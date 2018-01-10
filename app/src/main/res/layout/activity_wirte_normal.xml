@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/et_wirte_normal"
-        />
+    android:layout_height="match_parent">
+
     <RelativeLayout
+        android:layout_width="0sp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/et_wirte_normal"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_border_all_black_24dp"
-        android:id="@+id/iv_theme"
-        android:paddingLeft="20dp"
-        />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_assignment_turned_in_black_24dp"
-        android:id="@+id/save"
-        android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
-        />
-    </RelativeLayout>
+        android:background="#D8D8D8"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_border_all" />
+
+        <ImageView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:src="@drawable/selector_save" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

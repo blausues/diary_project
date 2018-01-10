@@ -42,7 +42,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_border_all_black_24dp" />
+            android:src="@drawable/selector_border_all" />
 
         <ImageButton
             android:id="@+id/btn_write"
@@ -51,7 +51,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_edit_black_24dp" />
+            android:src="@drawable/selector_create" />
 
         <ImageButton
             android:id="@+id/btn_setting"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_settings_black_24dp" />
+            android:src="@drawable/selector_setting"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

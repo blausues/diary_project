@@ -178,13 +178,13 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_edit_black_24dp"/>
+            android:src="@drawable/selector_border_all"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_edit_black_24dp"/>
+            android:src="@drawable/selector_save"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

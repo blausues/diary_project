@@ -24,5 +24,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"dsad",Toast.LENGTH_SHORT).show();
             }
         });
+
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"dsad",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
