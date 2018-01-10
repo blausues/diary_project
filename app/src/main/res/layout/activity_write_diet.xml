@@ -2,15 +2,58 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2017년 12월 6일"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5px"
+            android:background="#90909090"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="목표체중"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/tv_kg"
+                android:layout_alignBaseline="@id/tv_kg"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg"
+                android:id="@+id/tv_kg"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -20,17 +63,102 @@
             <EditText
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                />
+                android:layout_toLeftOf="@id/tv_kcal1"
+                android:layout_alignBaseline="@id/tv_kcal1"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="kcal"/>
+                android:text="kcal"
+                android:id="@+id/tv_kcal1"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentRight="true"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="먹은 식단"
+                android:layout_below="@id/tv_kcal1"/>
         </RelativeLayout>
-        <EditText
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="먹은 식단"
-            />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="점심"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/tv_kcal2"
+                android:layout_alignBaseline="@id/tv_kcal2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kcal"
+                android:id="@+id/tv_kcal2"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentRight="true"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="먹은 식단"
+                android:layout_below="@id/tv_kcal2"/>
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저녁"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/tv_kcal3"
+                android:layout_alignBaseline="@id/tv_kcal3"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kcal"
+                android:id="@+id/tv_kcal3"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentRight="true"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="먹은 식단"
+                android:layout_below="@id/tv_kcal3"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메모"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:id="@+id/tv_memo"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="오늘의 다이어트는 힘들었다."
+                android:layout_below="@id/tv_memo"/>
+        </RelativeLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

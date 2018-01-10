@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
         setContentView(R.layout.activity_day);
 
         btnThema = findViewById(R.id.btn_thema);
@@ -24,5 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"dsad",Toast.LENGTH_SHORT).show();
             }
         });
+=======
+        setContentView(R.layout.activity_write_diet);
+>>>>>>> 4a8fb1bca2f3171ca38ac5a647c40ae9c0f0706b
     }
 }
