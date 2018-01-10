@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/top_panel"
-        android:background="#ff0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#D8D8D8"
         android:gravity="center">
 
         <Button
@@ -20,48 +20,46 @@
 
     <ListView
         android:id="@+id/listview_book"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        app:layout_constraintTop_toBottomOf="@+id/top_panel"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_panel">
-    </ListView>
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
+        app:layout_constraintTop_toBottomOf="@+id/top_panel"></ListView>
 
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        android:background="#D8D8D8"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/btn_Thema"
-            android:text="임의1"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/btn_thema"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            />
-        <Button
+            android:src="@drawable/ic_border_all_black_24dp" />
+
+        <ImageButton
             android:id="@+id/btn_write"
-            android:text="임의2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            />
-        <Button
+            android:src="@drawable/ic_edit_black_24dp" />
+
+        <ImageButton
             android:id="@+id/btn_setting"
-            android:text="임의3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            />
-
+            android:src="@drawable/ic_settings_black_24dp" />
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>
