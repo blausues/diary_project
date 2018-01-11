@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                        Toast.makeText(MainActivity.this,date.getDate()+"",Toast.LENGTH_SHORT).show();
 
                         SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
                         SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
