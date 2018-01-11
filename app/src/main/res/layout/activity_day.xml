@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00ff0000"
-            android:text="test2017" />
+            android:text="test2017"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <ListView
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:background="#D8D8D8"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_setting"/>
+            android:src="@drawable/selector_setting" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
