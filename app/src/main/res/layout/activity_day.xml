@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:background="#D8D8D8"
         android:orientation="horizontal"
-        android:padding="15dp"
+        android:padding="13dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
