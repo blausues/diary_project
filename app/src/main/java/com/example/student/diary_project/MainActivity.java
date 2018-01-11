@@ -5,15 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageButton;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+
 public class MainActivity extends AppCompatActivity {
     private Button btnCalendar;
     private ImageButton btnThema, btnWrite, btnSetting;
-    MaterialCalendarView calendarV;
+    private MaterialCalendarView materialCalendarView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
                 final Dialog dialog = new Dialog(v.getContext());
                 dialog.setContentView(R.layout.dialog_calendar);
 
-//                ButterKnife.bind(this);
-                MaterialCalendarView calendarV = (MaterialCalendarView)findViewById(R.id.calendarView);
-
+                //start 달력 데코 (주말 색 표시,오늘 날짜 색 표시)
+                materialCalendarView = (MaterialCalendarView)dialog.findViewById(R.id.dialog_calendar);
+                materialCalendarView.addDecorators(
+                        new CalendarSaturdayDecorate(),
+                        new CalendarSundayDecorate(),
+                        new CalendarTodayDecorate());
+                //달력 데코 끝
                 dialog.show();
             }
         });
