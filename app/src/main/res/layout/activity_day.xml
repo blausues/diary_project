@@ -8,18 +8,21 @@
         android:id="@+id/top_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:background="#D8D8D8">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="20dp">
 
-            <Button
-                android:id="@+id/btn_calendar"
+            <TextView
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#00ff0000"
+                android:textColor="#000000"
+                android:textStyle="bold"
                 android:text="test2017"
                 android:textSize="20dp" />
         </LinearLayout>
@@ -29,22 +32,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="right"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal">
+            android:layout_marginRight="10dp">
 
-            <Button
-                android:id="@+id/btn_calendar_day"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:background="@drawable/activity_day_btn_shape"
-                android:layout_marginRight="5dp"
-                android:text="일 별"/>
-
-            <Button
-                android:id="@+id/btn_calendar_year"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:background="@drawable/activity_day_btn_shape"
+            <ImageButton
+                android:id="@+id/btn_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_calendar"
                 android:text="년 별"/>
         </LinearLayout>
     </LinearLayout>
