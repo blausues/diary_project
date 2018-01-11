@@ -12,6 +12,6 @@ public class MainMonthActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_month);
+        setContentView(R.layout.activity_write_diet);
     }
 }
