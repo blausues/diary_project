@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
                         btnCalendar.setText(year+"."+month+"."+day);
 
+
+
                         dialog.cancel();
                     }
                 });
