@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -32,6 +31,16 @@ public class MainActivity extends AppCompatActivity {
         btnThema = findViewById(R.id.btn_thema);
         btnWrite = findViewById(R.id.btn_write);
         btnSetting = findViewById(R.id.btn_setting);
+
+        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
+        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
+        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+
+        String year = yearSdf.format(new Date());
+        String month = monthSdf.format(new Date());
+        String day = daySdf.format(new Date());
+
+        btnCalendar.setText(year+"."+month+"."+day);
 
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
                         String day = daySdf.format(mDate);
 
                         btnCalendar.setText(year+"."+month+"."+day);
-
-
 
                         dialog.cancel();
                     }
