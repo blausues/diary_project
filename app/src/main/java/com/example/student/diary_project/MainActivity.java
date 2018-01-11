@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                         String day = daySdf.format(mDate);
 
                         btnCalendar.setText(year+"."+month+"."+day);
+
+                        dialog.cancel();
                     }
                 });
                 dialog.show();
