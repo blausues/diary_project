@@ -5,25 +5,43 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/write_normal_top_panel"
         android:layout_width="0sp"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
+        app:layout_constraintBottom_toTopOf="@+id/write_normal_center_panel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/et_wirte_normal"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:id="@+id/write_normal_center_panel"
+        app:layout_constraintBottom_toTopOf="@+id/write_normal_bottom_panel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_normal_top_panel"
+        >
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/iv_write_normal_plusImage"
+
+        />
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/bottom_panel"
+        android:id="@+id/write_normal_bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#D8D8D8"
@@ -31,20 +49,29 @@
         android:padding="13dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_theme"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/selector_border_all" />
-
-        <ImageView
-            android:id="@+id/save"
+            android:background="#00ff0000"
+            android:src="@drawable/selector_border_all"/>
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/selector_save" />
+            android:background="#00ff0000"
+            android:src="@drawable/selector_photo"
+            android:id="@+id/ib_select_image"
+            />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:src="@drawable/selector_save"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
