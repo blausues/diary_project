@@ -30,19 +30,22 @@
             android:layout_weight="1"
             android:background="#00ff0000"
             android:src="@drawable/selector_border_all"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:id="@+id/btn_month_theme"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
             android:src="@drawable/selector_create"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:id="@+id/btn_month_write"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_setting"/>
+            android:src="@drawable/selector_setting"
+            android:id="@+id/btn_month_setting"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

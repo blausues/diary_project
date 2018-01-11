@@ -9,14 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".WriteNormalActivity">
+=======
+        <activity android:name=".MainMonthActivity">
+>>>>>>> 2ad6c56fb0c1a8a1fc162a2105a6ff2b9c450b61
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainMonthActivity"/>
+        <!--<activity android:name=".MainMonthActivity"/>-->
     </application>
 
 </manifest>
