@@ -10,7 +10,7 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_selectionColor="#a9dbf0cb"
+        app:mcv_selectionColor="#fff4a460"
         app:mcv_showOtherDates="defaults"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,27 +22,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="10dp"
+        android:padding="13dp"
         android:background="#D8D8D8">
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_border_all_black_24dp"
+            android:src="@drawable/selector_border_all"
             android:layout_gravity="center"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_edit_black_24dp"
+            android:src="@drawable/selector_create"
             android:layout_gravity="center"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_settings_black_24dp"/>
+            android:src="@drawable/selector_setting"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
