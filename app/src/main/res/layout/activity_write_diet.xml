@@ -193,18 +193,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="#00ff0000"
-<<<<<<< HEAD
-            android:src="@drawable/ic_edit_black_24dp"/>
+            android:background="#00ff0000"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/ic_edit_black_24dp"/>
-=======
             android:src="@drawable/selector_save"/>
->>>>>>> 4228438b0ad0b3d947a3a9def0e43097a793f6fc
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
