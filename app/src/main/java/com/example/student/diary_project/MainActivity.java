@@ -40,41 +40,12 @@ public class MainActivity extends AppCompatActivity {
         String month = monthSdf.format(new Date());
         String day = daySdf.format(new Date());
 
-        btnCalendar.setText(year+"."+month+"."+day);
+        btnCalendar.setText(year+"."+month);
 
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(v.getContext());
-                dialog.setContentView(R.layout.dialog_calendar);
 
-                //start 달력 데코 (주말 색 표시,오늘 날짜 색 표시)
-                materialCalendarView = (MaterialCalendarView)dialog.findViewById(R.id.dialog_calendar);
-                materialCalendarView.addDecorators(
-                        new CalendarSaturdayDecorate(),
-                        new CalendarSundayDecorate(),
-                        new CalendarTodayDecorate());
-                //달력 데코 끝
-
-                materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-                    @Override
-                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-                        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-                        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
-
-                        Date mDate = date.getDate();
-                        String year = yearSdf.format(mDate);
-                        String month = monthSdf.format(mDate);
-                        String day = daySdf.format(mDate);
-
-                        btnCalendar.setText(year+"."+month+"."+day);
-
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
             }
         });
 
