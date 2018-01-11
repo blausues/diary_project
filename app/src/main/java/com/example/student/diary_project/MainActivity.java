@@ -1,13 +1,20 @@
 package com.example.student.diary_project;
 
 import android.app.Dialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +46,24 @@ public class MainActivity extends AppCompatActivity {
                         new CalendarSundayDecorate(),
                         new CalendarTodayDecorate());
                 //달력 데코 끝
+
+                materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                        Toast.makeText(MainActivity.this,date.getDate()+"",Toast.LENGTH_SHORT).show();
+
+                        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
+                        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
+                        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+
+                        Date mDate = date.getDate();
+                        String year = yearSdf.format(mDate);
+                        String month = monthSdf.format(mDate);
+                        String day = daySdf.format(mDate);
+
+                        btnCalendar.setText(year+"."+month+"."+day);
+                    }
+                });
                 dialog.show();
             }
         });
