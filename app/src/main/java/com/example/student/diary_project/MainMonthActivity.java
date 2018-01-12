@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -15,9 +16,12 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -25,11 +29,13 @@ import java.util.List;
  * Created by student on 2018-01-10.
  */
 
-// theme 0:일반, 1:그림, 2:금연, 3:다이어트
+// theme 0:일반, 1:그림, 2:금연, 3:다이어트 4:전체
 public class MainMonthActivity extends Activity {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
     private int theme = 0;
+
+    private DiaryDBHelper helper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,13 +47,31 @@ public class MainMonthActivity extends Activity {
         btnMonthWrite = findViewById(R.id.btn_month_write);
         btnMonthSetting = findViewById(R.id.btn_month_setting);
 
-        // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
+        helper = new DiaryDBHelper(this);
+
+        List<Calendar> tempDates = new ArrayList<>();
         List<CalendarDay> dates = new ArrayList<>();
-        // 오늘 날짜 가져오기
-        Calendar calendar = Calendar.getInstance();
-        // CalendarDay.from -> CalendarDay(year, month, day) return
-        CalendarDay day = CalendarDay.from(calendar);
-        dates.add(day);
+
+        // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
+        if(theme == 0) {
+
+        } else if(theme == 1) {
+
+        } else if(theme == 2) {
+
+        } else if(theme == 3) {
+            tempDates = helper.selectDietAllDate();
+        } else if(theme == 4) {
+            // 전체 리스트 화면으로 넘어가기
+        }
+
+        // Calendar 에서 CalderdarDay 로 변환
+        for(int i=0; i<tempDates.size(); i++) {
+            // CalendarDay.from -> CalendarDay(year, month, day) return
+            CalendarDay day = CalendarDay.from(tempDates.get(i));
+            dates.add(day);
+        }
+        // 그 날짜들 밑에 동그라미 그리기
         calendarView.addDecorator(new EventDecorator(Color.GRAY, dates));
 
         calendarView.addDecorators(new CalendarSundayDecorate(), new CalendarSaturdayDecorate(), new CalendarTodayDecorate());
