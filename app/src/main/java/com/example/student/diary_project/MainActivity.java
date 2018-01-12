@@ -1,10 +1,11 @@
 package com.example.student.diary_project;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private TextView viewDate;
     private ImageButton btnCalendar, btnThema, btnWrite, btnSetting;
     private Button btnCalendarDay, btnCalendarMonth, btnCalendarYear;
@@ -264,7 +265,8 @@ public class MainActivity extends AppCompatActivity {
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,DrawDiaryActivity.class);
+                startActivity(intent);
             }
         });
 
