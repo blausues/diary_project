@@ -1,10 +1,11 @@
 package com.example.student.diary_project;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -21,12 +22,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private TextView viewDate;
     private ImageButton btnCalendar, btnThema, btnWrite, btnSetting;
     private Button btnCalendarDay, btnCalendarMonth, btnCalendarYear;
-    private Button btnMonthDate;
+    private Button btnMonthDate,btnYearDate;
     private ImageButton btnMonthLeft, btnMonthRight;
+    private ImageButton btnYearLeft, btnYearRight;
     private MaterialCalendarView materialCalendarView;
     private String year, month, day;
 
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewDate.setText(year + "." + month);
 
+        //일정 선택 ////////////////////////////////////////////////////////////////////////////////////////////////
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +189,61 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 /////////////////////////////////////////////////////////////////////
+                //년별
+                btnCalendarYear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Dialog dialogYear = new Dialog(v.getContext());
+                        dialogYear.setContentView(R.layout.dialog_calendar_year);
+
+                        btnYearLeft = dialogYear.findViewById(R.id.btn_year_left);
+                        btnYearDate = dialogYear.findViewById(R.id.btn_year_date);
+                        btnYearRight = dialogYear.findViewById(R.id.btn_year_right);
+
+                        SimpleDateFormat yearDialogYear = new SimpleDateFormat("yyyy");
+
+                        year = yearDialogYear.format(new Date());
+
+                        btnYearDate.setText(year);
+
+                        btnYearLeft.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int tYear = Integer.parseInt(year);
+                                tYear--;
+                                year = Integer.toString(tYear);
+                                btnYearDate.setText(year);
+                            }
+                        });
+
+                        btnYearDate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                viewDate.setText(year);
+                                dialogYear.cancel();
+                            }
+                        });
+
+                        btnYearRight.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int tYear = Integer.parseInt(year);
+                                tYear++;
+                                year = Integer.toString(tYear);
+                                btnYearDate.setText(year);
+                            }
+                        });
+
+                        WindowManager.LayoutParams lp2 = new WindowManager.LayoutParams();
+                        lp2.copyFrom(dialogYear.getWindow().getAttributes());
+                        lp2.width = 950;
+                        lp2.height = 400;
+                        dialogYear.show();
+                        Window window = dialogYear.getWindow();
+                        window.setAttributes(lp2);
+                        dialog.cancel();
+                    }
+                });
 
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());
@@ -194,10 +252,9 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 Window window = dialog.getWindow();
                 window.setAttributes(lp);
-
-
             }
         });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         btnThema.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,7 +265,8 @@ public class MainActivity extends AppCompatActivity {
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,DrawDiaryActivity.class);
+                startActivity(intent);
             }
         });
 

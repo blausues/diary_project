@@ -16,7 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <!--<activity android:name=".MainMonthActivity"/>-->
+=======
+        <activity android:name=".MainMonthActivity"/>
+        <activity
+            android:name=".DrawDiaryActivity"
+            android:label="DrawDiaryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+>>>>>>> d5845e963c4108feedb5dd5bd98d8b3bd2bf0cef
     </application>
 
 </manifest>
