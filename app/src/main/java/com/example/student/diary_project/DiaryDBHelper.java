@@ -1,10 +1,14 @@
 package com.example.student.diary_project;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,9 +40,24 @@ public class DiaryDBHelper extends SQLiteOpenHelper {
     }
 
     // 다이어트 일기 쓴 날짜 다 불러오기
-    public List<Date> selectDietAllDate() {
-        List<Date> dates = new ArrayList<>();
+    public List<Calendar> selectDietAllDate() {
+        String sql = "SELECE WRITE_DATE FROM NOSMOKING_TABLE";
 
+        Cursor cursor = db.rawQuery(sql, null);
+
+        List<Calendar> dates = new ArrayList<>();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        while(cursor.moveToNext()) {
+            Calendar calendar = Calendar.getInstance();
+
+            Date date = transFormat.parse(cursor.getString(0), new ParsePosition(0));
+
+            calendar.setTime(date);
+//            calendar.add(Calendar.MONTH, 1);
+
+            dates.add(calendar);
+        }
         return dates;
     }
 }
