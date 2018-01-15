@@ -8,7 +8,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -33,7 +36,10 @@ import java.util.List;
 public class MainMonthActivity extends Activity {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
-    private int theme = 0;
+    private TextView tvProgress;
+    private ProgressBar pbDiary;
+
+    private int theme = 2;
 
     private DiaryDBHelper helper;
 
@@ -46,6 +52,8 @@ public class MainMonthActivity extends Activity {
         btnMonthTheme = findViewById(R.id.btn_month_theme);
         btnMonthWrite = findViewById(R.id.btn_month_write);
         btnMonthSetting = findViewById(R.id.btn_month_setting);
+        tvProgress = findViewById(R.id.tv_progress);
+        pbDiary = findViewById(R.id.pb_diary);
 
         helper = new DiaryDBHelper(this);
 
@@ -58,9 +66,25 @@ public class MainMonthActivity extends Activity {
         } else if(theme == 1) {
 
         } else if(theme == 2) {
+            NoSmokingVO noSmokingVO = new NoSmokingVO(new Date(), new Date(), 1, "gg");
 
+            helper.insertNoSmoking(noSmokingVO);
+
+            tempDates = helper.selectNoSmokingAllDate();
+
+            noSmokingVO = helper.selectNoSmokingLastDate();
+
+            // theme = 2, 3이면 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
+            if(noSmokingVO.getGiveUp() == 1) {
+                // giveUp 0:진행중, 1:포기
+                Date today = new Date();
+                double n = Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime())/86400000)+1;
+                Log.i("lyh", n+"");
+            }
+            tvProgress.setVisibility(View.VISIBLE);
+            pbDiary.setVisibility(View.VISIBLE);
         } else if(theme == 3) {
-            tempDates = helper.selectDietAllDate();
+
         } else if(theme == 4) {
             // 전체 리스트 화면으로 넘어가기
         }
