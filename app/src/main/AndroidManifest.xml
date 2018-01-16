@@ -9,11 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
-        <activity android:name=".MainActivity">
-=======
+        
         <activity android:name=".WriteNormalActivity">
->>>>>>> 4a1bee9ce69af36c7970ddb74241e8e6cc2a4f32
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
