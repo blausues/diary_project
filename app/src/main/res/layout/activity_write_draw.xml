@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/btn_draw_calendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00ff0000"
@@ -28,67 +29,142 @@
             android:background="#FF778899" />
     </LinearLayout>
 
-
     <LinearLayout
-        android:id="@+id/panel1_draw"
+        android:id="@+id/draw_paint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
+        android:background="#FF778899"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@+id/top_panel_draw">
 
         <ImageButton
+            android:id="@+id/btn_draw_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_photo" />
+            android:src="@drawable/selector_draw_color" />
 
         <ImageButton
+            android:id="@+id/btn_draw_eraser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_photo" />
+            android:src="@drawable/selector_draw_eraser" />
 
         <ImageButton
+            android:id="@+id/btn_draw_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_photo" />
+            android:src="@drawable/selector_draw_prev" />
 
         <ImageButton
+            android:id="@+id/btn_draw_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00ff0000"
-            android:src="@drawable/selector_photo" />
+            android:src="@drawable/selector_draw_delete" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/panel1_view"
+    <RelativeLayout
+        android:id="@+id/drawView_panel"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/panel1_draw">
+        android:layout_height="300dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/drawdiary_border"
+        app:layout_constraintTop_toBottomOf="@+id/draw_paint">
+
+        <GridView
+            android:id="@+id/draw_gridView"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:numColumns="5"
+            android:focusable="true"
+            android:background="@drawable/colorselectborder"
+            android:visibility="invisible"
+            >
+
+        </GridView>
 
         <com.example.student.diary_project.DrawView
             android:id="@+id/draw_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_panel_draw" />
-    </LinearLayout>
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/draw_scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawView_panel"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_draw_panel">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp">
+
+            <EditText
+                android:id="@+id/draw_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom_draw_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        >
+        android:background="#D8D8D8"
+        android:orientation="horizontal"
+        android:padding="13dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <ImageButton
+            android:id="@+id/btn_draw_thema"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:src="@drawable/selector_border_all" />
 
+        <ImageButton
+            android:id="@+id/btn_draw_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:src="@drawable/selector_save" />
+
+        <ImageButton
+            android:id="@+id/btn_draw_dd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ff0000"
+            android:src="@drawable/selector_setting" />
     </LinearLayout>
 
 
