@@ -71,7 +71,6 @@ public class MainMonthActivity extends Activity {
 
         } else if(theme == 2) {
             NoSmokingVO noSmokingVO = new NoSmokingVO(new Date(), new Date(), 1, "gg");
-
             helper.insertNoSmoking(noSmokingVO);
 
             tempDates = helper.selectNoSmokingAllDate();
@@ -113,12 +112,14 @@ public class MainMonthActivity extends Activity {
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 for(int i=0; i<dates.size(); i++) {
                     if(dates.get(i).equals(date)) {
-                        Intent intent = new Intent(MainMonthActivity.this, NoSmokingActivity.class);
+                        if(theme == 2) {
+                            Intent intent = new Intent(MainMonthActivity.this, NoSmokingActivity.class);
 
-                        intent.putExtra("writeDate", date);
-                        startActivity(intent);
+                            intent.putExtra("writeDate", date);
+                            startActivity(intent);
 
-                        break;
+                            break;
+                        }
                     }
                 }
             }
