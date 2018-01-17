@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="2017년 12월 6일"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:id="@+id/tv_nosmoking_writedate"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:layout_margin="10dp"
+                android:background="#D8D8D8"
+                android:id="@+id/divider"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="금연시작 2018년 12월 1일 D+30일"
+                android:id="@+id/tv_nosmoking_startdate"/>
+
+            <TextView
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_nosmoking_promise"
+                android:text="dddddddddddddddddddddddd"
+                android:visibility="visible"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/edit_nosmoking_promise"
+                android:visibility="gone"
+                android:background="#00ff0000"
+                android:textSize="14sp"
+                android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_nosmoking_now"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone"
+        android:background="#00ff0000"
+        android:layout_margin="11dp"
+        android:src="@drawable/ic_access_time_black_24dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:id="@+id/btn_nosmoking_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#00ff0000"
+        android:visibility="gone"/>
+</android.support.constraint.ConstraintLayout>

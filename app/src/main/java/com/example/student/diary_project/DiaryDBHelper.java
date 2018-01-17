@@ -46,6 +46,9 @@ public class DiaryDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 금연 일기
+
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {
         String sql = "SELECT WRITE_DATE FROM NOSMOKING_TABLE";
@@ -68,13 +71,13 @@ public class DiaryDBHelper extends SQLiteOpenHelper {
         return dates;
     }
 
-    // 금연 일기 최근에 쓴 것 불러오기(수정해야돼 ㅠㅠ 쿼리가 이상해)
+    // 금연 일기 최근에 쓴 것 불러오기
     public NoSmokingVO selectNoSmokingLastDate() {
-        String sql = "SELECT MAX(START_DATE), GIVE_UP FROM NOSMOKING_TABLE";
+        String sql = "SELECT START_DATE, GIVE_UP FROM NOSMOKING_TABLE WHERE WRITE_DATE = " +
+                "(SELECT MAX(WRITE_DATE) FROM NOSMOKING_TABLE)";
 
         Cursor cursor = db.rawQuery(sql, null);
 
-        List<Calendar> dates = new ArrayList<>();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         NoSmokingVO noSmokingVO = new NoSmokingVO();
@@ -84,27 +87,54 @@ public class DiaryDBHelper extends SQLiteOpenHelper {
             noSmokingVO.setStartDate(startDate);
 
             noSmokingVO.setGiveUp(cursor.getInt(1));
-            Log.i("lyh", startDate+"/"+cursor.getInt(1));
+            Log.i("lyh", startDate+"///"+cursor.getString(0)+"///"+cursor.getInt(1));
+        }
+        return noSmokingVO;
+    }
+
+    // 해당 날짜에 쓴 금연 일기 불러오기
+    public NoSmokingVO selectNoSmokingDate(String date) {
+        String sql = "SELECT WRITE_DATE, START_DATE, GIVE_UP, PROMISE FROM NOSMOKING_TABLE WHERE WRITE_DATE = '" + date + "'";
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        NoSmokingVO noSmokingVO = new NoSmokingVO();
+
+        if(cursor.moveToNext()) {
+            Date writeDate = transFormat.parse(cursor.getString(0), new ParsePosition(0));
+            noSmokingVO.setWriteDate(writeDate);
+
+            Date startDate = transFormat.parse(cursor.getString(1), new ParsePosition(0));
+            noSmokingVO.setStartDate(startDate);
+
+            noSmokingVO.setGiveUp(cursor.getInt(2));
+            noSmokingVO.setPromise(cursor.getString(3));
         }
         return noSmokingVO;
     }
 
     public void insertNoSmoking(NoSmokingVO noSmokingVO) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         Date writeDate = noSmokingVO.getWriteDate();
         Date startDate = noSmokingVO.getStartDate();
 
         ContentValues values = new ContentValues();
 
-//        values.put("WRITE_DATE", "2018-01-19 10:00:00");
-//        values.put("START_DATE", "2018-01-03 10:00:00");
+//        values.put("WRITE_DATE", "2018-01-15");
+//        values.put("START_DATE", "2018-01-03");
+//        values.put("GIVE_UP", 2);
 
         values.put("WRITE_DATE", dateFormat.format(writeDate));
         values.put("START_DATE", dateFormat.format(startDate));
-        values.put("GIVE_UP", 1);
+        values.put("GIVE_UP", noSmokingVO.getGiveUp());
         values.put("PROMISE", noSmokingVO.getPromise());
 
         db.insert("NOSMOKING_TABLE", null, values);
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 다이어트 일기
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

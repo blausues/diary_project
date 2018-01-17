@@ -1,6 +1,7 @@
 package com.example.student.diary_project;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -36,10 +38,12 @@ import java.util.List;
 public class MainMonthActivity extends Activity {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
-    private TextView tvProgress;
+    private TextView tvProgress, tvMaxProgress;
     private ProgressBar pbDiary;
 
     private int theme = 2;
+
+    private List<CalendarDay> dates;
 
     private DiaryDBHelper helper;
 
@@ -53,12 +57,13 @@ public class MainMonthActivity extends Activity {
         btnMonthWrite = findViewById(R.id.btn_month_write);
         btnMonthSetting = findViewById(R.id.btn_month_setting);
         tvProgress = findViewById(R.id.tv_progress);
+        tvMaxProgress = findViewById(R.id.tv_max_progress);
         pbDiary = findViewById(R.id.pb_diary);
 
         helper = new DiaryDBHelper(this);
 
         List<Calendar> tempDates = new ArrayList<>();
-        List<CalendarDay> dates = new ArrayList<>();
+        dates = new ArrayList<>();
 
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
@@ -67,7 +72,6 @@ public class MainMonthActivity extends Activity {
 
         } else if(theme == 2) {
             NoSmokingVO noSmokingVO = new NoSmokingVO(new Date(), new Date(), 1, "gg");
-
             helper.insertNoSmoking(noSmokingVO);
 
             tempDates = helper.selectNoSmokingAllDate();
@@ -75,13 +79,19 @@ public class MainMonthActivity extends Activity {
             noSmokingVO = helper.selectNoSmokingLastDate();
 
             // theme = 2, 3이면 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
-            if(noSmokingVO.getGiveUp() == 1) {
+            if(noSmokingVO.getGiveUp() == 3) {
                 // giveUp 0:진행중, 1:포기
                 Date today = new Date();
-                double n = Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime())/86400000)+1;
-                Log.i("lyh", n+"");
+
+                int dDay = (int) Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime()) / 86400000) + 1;
+
+                // progressBar에 d-day 표시해주기
+                tvProgress.setText("D+"+dDay);
+                tvMaxProgress.setText(((dDay/100) + 1) * 100+"");
+                pbDiary.setProgress(dDay%100);
             }
             tvProgress.setVisibility(View.VISIBLE);
+            tvMaxProgress.setVisibility(View.VISIBLE);
             pbDiary.setVisibility(View.VISIBLE);
         } else if(theme == 3) {
 
@@ -95,16 +105,26 @@ public class MainMonthActivity extends Activity {
             CalendarDay day = CalendarDay.from(tempDates.get(i));
             dates.add(day);
         }
-        // 그 날짜들 밑에 동그라미 그리기
-        calendarView.addDecorator(new EventDecorator(Color.GRAY, dates));
-
+        // 해당 날짜들 밑에 동그라미 그리기
+        calendarView.addDecorator(new EventDecorator(Color.RED, dates));
         calendarView.addDecorators(new CalendarSundayDecorate(), new CalendarSaturdayDecorate(), new CalendarTodayDecorate());
 
         // 달력 클릭 시, 일기 읽는 화면으로
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                for(int i=0; i<dates.size(); i++) {
+                    if(dates.get(i).equals(date)) {
+                        if(theme == 2) {
+                            Intent intent = new Intent(MainMonthActivity.this, NoSmokingActivity.class);
 
+                            intent.putExtra("writeDate", date);
+                            startActivity(intent);
+
+                            break;
+                        }
+                    }
+                }
             }
         });
 
@@ -135,7 +155,6 @@ public class MainMonthActivity extends Activity {
 
     // 날짜 밑에 원 그리는 decorator
     public class EventDecorator implements DayViewDecorator {
-
         private final int color;
         private final HashSet<CalendarDay> dates;
 
