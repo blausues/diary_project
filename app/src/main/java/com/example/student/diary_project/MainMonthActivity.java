@@ -38,7 +38,7 @@ import java.util.List;
 public class MainMonthActivity extends Activity {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
-    private TextView tvProgress;
+    private TextView tvProgress, tvMaxProgress;
     private ProgressBar pbDiary;
 
     private int theme = 2;
@@ -57,6 +57,7 @@ public class MainMonthActivity extends Activity {
         btnMonthWrite = findViewById(R.id.btn_month_write);
         btnMonthSetting = findViewById(R.id.btn_month_setting);
         tvProgress = findViewById(R.id.tv_progress);
+        tvMaxProgress = findViewById(R.id.tv_max_progress);
         pbDiary = findViewById(R.id.pb_diary);
 
         helper = new DiaryDBHelper(this);
@@ -82,13 +83,15 @@ public class MainMonthActivity extends Activity {
                 // giveUp 0:진행중, 1:포기
                 Date today = new Date();
 
-                int n = (int) Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime()) / 86400000) + 1;
+                int dDay = (int) Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime()) / 86400000) + 1;
 
                 // progressBar에 d-day 표시해주기
-                tvProgress.setText("+ "+n);
-                pbDiary.setProgress(n);
+                tvProgress.setText("D+"+dDay);
+                tvMaxProgress.setText(((dDay/100) + 1) * 100+"");
+                pbDiary.setProgress(dDay%100);
             }
             tvProgress.setVisibility(View.VISIBLE);
+            tvMaxProgress.setVisibility(View.VISIBLE);
             pbDiary.setVisibility(View.VISIBLE);
         } else if(theme == 3) {
 
