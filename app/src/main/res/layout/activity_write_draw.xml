@@ -87,17 +87,16 @@
             android:id="@+id/draw_gridView"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/colorselectborder"
+            android:focusable="true"
+            android:numColumns="5"
+            android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:numColumns="5"
-            android:focusable="true"
-            android:background="@drawable/colorselectborder"
-            android:visibility="invisible"
-            >
+            android:visibility="invisible">
 
         </GridView>
 
@@ -112,10 +111,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_draw_panel"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawView_panel"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_draw_panel">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawView_panel">
 
         <LinearLayout
             android:layout_width="match_parent"

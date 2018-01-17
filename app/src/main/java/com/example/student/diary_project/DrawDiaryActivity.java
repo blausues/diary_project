@@ -1,8 +1,12 @@
 package com.example.student.diary_project;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
@@ -17,15 +21,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by student on 2018-01-12.
@@ -182,7 +191,7 @@ public class DrawDiaryActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-//                drawView.eraser();
+                drawView.eraser(Color.WHITE);
             }
         });
 
@@ -200,6 +209,21 @@ public class DrawDiaryActivity extends AppCompatActivity {
                 drawView.setClear();
             }
         });
+
+        btnThema.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap myViewBitmap = getBitmapFromView(drawView);
+                File result = screenShotSave(myViewBitmap);
+            }
+        });
     }
 
     @Override
@@ -211,5 +235,44 @@ public class DrawDiaryActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        else
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
+    }
+
+    private File screenShotSave(Bitmap screenBitmap) {
+
+        String filename = new Random().nextInt(1000) + "screenshot.jpg";
+        File root = Environment.getExternalStorageDirectory();
+        File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
+        Toast.makeText(DrawDiaryActivity.this,"저장되었습니다.",Toast.LENGTH_SHORT).show();
+
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            screenBitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
+            Log.d("yyj", "save os");
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return file;
     }
 }

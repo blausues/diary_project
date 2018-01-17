@@ -24,8 +24,7 @@ public class DrawView extends View {
     private Paint currentPaint;
     private Path currentPath;
     private int currentColor = Color.BLACK;
-
-    private int undoCheck = 1;
+    private float currentFont = 10f;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -34,14 +33,16 @@ public class DrawView extends View {
     }
 
 
-//    private boolean isFirst = true;
+    //    private boolean isFirst = true;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+
         for (int x = 0; x < pathList.size(); x++) {
             canvas.drawPath(pathList.get(x), paintList.get(x));
         }
+        canvas.drawPath(currentPath, currentPaint);
     }
 
     @Override
@@ -56,16 +57,13 @@ public class DrawView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 currentPath.lineTo(x, y);
-                Log.d("hjw","ddd");
-                paintList.add(currentPaint);
-                pathList.add(currentPath);
+                Log.d("hjw", "ddd");
                 break;
-//            case MotionEvent.ACTION_UP:
-//
-//                pathList.add(currentPath);
-//                paintList.add(currentPaint);
-//                currentPath = new Path();
-//                break;
+            case MotionEvent.ACTION_UP:
+                pathList.add(currentPath);
+                paintList.add(currentPaint);
+                makePaintPath();
+                break;
         }
 
         invalidate();
@@ -75,29 +73,35 @@ public class DrawView extends View {
     public void makePaintPath() {
         currentPaint = new Paint();
         currentPaint.setStyle(Paint.Style.STROKE);
-        currentPaint.setStrokeWidth(10f);
+        currentPaint.setStrokeWidth(currentFont);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setAntiAlias(true);
         currentPaint.setColor(currentColor);
 
         currentPath = new Path();
     }
-    public void selColor(int color){
+
+    public void selColor(int color) {
+        currentFont = 10f;
         currentColor = color;
-        currentPaint.setColor(color);
     }
-    public void setClear() {
-        for (int x = 0; x < pathList.size(); x++) {
-            pathList.get(x).reset();
-            paintList.get(x).reset();
-        }
-        invalidate();
+
+    public void eraser(int color){
+        currentFont = 25f;
+        currentColor = color;
     }
 
     public void printBack() {
-        pathList.get(pathList.size()-1).reset();
-        paintList.get(paintList.size()-1).reset();
+        if (pathList.size() != 0) {
+            pathList.remove(pathList.size() - 1);
+            paintList.remove(paintList.size() - 1);
+            invalidate();
+        }
+    }
 
+    public void setClear() {
+        pathList.clear();
+        paintList.clear();
         invalidate();
     }
 }
