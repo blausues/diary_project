@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.student.diary_project">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +26,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+
     </application>
 
 </manifest>

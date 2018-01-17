@@ -9,15 +9,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity;
+import com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity;
+import com.yongbeam.y_photopicker.util.photopicker.utils.YPhotoPickerIntent;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by student on 2018-01-11.
@@ -30,8 +37,9 @@ public class WriteNormalActivity extends Activity {
     private Date date;
     private SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
     private ImageView plusImage[] = new ImageView[5];
-    private int PICK_IMAGE_REQUEST = 1;
+    private int REQUEST_CODE = 1;
     private int tmpID;
+    public static ArrayList<String> selectedPhotos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +52,7 @@ public class WriteNormalActivity extends Activity {
 
         String pkg = getPackageName();   // findViewById 반복문 돌리기
         for (int i = 0; i < 5; i++) {
-            tmpID = getResources().getIdentifier("iv_write_normal_plusImage"+i, "id", pkg);
+            tmpID = getResources().getIdentifier("iv_write_normal_plusImage" + i, "id", pkg);
             plusImage[i] = findViewById(tmpID);
         }
 
@@ -59,82 +67,60 @@ public class WriteNormalActivity extends Activity {
         selectImage.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                YPhotoPickerIntent intent = new YPhotoPickerIntent(WriteNormalActivity.this);
+                intent.setMaxSelectCount(5);
+                intent.setShowCamera(true);
+                intent.setShowGif(true);
+                intent.setSelectCheckBox(false);
+                intent.setMaxGrideItemCount(3);
+                startActivityForResult(intent, REQUEST_CODE);
+
             }
         });
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        List<String> photos = null;
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            if (data != null) {
+                photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.i("asd", photos.get(0));
+            }
+            if (photos != null) {
+                selectedPhotos.addAll(photos);
+                for (int i = 0; i < selectedPhotos.size(); i++) {
+                    Log.i("asd","asd");
+                    if(plusImage[i].getDrawable()==null) {
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(selectedPhotos.get(i)));
+                            plusImage[i].setImageBitmap(bitmap);
+                            Log.i("asdasd", String.valueOf(bitmap));
+                        } catch (IOException e) {
+                            Log.i("zxc", String.valueOf(e));
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
     private String getTime() {   // 맨 위에 현재 날짜 뽑아 오기.
         now = System.currentTimeMillis();
         date = new Date(now);
         return formate.format(date);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            for (int i = 0; i < 5; i++) {
-                if (plusImage[i].getDrawable() == null) {
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                        ExifInterface exif = new ExifInterface(uri.getPath());
-                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                        int exifDegree = exifOrientationToDegrees(exifOrientation);
-                        bitmap = rotate(bitmap, exifDegree);
-
-                        plusImage[i].setImageBitmap(bitmap);
-                        break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else if(plusImage[4].getDrawable() != null){
-                    Toast.makeText(this, "사진은 최대 5장!!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }
-    }
-    public int exifOrientationToDegrees(int exifOrientation){
-        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        }else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_180){
-            return 180;
-        }else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_270){
-            return 270;
-        } return 0;
-
-    }
-    public Bitmap rotate(Bitmap bitmap, int degrees)
-    {
-        if(degrees != 0 && bitmap != null)
-        {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
-                    (float) bitmap.getHeight() / 2);
-
-            try
-            {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if(bitmap != converted)
-                {
-                    bitmap.recycle();
-                    bitmap = converted;
-                }
-            }
-            catch(OutOfMemoryError ex)
-            {
-                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
-            }
-        }
-        return bitmap;
-    }
-
 
 }
+
+
+
+
+
+
+
