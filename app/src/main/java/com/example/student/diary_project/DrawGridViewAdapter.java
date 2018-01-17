@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -41,18 +42,18 @@ public class DrawGridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ImageButton viewDrawColor;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ImageView viewDrawColor;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(itemLayout, parent, false);
 
-            viewDrawColor = (ImageButton) convertView.findViewById(R.id.view_item_color);
+            viewDrawColor = (ImageView) convertView.findViewById(R.id.view_item_color);
 
             convertView.setTag(viewDrawColor);
         } else {
-            viewDrawColor = (ImageButton) convertView.getTag();
+            viewDrawColor = (ImageView) convertView.getTag();
         }
 
         switch (colorList.get(position)) {

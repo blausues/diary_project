@@ -1,20 +1,22 @@
 package com.example.student.diary_project;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -38,6 +40,9 @@ public class DrawDiaryActivity extends AppCompatActivity {
 
     private Date mDate;
     private String year, month, day;
+    private int checkColorMenu = 0;
+
+    private DrawView drawView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +68,8 @@ public class DrawDiaryActivity extends AppCompatActivity {
         btnOut = findViewById(R.id.btn_draw_dd);
         drawEdit = findViewById(R.id.draw_edit);
         drawGridView = findViewById(R.id.draw_gridView);
+        drawView = (DrawView) findViewById(R.id.draw_view);
+
         //////////////////////////////////////////////////////////////////////////////////
 
         //현재 시간 표시
@@ -80,11 +87,11 @@ public class DrawDiaryActivity extends AppCompatActivity {
         //그리기 색상 표시 디자인하기 위해 그리드 뷰로 구성
         List<Integer> colorList = new ArrayList<>();
 
-        for(int x=0; x<5; x++){
+        for (int x = 0; x < 5; x++) {
             colorList.add(x);
         }
 
-        DrawGridViewAdapter adapter = new DrawGridViewAdapter(this,R.layout.item_colorbutton,colorList);
+        DrawGridViewAdapter adapter = new DrawGridViewAdapter(this, R.layout.item_colorbutton, colorList);
         drawGridView.setAdapter(adapter);
         ////////////////////////////////////////////////////////////////////////////
 
@@ -131,34 +138,66 @@ public class DrawDiaryActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                drawGridView.setVisibility(View.VISIBLE);
+                if (checkColorMenu == 0) {
+                    drawGridView.setVisibility(View.VISIBLE);
+                    drawGridView.setFocusable(true);
+                    drawGridView.setFocusableInTouchMode(true);
+                    drawGridView.requestFocus();
+                    drawGridView.bringToFront();
+                    checkColorMenu = 1;
+                } else {
+                    drawGridView.setVisibility(View.INVISIBLE);
+                    checkColorMenu = 0;
+                }
+
+            }
+        });
+
+        drawGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        drawView.selColor(Color.RED);
+                        break;
+                    case 1:
+                        drawView.selColor(Color.BLUE);
+                        break;
+                    case 2:
+                        drawView.selColor(Color.rgb(255, 165, 000));
+                        break;
+                    case 3:
+                        drawView.selColor(Color.BLACK);
+                        break;
+                    case 4:
+                        drawView.selColor(Color.GREEN);
+                        break;
+                }
+                drawGridView.setVisibility(View.INVISIBLE);
+                checkColorMenu = 0;
             }
         });
 
         btnEraser.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View v) {
-
+//                drawView.eraser();
             }
         });
 
-        btnPrev.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                drawView.printBack();
             }
         });
 
         btnClear.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View v) {
-
+                drawView.setClear();
             }
         });
     }

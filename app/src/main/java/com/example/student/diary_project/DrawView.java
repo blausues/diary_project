@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,34 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by student on 2018-01-15.
+ * Created by student on 2017-12-14.
  */
 
-public class DrawView extends View{
+public class DrawView extends View {
     private List<Path> pathList = new ArrayList<>();
     private List<Paint> paintList = new ArrayList<>();
     private Paint currentPaint;
     private Path currentPath;
+    private int currentColor = Color.BLACK;
+
+    private int undoCheck = 1;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        currentPaint = new Paint();
-        currentPaint.setStyle(Paint.Style.STROKE);
-        currentPaint.setStrokeWidth(10f);
-        currentPaint.setStrokeJoin(Paint.Join.ROUND);
-        currentPaint.setAntiAlias(true);
-        currentPaint.setColor(Color.BLACK);
-
-        currentPath = new Path();
-
-        pathList.add(currentPath);
-        paintList.add(currentPaint);
+        makePaintPath();
     }
 
+
+//    private boolean isFirst = true;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         for (int x = 0; x < pathList.size(); x++) {
             canvas.drawPath(pathList.get(x), paintList.get(x));
         }
@@ -54,47 +51,53 @@ public class DrawView extends View{
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                makePaintPath();
                 currentPath.moveTo(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 currentPath.lineTo(x, y);
+                Log.d("hjw","ddd");
+                paintList.add(currentPaint);
+                pathList.add(currentPath);
                 break;
+//            case MotionEvent.ACTION_UP:
+//
+//                pathList.add(currentPath);
+//                paintList.add(currentPaint);
+//                currentPath = new Path();
+//                break;
         }
+
         invalidate();
         return true;
     }
 
-    public void selColor(int color) {
+    public void makePaintPath() {
         currentPaint = new Paint();
         currentPaint.setStyle(Paint.Style.STROKE);
         currentPaint.setStrokeWidth(10f);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setAntiAlias(true);
-        currentPaint.setColor(color);
+        currentPaint.setColor(currentColor);
 
         currentPath = new Path();
-
-        pathList.add(currentPath);
-        paintList.add(currentPaint);
     }
-
-    public void setClear(int deleteColor) {
-        if (deleteColor != 0) {
-            for (int x = 0; x < pathList.size(); x++) {
-                if (paintList.get(x).getColor() == deleteColor) {
-                    pathList.get(x).reset();
-                }
-            }
-        } else {
-            for (int x = 0; x < pathList.size(); x++) {
-                pathList.get(x).reset();
-            }
+    public void selColor(int color){
+        currentColor = color;
+        currentPaint.setColor(color);
+    }
+    public void setClear() {
+        for (int x = 0; x < pathList.size(); x++) {
+            pathList.get(x).reset();
+            paintList.get(x).reset();
         }
         invalidate();
     }
 
     public void printBack() {
-        currentPath.reset();
+        pathList.get(pathList.size()-1).reset();
+        paintList.get(paintList.size()-1).reset();
+
         invalidate();
     }
 }
