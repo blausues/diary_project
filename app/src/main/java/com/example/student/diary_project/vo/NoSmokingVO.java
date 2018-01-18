@@ -7,33 +7,33 @@ import java.util.Date;
  */
 
 public class NoSmokingVO {
-    private Date writeDate;
-    private Date startDate;
+    private String writeDate;
+    private String startDate;
     private int giveUp;
     private String promise;
 
     public NoSmokingVO() {}
 
-    public NoSmokingVO(Date writeDate, Date startDate, int giveUp, String promise) {
+    public NoSmokingVO(String writeDate, String startDate, int giveUp, String promise) {
         this.writeDate = writeDate;
         this.startDate = startDate;
         this.giveUp = giveUp;
         this.promise = promise;
     }
 
-    public Date getWriteDate() {
+    public String getWriteDate() {
         return writeDate;
     }
 
-    public void setWriteDate(Date writeDate) {
+    public void setWriteDate(String writeDate) {
         this.writeDate = writeDate;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
@@ -51,5 +51,15 @@ public class NoSmokingVO {
 
     public void setPromise(String promise) {
         this.promise = promise;
+    }
+
+    @Override
+    public String toString() {
+        return "NoSmokingVO{" +
+                "writeDate='" + writeDate + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", giveUp=" + giveUp +
+                ", promise='" + promise + '\'' +
+                '}';
     }
 }

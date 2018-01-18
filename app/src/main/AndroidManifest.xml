@@ -14,13 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainMonthActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".DrawDiaryActivity"
             android:label="DrawDiaryActivity">
@@ -28,19 +29,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-<<<<<<< HEAD
-        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-=======
         <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-
->>>>>>> 9efd90c79187106488c156c723cdffee837bfd3a
-        <activity android:name=".NoSmokingActivity"
+        <activity android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".WriteNoSmokingActivity"/>
+        <activity android:name=".WriteDietActivity"/>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

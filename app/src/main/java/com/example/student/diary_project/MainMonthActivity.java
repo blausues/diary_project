@@ -6,12 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -71,19 +69,19 @@ public class MainMonthActivity extends Activity {
         } else if(theme == 1) {
 
         } else if(theme == 2) {
-            NoSmokingVO noSmokingVO = new NoSmokingVO(new Date(), new Date(), 1, "gg");
-            helper.insertNoSmoking(noSmokingVO);
-
             tempDates = helper.selectNoSmokingAllDate();
 
-            noSmokingVO = helper.selectNoSmokingLastDate();
+            NoSmokingVO noSmokingVO = helper.selectNoSmokingLastDate();
 
             // theme = 2, 3이면 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
-            if(noSmokingVO.getGiveUp() == 3) {
+            if(noSmokingVO.getGiveUp() == 0) {
                 // giveUp 0:진행중, 1:포기
                 Date today = new Date();
 
-                int dDay = (int) Math.floor((today.getTime() - noSmokingVO.getStartDate().getTime()) / 86400000) + 1;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDate = sdf.parse(noSmokingVO.getStartDate(), new ParsePosition(0));
+
+                int dDay = (int) Math.floor((today.getTime() - startDate.getTime()) / 86400000) + 1;
 
                 // progressBar에 d-day 표시해주기
                 tvProgress.setText("D+"+dDay);
@@ -116,7 +114,7 @@ public class MainMonthActivity extends Activity {
                 for(int i=0; i<dates.size(); i++) {
                     if(dates.get(i).equals(date)) {
                         if(theme == 2) {
-                            Intent intent = new Intent(MainMonthActivity.this, NoSmokingActivity.class);
+                            Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
 
                             intent.putExtra("writeDate", date);
                             startActivity(intent);
@@ -133,6 +131,7 @@ public class MainMonthActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+
             }
         });
 
@@ -140,7 +139,8 @@ public class MainMonthActivity extends Activity {
         btnMonthWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -172,5 +172,13 @@ public class MainMonthActivity extends Activity {
         public void decorate(DayViewFacade view) {
             view.addSpan(new DotSpan(10, color));
         }
+    }
+
+    // 뒤로가기 버튼을 통해서 왔을 때, 새로고침 되어야 한다!
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 }
