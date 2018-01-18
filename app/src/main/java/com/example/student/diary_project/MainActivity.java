@@ -38,11 +38,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day);
 
+        //레이아웃 아이디 모음
+
         viewDate = findViewById(R.id.tv_date);
         btnCalendar = findViewById(R.id.btn_calendar);
         btnThema = findViewById(R.id.btn_thema);
         btnWrite = findViewById(R.id.btn_write);
         btnSetting = findViewById(R.id.btn_setting);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
 
         SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
         SimpleDateFormat monthSdf = new SimpleDateFormat("MM");

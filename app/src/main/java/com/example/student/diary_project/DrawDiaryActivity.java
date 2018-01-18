@@ -1,51 +1,37 @@
 package com.example.student.diary_project;
 
-import android.app.Dialog;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
- * Created by student on 2018-01-12.
+ * Created by student on 2018-01-18.
  */
 
-public class DrawDiaryActivity extends AppCompatActivity {
-    private Button btnCalendar;
-    private ImageButton btnThema, btnSave, btnOut;
+public class DrawDiaryActivity extends AppCompatActivity{
+    private LinearLayout showPaint;
     private ImageButton btnColor, btnEraser, btnPrev, btnClear;
+    private Button btnUpdate;
     private EditText drawEdit;
     private GridView drawGridView;
+    private TextView tvDate;
 
     private Date mDate;
     private String year, month, day;
@@ -53,11 +39,11 @@ public class DrawDiaryActivity extends AppCompatActivity {
 
     private DrawView drawView;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_draw);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setContentView(R.layout.activity_show_draw);
 
         //뒤로가기 버튼 구현
         ActionBar actionBar = getSupportActionBar();
@@ -67,21 +53,22 @@ public class DrawDiaryActivity extends AppCompatActivity {
         ///////////////////////////////////////////////////////////////////////////////////
 
         //레이아웃 아이디 모음
-        btnCalendar = findViewById(R.id.btn_draw_calendar);
-        btnColor = findViewById(R.id.btn_draw_color);
-        btnEraser = findViewById(R.id.btn_draw_eraser);
-        btnPrev = findViewById(R.id.btn_draw_prev);
-        btnClear = findViewById(R.id.btn_draw_clear);
-        btnThema = findViewById(R.id.btn_draw_thema);
-        btnSave = findViewById(R.id.btn_draw_save);
-        btnOut = findViewById(R.id.btn_draw_dd);
+        btnColor = findViewById(R.id.btn_drawshow_color);
+        btnEraser = findViewById(R.id.btn_drawshow_eraser);
+        btnPrev = findViewById(R.id.btn_drawshow_prev);
+        btnClear = findViewById(R.id.btn_drawshow_clear);
+        btnUpdate = findViewById(R.id.btn_drawshow_update);
         drawEdit = findViewById(R.id.draw_edit);
-        drawGridView = findViewById(R.id.draw_gridView);
-        drawView = (DrawView) findViewById(R.id.draw_view);
+        drawGridView = findViewById(R.id.drawshow_gridView);
+        drawView = (DrawView) findViewById(R.id.drawshow_view);
+        tvDate = findViewById(R.id.tv_drawshow_date);
+        showPaint = findViewById(R.id.drawshow_paint);
 
         //////////////////////////////////////////////////////////////////////////////////
 
-        //현재 시간 표시
+        //////////////////////////////////////////////////////////////////////////////////
+
+        //선택한 일기 시간 표시
         SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
         SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
         SimpleDateFormat daySdf = new SimpleDateFormat("dd");
@@ -90,8 +77,18 @@ public class DrawDiaryActivity extends AppCompatActivity {
         month = monthSdf.format(new Date());
         day = daySdf.format(new Date());
 
-        btnCalendar.setText(year + "." + month + "." + day);
-        /////////////////////////////////////////////////////////////////////////////
+        tvDate.setText(year + "." + month + "." + day);
+        ///////////////////////////////////////////////////////////////////////////
+
+        //읽기 화면에서 수정화면 전환
+        drawView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                showPaint.setVisibility(View.VISIBLE);
+                btnUpdate.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
 
         //그리기 색상 표시 디자인하기 위해 그리드 뷰로 구성
         List<Integer> colorList = new ArrayList<>();
@@ -102,45 +99,8 @@ public class DrawDiaryActivity extends AppCompatActivity {
 
         DrawGridViewAdapter adapter = new DrawGridViewAdapter(this, R.layout.item_colorbutton, colorList);
         drawGridView.setAdapter(adapter);
-        ////////////////////////////////////////////////////////////////////////////
 
-        btnCalendar.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(v.getContext());
-                dialog.setContentView(R.layout.dialog_calendar_day);
-
-                //start 달력 데코 (주말 색 표시,오늘 날짜 색 표시)
-                MaterialCalendarView materialCalendarView = (MaterialCalendarView) dialog.findViewById(R.id.dialog_calendar);
-                materialCalendarView.addDecorators(
-                        new CalendarSaturdayDecorate(),
-                        new CalendarSundayDecorate(),
-                        new CalendarTodayDecorate());
-                //달력 데코 끝
-
-                materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-                    @Override
-                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-                        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-                        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
-
-                        mDate = date.getDate();
-                        year = yearSdf.format(mDate);
-                        month = monthSdf.format(mDate);
-                        day = daySdf.format(mDate);
-
-                        btnCalendar.setText(year + "." + month + "." + day);
-
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
-            }
-        });
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
 
         btnColor.setOnClickListener(new View.OnClickListener()
 
@@ -209,70 +169,19 @@ public class DrawDiaryActivity extends AppCompatActivity {
                 drawView.setClear();
             }
         });
-
-        btnThema.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap myViewBitmap = getBitmapFromView(drawView);
-                File result = screenShotSave(myViewBitmap);
-            }
-        });
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    //뒤로가기 버튼 이벤트
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+//                NavUtils.navigateUpFromSameTask(this); //아에 이전 액티비티 다시 실행
+                finish(); //이전 액티비티 그대로 유지
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public static Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        else
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
-    }
-
-    private File screenShotSave(Bitmap screenBitmap) {
-
-        String filename = new Random().nextInt(1000) + "screenshot.jpg";
-        File root = Environment.getExternalStorageDirectory();
-        File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
-        Toast.makeText(DrawDiaryActivity.this,"저장되었습니다.",Toast.LENGTH_SHORT).show();
-
-        FileOutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            screenBitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
-            Log.d("yyj", "save os");
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return file;
     }
 }
