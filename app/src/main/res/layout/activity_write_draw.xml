@@ -145,7 +145,7 @@
            android:id="@+id/btn_draw_save"
            android:layout_width="wrap_content"
            android:layout_height="27dp"
-           android:background="#00ff00000"
+           android:background="#00ff0000"
            android:text="SAVE"
            />
     </LinearLayout>
