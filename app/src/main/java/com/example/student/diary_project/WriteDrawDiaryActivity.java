@@ -1,5 +1,6 @@
 package com.example.student.diary_project;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,7 +11,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +39,7 @@ import java.util.Random;
  * Created by student on 2018-01-12.
  */
 
-public class WriteDrawDiaryActivity extends AppCompatActivity {
+public class WriteDrawDiaryActivity extends Activity {
     private Button btnCalendar,btnSave;
     private ImageButton btnColor, btnEraser, btnPrev, btnClear;
     private EditText drawEdit;
@@ -56,13 +56,6 @@ public class WriteDrawDiaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_draw);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        //뒤로가기 버튼 구현
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        ///////////////////////////////////////////////////////////////////////////////////
 
         //레이아웃 아이디 모음
         btnCalendar = findViewById(R.id.btn_draw_calendar);
@@ -213,18 +206,6 @@ public class WriteDrawDiaryActivity extends AppCompatActivity {
                 File result = screenShotSave(myViewBitmap);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-//                NavUtils.navigateUpFromSameTask(this); //아에 이전 액티비티 다시 실행
-                finish(); //이전 액티비티 그대로 유지
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public static Bitmap getBitmapFromView(View view) {

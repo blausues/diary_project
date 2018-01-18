@@ -1,11 +1,10 @@
 package com.example.student.diary_project;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +24,7 @@ import java.util.List;
  * Created by student on 2018-01-18.
  */
 
-public class DrawDiaryActivity extends AppCompatActivity{
+public class DrawDiaryActivity extends Activity {
     private LinearLayout showPaint;
     private ImageButton btnColor, btnEraser, btnPrev, btnClear;
     private Button btnUpdate;
@@ -44,13 +43,6 @@ public class DrawDiaryActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_draw);
-
-        //뒤로가기 버튼 구현
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        ///////////////////////////////////////////////////////////////////////////////////
 
         //레이아웃 아이디 모음
         btnColor = findViewById(R.id.btn_drawshow_color);
@@ -171,17 +163,4 @@ public class DrawDiaryActivity extends AppCompatActivity{
         });
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //뒤로가기 버튼 이벤트
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-//                NavUtils.navigateUpFromSameTask(this); //아에 이전 액티비티 다시 실행
-                finish(); //이전 액티비티 그대로 유지
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }
