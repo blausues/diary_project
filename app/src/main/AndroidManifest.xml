@@ -28,15 +28,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-<<<<<<< HEAD
-        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-
-=======
         <activity android:name=".NoSmokingActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".WriteNoSmokingActivity"/>
->>>>>>> 6f36bcbe5fc95918612e66a21067391be9c5b3e9
     </application>
 </manifest>
