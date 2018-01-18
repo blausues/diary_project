@@ -7,7 +7,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_group">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,16 +31,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="5px"
                 android:layout_margin="10dp"
-                android:background="#D8D8D8"
-                android:id="@+id/divider"/>
+                android:background="#D8D8D8"/>
 
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="금연시작 2018년 12월 1일 D+30일"
-                android:id="@+id/tv_nosmoking_startdate"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="금연시작 2018년 12월 1일 D+30"
+                    android:id="@+id/tv_nosmoking_startdate"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="그만하기"
+                    android:id="@+id/check_nosmoking_giveup"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_margin="20dp"
@@ -45,8 +61,10 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_nosmoking_promise"
                 android:text="dddddddddddddddddddddddd"
+                android:padding="5dp"
                 android:visibility="visible"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:background="@drawable/border"/>
 
             <EditText
                 android:layout_margin="20dp"
@@ -54,30 +72,39 @@
                 android:layout_height="match_parent"
                 android:id="@+id/edit_nosmoking_promise"
                 android:visibility="gone"
-                android:background="#00ff0000"
+                android:gravity="left"
+                android:background="@drawable/border"
+                android:padding="5dp"
                 android:textSize="14sp"
                 android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"/>
         </LinearLayout>
     </ScrollView>
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_nosmoking_now"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:visibility="gone"
-        android:background="#00ff0000"
-        android:layout_margin="11dp"
-        android:src="@drawable/ic_access_time_black_24dp"/>
+        android:id="@+id/btn_group">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SAVE"
-        android:id="@+id/btn_nosmoking_save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="#00ff0000"
-        android:visibility="gone"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_nosmoking_now"
+            android:visibility="gone"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="12dp"
+            android:background="#00ff0000"
+            android:src="@drawable/ic_access_time_black_24dp"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:id="@+id/btn_nosmoking_save"
+            android:background="#00ff0000"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

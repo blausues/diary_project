@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 /**
- * Created by student on 2018-01-17.
+ * Created by student on 2018-01-18.
  */
 
-public class WriteNoSmokingActivity extends Activity {
+public class WriteDietActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_nosmoking);
-
+        setContentView(R.layout.activity_write_diet);
     }
 }
