@@ -139,8 +139,16 @@ public class MainMonthActivity extends Activity {
         btnMonthWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
-                startActivity(intent);
+                if(theme == 0) {
+                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+                } else if(theme == 1) {
+                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+                } else if(theme == 2) {
+                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+                } else if(theme == 3) {
+                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+                }
+//                startActivity(intent);
             }
         });
 
