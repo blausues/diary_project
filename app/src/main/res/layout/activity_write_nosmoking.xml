@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_group">
+        app:layout_constraintBottom_toTopOf="@id/btn_group_nosmoking_write">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,12 +72,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/btn_group">
+        android:id="@+id/btn_group_nosmoking_write">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_nosmoking_now"
+            android:id="@+id/btn_nosmoking_write_now"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="12dp"
             android:background="#00ff0000"
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SAVE"
-            android:id="@+id/btn_nosmoking_save"
+            android:id="@+id/btn_nosmoking_write_save"
             android:background="#00ff0000"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>

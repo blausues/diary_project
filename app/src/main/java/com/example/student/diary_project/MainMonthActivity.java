@@ -131,7 +131,6 @@ public class MainMonthActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-
             }
         });
 
@@ -141,11 +140,11 @@ public class MainMonthActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 if(theme == 0) {
-//                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+
                 } else if(theme == 1) {
-//                    Intent intent = new Intent(MainMonthActivity.this, WriteDietActivity.class);
+
                 } else if(theme == 2) {
-                    intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
+                    intent.setClass(MainMonthActivity.this, WriteNoSmokingActivity.class);
                 } else if(theme == 3) {
                     intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
                 }
@@ -183,7 +182,7 @@ public class MainMonthActivity extends Activity {
         }
     }
 
-    // 뒤로가기 버튼을 통해서 왔을 때, 새로고침 되어야 한다!
+    // 뒤로가기 버튼을 통해서 왔을 때, 새로고침
     @Override
     protected void onRestart() {
         super.onRestart();

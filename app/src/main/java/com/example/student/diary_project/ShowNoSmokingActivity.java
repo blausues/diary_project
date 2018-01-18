@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.nio.charset.Charset;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,8 +48,8 @@ public class ShowNoSmokingActivity extends Activity {
         tvNoSmokingPromise = findViewById(R.id.tv_nosmoking_promise);
         editNoSmokingPromise = findViewById(R.id.edit_nosmoking_promise);
         checkNoSmokingGiveup = findViewById(R.id.check_nosmoking_giveup);
-        btnNoSmokingSave = findViewById(R.id.btn_nosmoking_save);
         btnNoSmokingNow = findViewById(R.id.btn_nosmoking_now);
+        btnNoSmokingSave = findViewById(R.id.btn_nosmoking_save);
 
         helper = new DiaryDBHelper(this);
 
@@ -80,6 +81,8 @@ public class ShowNoSmokingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 btnNoSmokingSave.setVisibility(View.VISIBLE);
+
+                // 다이얼로그 하나 넣자!!!!!!!!
             }
         });
 
@@ -132,19 +135,7 @@ public class ShowNoSmokingActivity extends Activity {
             }
         });
 
-        btnNoSmokingNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date today = new Date();
-                Locale locale = Locale.US;
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", locale);
-                String now = sdf.format(today);
-                editNoSmokingPromise.setText(editNoSmokingPromise.getText()+now+" ");
-
-                // 커서 위치 조정
-                editNoSmokingPromise.setSelection(editNoSmokingPromise.getText().length());
-            }
-        });
+        btnNoSmokingNow.setOnClickListener(new WriteNowListener(editNoSmokingPromise));
     }
 
     // BACK 버튼 눌렀을 때, SAVE 버튼 안보이게 할까? 냅둬도 될 것 같네

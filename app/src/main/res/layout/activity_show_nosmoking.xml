@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_group">
+        app:layout_constraintBottom_toTopOf="@id/btn_group_nosmoking">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/btn_group">
+        android:id="@+id/btn_group_nosmoking">
 
         <ImageButton
             android:layout_width="wrap_content"
