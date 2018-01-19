@@ -131,7 +131,7 @@ public class ShowNoSmokingActivity extends Activity {
             }
         });
 
-        btnNoSmokingNow.setOnClickListener(new WriteNowListener(editNoSmokingPromise));
+        btnNoSmokingNow.setOnClickListener(new NowListener(editNoSmokingPromise));
     }
 
     // BACK 버튼 눌렀을 때, SAVE 버튼 안보이게 할까? 냅둬도 될 것 같네

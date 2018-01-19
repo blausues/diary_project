@@ -41,7 +41,7 @@ public class WriteNoSmokingActivity extends Activity {
 
         helper = new NoSmokingDBHelper(this);
 
-        btnNoSmokingWriteNow.setOnClickListener(new WriteNowListener(editNoSmokingWritePromise));
+        btnNoSmokingWriteNow.setOnClickListener(new NowListener(editNoSmokingWritePromise));
 
         btnNoSmokingWriteSave.setOnClickListener(new View.OnClickListener() {
             @Override
