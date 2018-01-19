@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:id="@+id/top_panel_drawshow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_drawshow_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff0000"
+            android:text="2017.01.05"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="180dp"
+            android:layout_height="5px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#FF778899" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/drawshow_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_drawshow_panel"
+        app:layout_constraintTop_toBottomOf="@+id/top_panel_drawshow">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/drawshow_paintPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="25dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/drawshow_paint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FF778899"
+                    android:padding="10dp"
+                    android:visibility="invisible">
+
+                    <ImageButton
+                        android:id="@+id/btn_drawshow_color"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#00ff0000"
+                        android:src="@drawable/selector_draw_color"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_drawshow_eraser" />
+
+                    <ImageButton
+                        android:id="@+id/btn_drawshow_eraser"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#00ff0000"
+                        android:src="@drawable/selector_draw_eraser"
+                        app:layout_constraintLeft_toRightOf="@+id/btn_drawshow_color"
+                        app:layout_constraintRight_toLeftOf="@+id/btn_drawshow_prev" />
+
+                    <ImageButton
+                        android:id="@+id/btn_drawshow_prev"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#00ff0000"
+                        android:src="@drawable/selector_draw_prev"
+                        app:layout_constraintLeft_toRightOf="@+id/btn_drawshow_eraser"
+                        app:layout_constraintRight_toLeftOf="@id/btn_drawshow_clear" />
+
+                    <ImageButton
+                        android:id="@+id/btn_drawshow_clear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="#00ff0000"
+                        android:src="@drawable/selector_draw_delete"
+                        app:layout_constraintLeft_toRightOf="@+id/btn_drawshow_prev"
+                        app:layout_constraintRight_toRightOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/btn_drawshow_edit"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/selector_drawshow_editbutton"
+                    android:text="EDIT"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/drawViewshow_panel"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/drawdiaryshow_border"
+                app:layout_constraintTop_toBottomOf="@+id/drawshow_paintPanel">
+
+                <GridView
+                    android:id="@+id/drawshow_gridView"
+                    android:layout_width="160dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/colorselectborder"
+                    android:focusable="true"
+                    android:numColumns="5"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:visibility="invisible">
+
+                </GridView>
+
+                <com.example.student.diary_project.DrawView
+                    android:id="@+id/drawshow_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp">
+
+                <TextView
+                    android:id="@+id/tv_drawshow_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="10dp"
+                    android:text="aaaaaa"
+                    android:textSize="20dp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/drawshow_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="aaaaaa"
+                    android:textSize="20dp"
+                    android:visibility="invisible">
+
+                    <requestFocus />
+                </EditText>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_drawshow_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="right"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btn_drawshow_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff0000"
+            android:text="SAVE"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
