@@ -3,7 +3,6 @@ package com.example.student.diary_project;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,7 +23,7 @@ public class WriteNoSmokingActivity extends Activity {
     private Button btnNoSmokingWriteSave;
     private ImageButton btnNoSmokingWriteNow;
 
-    private DiaryDBHelper helper;
+    private NoSmokingDBHelper helper;
 
     private NoSmokingVO noSmokingVO;
 
@@ -40,7 +39,7 @@ public class WriteNoSmokingActivity extends Activity {
         btnNoSmokingWriteNow = findViewById(R.id.btn_nosmoking_write_now);
         btnNoSmokingWriteSave = findViewById(R.id.btn_nosmoking_write_save);
 
-        helper = new DiaryDBHelper(this);
+        helper = new NoSmokingDBHelper(this);
 
         btnNoSmokingWriteNow.setOnClickListener(new WriteNowListener(editNoSmokingWritePromise));
 

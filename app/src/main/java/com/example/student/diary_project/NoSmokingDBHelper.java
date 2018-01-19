@@ -19,13 +19,13 @@ import java.util.List;
  * Created by student on 2018-01-11.
  */
 
-public class DiaryDBHelper extends SQLiteOpenHelper {
+public class NoSmokingDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "diary.db";
     private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
 
-    public DiaryDBHelper(Context context) {
+    public NoSmokingDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
 
         db = getWritableDatabase();
@@ -33,7 +33,7 @@ public class DiaryDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 테이블 생성 (4개)
+        // 테이블 생성
         String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE " +
                 "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT)";
         db.execSQL(sql);

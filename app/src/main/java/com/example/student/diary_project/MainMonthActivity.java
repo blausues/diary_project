@@ -43,7 +43,7 @@ public class MainMonthActivity extends Activity {
 
     private List<CalendarDay> dates;
 
-    private DiaryDBHelper helper;
+    private NoSmokingDBHelper helper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class MainMonthActivity extends Activity {
         tvMaxProgress = findViewById(R.id.tv_max_progress);
         pbDiary = findViewById(R.id.pb_diary);
 
-        helper = new DiaryDBHelper(this);
+        helper = new NoSmokingDBHelper(this);
 
         List<Calendar> tempDates = new ArrayList<>();
         dates = new ArrayList<>();

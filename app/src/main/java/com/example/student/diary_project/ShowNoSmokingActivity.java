@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,16 +11,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-import java.nio.charset.Charset;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by student on 2018-01-16.
@@ -34,7 +30,7 @@ public class ShowNoSmokingActivity extends Activity {
     private Button btnNoSmokingSave;
     private ImageButton btnNoSmokingNow;
 
-    private DiaryDBHelper helper;
+    private NoSmokingDBHelper noSmokingHelper;
 
     private NoSmokingVO noSmokingVO;
 
@@ -51,7 +47,7 @@ public class ShowNoSmokingActivity extends Activity {
         btnNoSmokingNow = findViewById(R.id.btn_nosmoking_now);
         btnNoSmokingSave = findViewById(R.id.btn_nosmoking_save);
 
-        helper = new DiaryDBHelper(this);
+        noSmokingHelper = new NoSmokingDBHelper(this);
 
         Intent intent = getIntent();
         CalendarDay writeDate = intent.getParcelableExtra("writeDate");
@@ -59,7 +55,7 @@ public class ShowNoSmokingActivity extends Activity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String writeDateStr = sdf.format(writeDate.getDate());
 
-        noSmokingVO = helper.selectNoSmokingDate(writeDateStr);
+        noSmokingVO = noSmokingHelper.selectNoSmokingDate(writeDateStr);
 
         Date startDate = sdf.parse(noSmokingVO.getStartDate(), new ParsePosition(0));
 
@@ -82,8 +78,8 @@ public class ShowNoSmokingActivity extends Activity {
             public void onClick(View v) {
                 btnNoSmokingSave.setVisibility(View.VISIBLE);
 
-                // 다이얼로그 하나 넣자!!!!!!!!
-            }
+                // 다이얼로그그 하나 넣자!!!!!!!!
+           }
         });
 
         // 클릭 시, 편집
@@ -120,7 +116,7 @@ public class ShowNoSmokingActivity extends Activity {
 
                 noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 
-                helper.updateNoSmoking(noSmokingVO);
+                noSmokingHelper.updateNoSmoking(noSmokingVO);
 
                 tvNoSmokingPromise.setVisibility(View.VISIBLE);
 
