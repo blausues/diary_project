@@ -11,10 +11,10 @@ import java.util.Locale;
  * Created by student on 2018-01-18.
  */
 
-public class WriteNowListener implements View.OnClickListener {
+public class NowListener implements View.OnClickListener {
     EditText editText;
 
-    public WriteNowListener(EditText editText) {
+    public NowListener(EditText editText) {
         this.editText = editText;
     }
 
