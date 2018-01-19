@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainMonthActivity">
+        <activity android:name=".MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,29 +25,18 @@
         </activity>
 
         <activity
-            android:name=".WriteDrawDiaryActivity"
-            android:label="DrawDiaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".DrawDiaryActivity"
-            android:label="DrawDiaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity android:name=".ShowNoSmokingActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".WriteNoSmokingActivity"/>
-        <activity android:name=".WriteDietActivity"/>
+            android:name=".ShowNoSmokingActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".WriteNoSmokingActivity" />
+        <activity android:name=".WriteDietActivity" />
+        <activity android:name=".DrawDiaryActivity" />
+        <activity android:name=".WriteDrawDiaryActivity"/>
     </application>
 
 </manifest>
