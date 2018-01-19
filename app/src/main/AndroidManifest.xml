@@ -16,7 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
+        <activity android:name=".WriteNormalActivity">
+=======
         <activity android:name=".MainMonthActivity">
+>>>>>>> be7c0cb93f4f5cdfe2dc734040e577f71ff38384
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +48,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+<<<<<<< HEAD
+        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity android:name=".NoSmokingActivity"
+=======
         <activity android:name=".ShowNoSmokingActivity"
+>>>>>>> be7c0cb93f4f5cdfe2dc734040e577f71ff38384
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".WriteNoSmokingActivity"/>
         <activity android:name=".WriteDietActivity"/>

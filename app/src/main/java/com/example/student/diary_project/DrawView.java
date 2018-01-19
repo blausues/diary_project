@@ -1,6 +1,7 @@
 package com.example.student.diary_project;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,6 +26,7 @@ public class DrawView extends View {
     private Path currentPath;
     private int currentColor = Color.BLACK;
     private float currentFont = 10f;
+    private Bitmap currentImage;
 
     public DrawView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,7 +39,9 @@ public class DrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        if(currentImage!=null) {
+            canvas.drawBitmap(currentImage, 0, 0, null);
+        }
 
         for (int x = 0; x < pathList.size(); x++) {
             canvas.drawPath(pathList.get(x), paintList.get(x));
@@ -53,6 +57,7 @@ public class DrawView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 makePaintPath();
+                this.getParent().requestDisallowInterceptTouchEvent(true);
                 currentPath.moveTo(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -62,6 +67,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_UP:
                 pathList.add(currentPath);
                 paintList.add(currentPaint);
+                this.getParent().requestDisallowInterceptTouchEvent(false);
                 makePaintPath();
                 break;
         }
@@ -103,5 +109,9 @@ public class DrawView extends View {
         pathList.clear();
         paintList.clear();
         invalidate();
+    }
+
+    public void setBackground(Bitmap outputBitmap) {
+        currentImage = outputBitmap;
     }
 }

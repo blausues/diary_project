@@ -2,6 +2,7 @@ package com.example.student.diary_project;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,16 +11,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -40,7 +41,8 @@ import java.util.Random;
  */
 
 public class WriteDrawDiaryActivity extends Activity {
-    private Button btnCalendar,btnSave;
+    private TextView tvDate;
+    private Button btnSave;
     private ImageButton btnColor, btnEraser, btnPrev, btnClear;
     private EditText drawEdit;
     private GridView drawGridView;
@@ -58,7 +60,7 @@ public class WriteDrawDiaryActivity extends Activity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         //레이아웃 아이디 모음
-        btnCalendar = findViewById(R.id.btn_draw_calendar);
+        tvDate = findViewById(R.id.tv_draw_date);
         btnColor = findViewById(R.id.btn_draw_color);
         btnEraser = findViewById(R.id.btn_draw_eraser);
         btnPrev = findViewById(R.id.btn_draw_prev);
@@ -79,13 +81,18 @@ public class WriteDrawDiaryActivity extends Activity {
         month = monthSdf.format(new Date());
         day = daySdf.format(new Date());
 
-        btnCalendar.setText(year + "." + month + "." + day);
+        //////////////////////////////////////////////////////////////////////////////////////
+
         /////////////////////////////////////////////////////////////////////////////
 
         //그리기 색상 표시 디자인하기 위해 그리드 뷰로 구성
         List<Integer> colorList = new ArrayList<>();
 
-        for (int x = 0; x < 5; x++) {
+        for (
+                int x = 0;
+                x < 5; x++)
+
+        {
             colorList.add(x);
         }
 
@@ -93,7 +100,7 @@ public class WriteDrawDiaryActivity extends Activity {
         drawGridView.setAdapter(adapter);
         ////////////////////////////////////////////////////////////////////////////
 
-        btnCalendar.setOnClickListener(new View.OnClickListener()
+        tvDate.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -122,7 +129,7 @@ public class WriteDrawDiaryActivity extends Activity {
                         month = monthSdf.format(mDate);
                         day = daySdf.format(mDate);
 
-                        btnCalendar.setText(year + "." + month + "." + day);
+                        tvDate.setText(year + "." + month + "." + day);
 
                         dialog.cancel();
                     }
@@ -151,7 +158,9 @@ public class WriteDrawDiaryActivity extends Activity {
             }
         });
 
-        drawGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drawGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -177,6 +186,7 @@ public class WriteDrawDiaryActivity extends Activity {
         });
 
         btnEraser.setOnClickListener(new View.OnClickListener()
+
         {
             @Override
             public void onClick(View v) {
@@ -184,7 +194,9 @@ public class WriteDrawDiaryActivity extends Activity {
             }
         });
 
-        btnPrev.setOnClickListener(new View.OnClickListener() {
+        btnPrev.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 drawView.printBack();
@@ -192,6 +204,7 @@ public class WriteDrawDiaryActivity extends Activity {
         });
 
         btnClear.setOnClickListener(new View.OnClickListener()
+
         {
             @Override
             public void onClick(View v) {
@@ -199,7 +212,9 @@ public class WriteDrawDiaryActivity extends Activity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
@@ -210,12 +225,12 @@ public class WriteDrawDiaryActivity extends Activity {
 
     public static Bitmap getBitmapFromView(View view) {
         //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         //Bind a canvas to it
         Canvas canvas = new Canvas(returnedBitmap);
         //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
             //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
         else
@@ -232,7 +247,7 @@ public class WriteDrawDiaryActivity extends Activity {
         String filename = new Random().nextInt(1000) + "screenshot.jpg";
         File root = Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
-        Toast.makeText(WriteDrawDiaryActivity.this,"저장되었습니다.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(WriteDrawDiaryActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
 
         FileOutputStream os = null;
         try {
