@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_gravity="bottom"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_theme_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="일반"
+        android:layout_margin="3dp"
+        android:background="@drawable/selector_mainbtn"/>
+    <Button
+        android:id="@+id/btn_theme_draw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="3dp"
+        android:text="그림"
+        android:background="@drawable/selector_mainbtn"/>
+    <Button
+        android:id="@+id/btn_theme_nosmoking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="3dp"
+        android:text="금연"
+        android:background="@drawable/selector_mainbtn"/>
+    <Button
+        android:id="@+id/btn_theme_diet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="3dp"
+        android:text="다이어트"
+        android:background="@drawable/selector_mainbtn"/>
+
+</LinearLayout>

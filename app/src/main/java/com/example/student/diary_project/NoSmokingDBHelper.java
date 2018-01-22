@@ -118,7 +118,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         return noSmokingVO;
     }
 
-    public void insertNoSmoking(NoSmokingVO noSmokingVO) {
+    public int insertNoSmoking(NoSmokingVO noSmokingVO) {
         ContentValues values = new ContentValues();
 
         values.put("WRITE_DATE", noSmokingVO.getWriteDate());
@@ -126,16 +126,16 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         values.put("GIVE_UP", noSmokingVO.getGiveUp());
         values.put("PROMISE", noSmokingVO.getPromise());
 
-        db.insert("NOSMOKING_TABLE", null, values);
+        return (int) db.insert("NOSMOKING_TABLE", null, values);
     }
 
-    public void updateNoSmoking(NoSmokingVO noSmokingVO) {
+    public int updateNoSmoking(NoSmokingVO noSmokingVO) {
         ContentValues values = new ContentValues();
 
         values.put("GIVE_UP", noSmokingVO.getGiveUp());
         values.put("PROMISE", noSmokingVO.getPromise());
 
-        db.update("NOSMOKING_TABLE", values, "WRITE_DATE = ?", new String[]{noSmokingVO.getWriteDate()});
+        return db.update("NOSMOKING_TABLE", values, "WRITE_DATE = ?", new String[]{noSmokingVO.getWriteDate()});
     }
 
     // giveUp이 0에서 1로 바뀌었을 때(포기했을 때)
