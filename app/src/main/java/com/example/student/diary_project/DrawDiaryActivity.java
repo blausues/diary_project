@@ -46,7 +46,6 @@ public class DrawDiaryActivity extends Activity {
     private GridView drawGridView;
     private TextView tvDate,tvContent;
 
-    private Date mDate;
     private String year, month, day;
     private int checkColorMenu = 0;
 
@@ -92,7 +91,6 @@ public class DrawDiaryActivity extends Activity {
         ///////////////////////////////////////////////////////////////////////////
 
         //저장한 그림 가져오기
-
         screenShotOutput(outputBitmap);
 
 
@@ -116,8 +114,6 @@ public class DrawDiaryActivity extends Activity {
                 tvContent.setVisibility(View.INVISIBLE);
                 drawEdit.setVisibility(View.VISIBLE);
                 btnUpdate.setVisibility(View.VISIBLE);
-
-                drawEdit.requestFocus();
 
                 InputMethodManager im = (InputMethodManager)getSystemService(DrawDiaryActivity.INPUT_METHOD_SERVICE);
                 im.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -151,7 +147,6 @@ public class DrawDiaryActivity extends Activity {
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
         btnColor.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View v) {

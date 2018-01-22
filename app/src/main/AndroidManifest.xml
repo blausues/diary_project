@@ -16,15 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".WriteNormalActivity"/>
-        <activity android:name=".MainMonthActivity">
+        <activity android:name=".MainActivity">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WriteNormalActivity" />
+        <activity android:name=".MainMonthActivity"/>
 
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
@@ -32,12 +33,12 @@
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ShowNoSmokingActivity"/>
-        <activity android:name=".WriteNoSmokingActivity"/>
-        <activity android:name=".WriteDietActivity"/>
-            android:name=".ShowNoSmokingActivity"
-            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ShowNoSmokingActivity" />
+        <activity android:name=".WriteNoSmokingActivity" />
+        <activity android:name=".WriteDietActivity" />
+        android:name=".ShowNoSmokingActivity"
+        android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DrawDiaryActivity" />
-        <activity android:name=".WriteDrawDiaryActivity"/>
+        <activity android:name=".WriteDrawDiaryActivity" />
     </application>
 </manifest>
