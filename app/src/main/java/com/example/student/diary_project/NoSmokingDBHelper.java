@@ -148,7 +148,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
     }
 
     // giveUp이 1에서 0으로 바뀌었을 때
-    // writeDate 바로 뒤에 쓴 일기의 startDate와 같은 것들의 startDate를 writeDate의 startDate로 updated
+    // writeDate 바로 뒤에 쓴 일기의 startDate와 같은 것들의 startDate를 writeDate의 startDate로 update
     public void updateNoSmokingStartDateNoGiveUp(String writeDate, String startDate) {
         String sql = "UPDATE NOSMOKING_TABLE SET START_DATE='"+startDate+"' WHERE START_DATE=" +
                 "(SELECT * FROM (SELECT START_DATE FROM NOSMOKING_TABLE A WHERE WRITE_DATE=" +
