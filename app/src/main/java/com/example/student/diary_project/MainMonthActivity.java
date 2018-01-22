@@ -1,16 +1,22 @@
 package com.example.student.diary_project;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -40,7 +46,7 @@ public class MainMonthActivity extends Activity {
     private TextView tvProgress, tvMaxProgress;
     private ProgressBar pbDiary;
 
-    private int theme = 2;
+    private int theme = 0;
 
     private List<CalendarDay> dates;
     private CalendarDay selectedDate = null;
@@ -65,9 +71,12 @@ public class MainMonthActivity extends Activity {
         List<Calendar> tempDates = new ArrayList<>();
         dates = new ArrayList<>();
 
+        Intent intent = getIntent();
+        theme = intent.getIntExtra("theme", 2);
+
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
-
+            Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
         } else if(theme == 1) {
 
         } else if(theme == 2) {
@@ -117,13 +126,19 @@ public class MainMonthActivity extends Activity {
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 for (int i = 0; i < dates.size(); i++) {
                     if (dates.get(i).equals(date)) {
-                        if (theme == 2) {
+                        if(theme == 0) {
+
+                        } else if(theme == 1) {
+
+                        } else if(theme == 2) {
                             Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
 
                             intent.putExtra("writeDate", date);
                             startActivity(intent);
 
                             break;
+                        } else if(theme == 3) {
+
                         }
                     }
                 }
@@ -134,8 +149,7 @@ public class MainMonthActivity extends Activity {
         btnMonthTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedDate = calendarView.getSelectedDate();
-                Log.i("lyh", selectedDate+"");
+                makeThemeDialog().show();
             }
         });
 
@@ -203,5 +217,49 @@ public class MainMonthActivity extends Activity {
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    private Dialog makeThemeDialog() {
+        Dialog themeDialog = new Dialog(this);
+        themeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        themeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        themeDialog.getWindow().setGravity(Gravity.BOTTOM);
+        themeDialog.setContentView(R.layout.dialog_select_theme);
+
+        Button btnThemeNormal = themeDialog.findViewById(R.id.btn_theme_normal);
+        Button btnThemeDraw = themeDialog.findViewById(R.id.btn_theme_draw);
+        Button btnThemeNoSmoking = themeDialog.findViewById(R.id.btn_theme_nosmoking);
+        Button btnThemeDiet = themeDialog.findViewById(R.id.btn_theme_diet);
+
+        btnThemeNormal.setOnClickListener(new themeSelectListener());
+        btnThemeDraw.setOnClickListener(new themeSelectListener());
+        btnThemeNoSmoking.setOnClickListener(new themeSelectListener());
+        btnThemeDiet.setOnClickListener(new themeSelectListener());
+
+        return  themeDialog;
+    }
+
+    private class themeSelectListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_theme_normal:
+                    theme = 0;
+                    break;
+                case R.id.btn_theme_draw:
+                    theme = 1;
+                    break;
+                case R.id.btn_theme_nosmoking:
+                    theme = 2;
+                    break;
+                case R.id.btn_theme_diet:
+                    theme = 3;
+                    break;
+            }
+            Intent intent = new Intent(MainMonthActivity.this, MainMonthActivity.class);
+            intent.putExtra("theme", theme);
+
+            startActivity(intent);
+        }
     }
 }

@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -130,18 +131,23 @@ public class ShowNoSmokingActivity extends Activity {
                 }
                 noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 
-                noSmokingHelper.updateNoSmoking(noSmokingVO);
+                int result = noSmokingHelper.updateNoSmoking(noSmokingVO);
+                if(result == 0) {
+                    // 수정 실패
+                    Toast.makeText(ShowNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 수정 성공
+                    tvNoSmokingPromise.setVisibility(View.VISIBLE);
 
-                tvNoSmokingPromise.setVisibility(View.VISIBLE);
+                    tvNoSmokingPromise.setText(editNoSmokingPromise.getText().toString());
+                    editNoSmokingPromise.setVisibility(View.GONE);
 
-                tvNoSmokingPromise.setText(editNoSmokingPromise.getText().toString());
-                editNoSmokingPromise.setVisibility(View.GONE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(ShowNoSmokingActivity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editNoSmokingPromise.getWindowToken(), 0);
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(ShowNoSmokingActivity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editNoSmokingPromise.getWindowToken(), 0);
-
-                btnNoSmokingSave.setVisibility(View.GONE);
-                btnNoSmokingNow.setVisibility(View.GONE);
+                    btnNoSmokingSave.setVisibility(View.GONE);
+                    btnNoSmokingNow.setVisibility(View.GONE);
+                }
             }
         });
 
