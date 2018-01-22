@@ -6,9 +6,11 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_group_nosmoking_write">
 
@@ -33,10 +35,9 @@
                 android:layout_margin="10dp"
                 android:background="#D8D8D8"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -44,16 +45,19 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:text="금연시작 2018년 12월 1일 D+30"
-                    android:id="@+id/tv_nosmoking_write_startdate"/>
+                    android:id="@+id/tv_nosmoking_write_startdate"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBaseline="@id/check_nosmoking_write_giveup"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:text="그만하기"
-                    android:id="@+id/check_nosmoking_write_giveup"/>
+                    android:id="@+id/check_nosmoking_write_giveup"
+                    android:layout_alignParentRight="true"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <EditText
                 android:layout_margin="20dp"

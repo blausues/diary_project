@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -53,6 +54,8 @@ public class ShowNoSmokingActivity extends Activity {
         CalendarDay writeDate = intent.getParcelableExtra("writeDate");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
+
         String writeDateStr = sdf.format(writeDate.getDate());
 
         noSmokingVO = noSmokingHelper.selectNoSmokingDate(writeDateStr);
@@ -61,10 +64,8 @@ public class ShowNoSmokingActivity extends Activity {
 
         int dDay = (int) Math.floor((writeDate.getDate().getTime() - startDate.getTime()) / 86400000) + 1;
 
-        CalendarDay startDay = CalendarDay.from(startDate);
-
-        tvNoSmokingWriteDate.setText(writeDate.getYear()+"년 "+writeDate.getMonth()+1+"월 "+writeDate.getDay()+"일");
-        tvNoSmokingStartDate.setText("금연 시작 "+startDay.getYear()+"년 "+startDay.getMonth()+1+"월 "+startDay.getDay()+"일 "+"D+"+dDay);
+        tvNoSmokingWriteDate.setText(sdf2.format(writeDate.getDate()));
+        tvNoSmokingStartDate.setText("금연 시작 "+sdf2.format(startDate)+" D+"+dDay);
         tvNoSmokingPromise.setText(noSmokingVO.getPromise());
 
         if(noSmokingVO.getGiveUp() == 0) {
@@ -78,7 +79,12 @@ public class ShowNoSmokingActivity extends Activity {
             public void onClick(View v) {
                 btnNoSmokingSave.setVisibility(View.VISIBLE);
 
-                // 다이얼로그그 하나 넣자!!!!!!!!
+                // 다이얼로그 하나 넣자!!!!!!!!
+
+                tvNoSmokingPromise.setVisibility(View.GONE);
+
+                editNoSmokingPromise.setText(tvNoSmokingPromise.getText());
+                editNoSmokingPromise.setVisibility(View.VISIBLE);
            }
         });
 
@@ -108,12 +114,20 @@ public class ShowNoSmokingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // DB에 저장
+                if(noSmokingVO.getGiveUp()==0 && checkNoSmokingGiveup.isChecked()==true) {
+                    // 그만하는 것으로 수정
+                    noSmokingHelper.updateNoSmokingStartDateGiveUp(noSmokingVO.getWriteDate(), noSmokingVO.getStartDate());
+                } else if(noSmokingVO.getGiveUp()==1 && checkNoSmokingGiveup.isChecked()==false) {
+                    // 다시 도전
+                    noSmokingHelper.updateNoSmokingStartDateNoGiveUp(noSmokingVO.getWriteDate(), noSmokingVO.getStartDate());
+                }
+
                 if(checkNoSmokingGiveup.isChecked() == false) {
                     noSmokingVO.setGiveUp(0);
                 } else {
                     noSmokingVO.setGiveUp(1);
-                }
 
+                }
                 noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 
                 noSmokingHelper.updateNoSmoking(noSmokingVO);

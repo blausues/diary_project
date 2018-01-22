@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -42,6 +43,7 @@ public class MainMonthActivity extends Activity {
     private int theme = 2;
 
     private List<CalendarDay> dates;
+    private CalendarDay selectedDate = null;
 
     private NoSmokingDBHelper helper;
 
@@ -73,8 +75,10 @@ public class MainMonthActivity extends Activity {
 
             NoSmokingVO noSmokingVO = helper.selectNoSmokingLastDate();
 
+            Log.i("lyh", noSmokingVO+"");
+
             // theme = 2, 3이면 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
-            if(noSmokingVO.getGiveUp() == 0) {
+            if(noSmokingVO.getGiveUp() == 0 && noSmokingVO.getStartDate() != null) {
                 // giveUp 0:진행중, 1:포기
                 Date today = new Date();
 
@@ -111,9 +115,9 @@ public class MainMonthActivity extends Activity {
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                for(int i=0; i<dates.size(); i++) {
-                    if(dates.get(i).equals(date)) {
-                        if(theme == 2) {
+                for (int i = 0; i < dates.size(); i++) {
+                    if (dates.get(i).equals(date)) {
+                        if (theme == 2) {
                             Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
 
                             intent.putExtra("writeDate", date);
@@ -130,7 +134,8 @@ public class MainMonthActivity extends Activity {
         btnMonthTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                selectedDate = calendarView.getSelectedDate();
+                Log.i("lyh", selectedDate+"");
             }
         });
 
@@ -139,6 +144,16 @@ public class MainMonthActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+
+                selectedDate = calendarView.getSelectedDate();
+
+                // 작성하려는 날짜 intent에 담기
+                if(selectedDate == null) {
+                    intent.putExtra("selectedDate", CalendarDay.from(new Date()));
+                } else {
+                    intent.putExtra("selectedDate", selectedDate);
+                }
+
                 if(theme == 0) {
 
                 } else if(theme == 1) {
