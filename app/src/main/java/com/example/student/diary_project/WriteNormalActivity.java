@@ -58,7 +58,7 @@ public class WriteNormalActivity extends Activity {
         selectImage = findViewById(R.id.ib_select_image);
 
         String pkg = getPackageName();   // findViewById 반복문 돌리기
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             tmpID = getResources().getIdentifier("iv_write_normal_plusImage" + i, "id", pkg);
             plusImage.add(i, (ImageView) findViewById(tmpID));
         }
@@ -69,23 +69,34 @@ public class WriteNormalActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     for (int a = finalI; a < selectedPhotos.size(); a++) {
-                        Bitmap bitmap = ((BitmapDrawable)plusImage.get(a+1).getDrawable()).getBitmap();
-                        plusImage.get(a).setImageResource(0);
-                        plusImage.get(a+1).setImageResource(0);
-                        plusImage.get(a).setImageBitmap(bitmap);
-                        selectedPhotos.remove(a);
+                        if (plusImage.get(a + 1).getDrawable() != null) {
+                            selectedPhotos.remove(a);
+                            for (int b = 0; b < 6; b++) {
+                                plusImage.get(b).setImageResource(0);
+                            }
+                            for (int i = 0; i < selectedPhotos.size(); i++) {
+                                if (plusImage.get(i).getDrawable() == null) {
+                                    try {
+                                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                                        plusImage.get(i).setImageBitmap(bitmap);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            break;
+                        } else {
+                            plusImage.get(a).setImageResource(0);
+                            selectedPhotos.remove(a);
+                        }
                     }
                 }
             });
         }
         selectImage.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
-
             public void onClick(View v) {
-                Log.d("check", String.valueOf(selectedPhotos));
-                Log.d("check2", String.valueOf(plusImage));
-                Log.d("check3", String.valueOf(plusImage.get(0).getDrawable())+"//"+String.valueOf(plusImage.get(0).getDrawable())+"//"+String.valueOf(plusImage.get(1).getDrawable())+"//"+String.valueOf(plusImage.get(2).getDrawable())+"//"+String.valueOf(plusImage.get(3).getDrawable())+"//"+String.valueOf(plusImage.get(4).getDrawable())+"//");
-                if (plusImage.get(0).getDrawable() != null && plusImage.get(0).getDrawable() != null && plusImage.get(0).getDrawable() != null && plusImage.get(0).getDrawable() != null && plusImage.get(0).getDrawable() != null) {
+                if (plusImage.get(4).getDrawable() != null) {
                     Toast.makeText(WriteNormalActivity.this, "사진은다섯장만^^", Toast.LENGTH_SHORT).show();
                 } else {
                     YPhotoPickerIntent intent = new YPhotoPickerIntent(WriteNormalActivity.this);
@@ -99,30 +110,30 @@ public class WriteNormalActivity extends Activity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-//        List<String> photos = null;
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             if (data != null) {
-                selectedPhotos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-//            }
-//            if (photos != null) {
-                for (int i = 0; i < selectedPhotos.size(); i++) {
+                ArrayList<String> addPhotos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.d("qwe", String.valueOf(getIndex())+"//"+addPhotos.size()+"//"+selectedPhotos.size());
+                for (int i = getIndex(); i < addPhotos.size()+selectedPhotos.size(); i++) {
                     if (plusImage.get(i).getDrawable() == null) {
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(addPhotos.get(i)));
                             plusImage.get(i).setImageBitmap(bitmap);
-                            Log.d("bitman", String.valueOf(bitmap));
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
+                selectedPhotos = addPhotos;
             }
         }
     }
+
     public Uri getUriFromPath(String path) { // 사진path를 uri 로 변환시키는 메소드.
         String fileName = path;
         Uri fileUri = Uri.parse(fileName);
@@ -133,9 +144,20 @@ public class WriteNormalActivity extends Activity {
         Uri uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
         return uri;
     }
+
     private String getTime() {   // 맨 위에 현재 날짜 뽑아 오기.
         now = System.currentTimeMillis();
         date = new Date(now);
         return formate.format(date);
+    }
+    private int getIndex(){ // 인덱스값 뽑아오는 메소드
+        int result = 0;
+        for (int i = 0 ; i <6 ;i++){
+            if(plusImage.get(i).getDrawable() == null){
+                result = i;
+                break;
+            }
+        }
+        return  result;
     }
 }

@@ -16,11 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<<<<<<< HEAD
-        <activity android:name=".WriteNormalActivity"/>
-=======
->>>>>>> 6b9e70bfece563077d09c1c1a9ef11e95feff478
-        <activity android:name=".MainMonthActivity">
+        <activity android:name=".WriteNormalActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,14 +37,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ShowNoSmokingActivity"
-<<<<<<< HEAD
-            android:windowSoftInputMode="adjustResize"/>
-=======
+        <activity
+            android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
->>>>>>> 6b9e70bfece563077d09c1c1a9ef11e95feff478
-        <activity android:name=".WriteNoSmokingActivity"/>
-        <activity android:name=".WriteDietActivity"/>
-        <activity android:name=".WriteDrawDiaryActivity"/>
+        <activity android:name=".WriteNoSmokingActivity" />
+        <activity android:name=".WriteDietActivity" />
+        <activity android:name=".WriteDrawDiaryActivity" />
     </application>
 </manifest>
