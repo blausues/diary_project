@@ -16,8 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
-
+        <activity android:name=".MainMonthActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WriteNormalActivity" />
-        <activity android:name=".MainMonthActivity" />
+        <activity android:name=".MainActivity" />
 
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"

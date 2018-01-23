@@ -13,7 +13,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.student.diary_project.vo.DrawingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -26,17 +28,25 @@ public class MainActivity extends Activity {
     private TextView viewDate;
     private ImageButton btnCalendar, btnThema, btnWrite, btnSetting;
     private Button btnCalendarDay, btnCalendarMonth, btnCalendarYear;
-    private Button btnMonthDate,btnYearDate;
+    private Button btnMonthDate, btnYearDate;
     private ImageButton btnMonthLeft, btnMonthRight;
     private ImageButton btnYearLeft, btnYearRight;
     private MaterialCalendarView materialCalendarView;
-    private String year, month, day;
+    private String selectDate;
+    private String year, month;
+    private SimpleDateFormat currentDate;
 
+    private DrawDBHelper drawDBHelper;
+    private DrawingVO drawingVO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day);
+
+        //db액티비티 생성
+        drawDBHelper = new DrawDBHelper(this);
+        drawingVO = new DrawingVO();
 
         //레이아웃 아이디 모음
 
@@ -48,13 +58,11 @@ public class MainActivity extends Activity {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
-        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
+        currentDate = new SimpleDateFormat("yyyy-MM");
 
-        year = yearSdf.format(new Date());
-        month = monthSdf.format(new Date());
+        selectDate = currentDate.format(new Date());
 
-        viewDate.setText(year + "." + month);
+        viewDate.setText(selectDate);
 
         //일정 선택 ////////////////////////////////////////////////////////////////////////////////////////////////
         btnCalendar.setOnClickListener(new View.OnClickListener() {
@@ -88,16 +96,12 @@ public class MainActivity extends Activity {
                             @Override
                             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-                                SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-                                SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-                                SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+                                currentDate = new SimpleDateFormat("yyyy-MM-dd");
 
                                 Date mDate = date.getDate();
-                                year = yearSdf.format(mDate);
-                                month = monthSdf.format(mDate);
-                                day = daySdf.format(mDate);
+                                selectDate = currentDate.format(mDate);
 
-                                viewDate.setText(year + "." + month + "." + day);
+                                viewDate.setText(selectDate);
 
                                 dialogDay.cancel();
                             }
@@ -124,7 +128,7 @@ public class MainActivity extends Activity {
                         year = yearDialogMonth.format(new Date());
                         month = monthDialogMonth.format(new Date());
 
-                        btnMonthDate.setText(year + " . " + month);
+                        btnMonthDate.setText(year + "-" + month);
 
                         btnMonthLeft.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -146,14 +150,15 @@ public class MainActivity extends Activity {
                                 }
 
                                 year = Integer.toString(tYear);
-                                btnMonthDate.setText(year + " . " + month);
+                                btnMonthDate.setText(year + "-" + month);
                             }
                         });
 
                         btnMonthDate.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                viewDate.setText(year + "." + month);
+                                selectDate = year + "-" + month;
+                                viewDate.setText(selectDate);
                                 dialogMonth.cancel();
                             }
                         });
@@ -177,7 +182,7 @@ public class MainActivity extends Activity {
                                 }
 
                                 year = Integer.toString(tYear);
-                                btnMonthDate.setText(year + " . " + month);
+                                btnMonthDate.setText(year + "-" + month);
                             }
                         });
 
@@ -204,9 +209,9 @@ public class MainActivity extends Activity {
                         btnYearDate = dialogYear.findViewById(R.id.btn_year_date);
                         btnYearRight = dialogYear.findViewById(R.id.btn_year_right);
 
-                        SimpleDateFormat yearDialogYear = new SimpleDateFormat("yyyy");
+                        currentDate = new SimpleDateFormat("yyyy");
 
-                        year = yearDialogYear.format(new Date());
+                        year = currentDate.format(new Date());
 
                         btnYearDate.setText(year);
 
@@ -223,7 +228,8 @@ public class MainActivity extends Activity {
                         btnYearDate.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                viewDate.setText(year);
+                                selectDate = year;
+                                viewDate.setText(selectDate);
                                 dialogYear.cancel();
                             }
                         });
@@ -269,8 +275,12 @@ public class MainActivity extends Activity {
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,DrawDiaryActivity.class);
-                startActivity(intent);
+                if (drawDBHelper.selectDrawDiaryCount("2018-01-25") >= 1) {
+                    Toast.makeText(MainActivity.this,"이미 작성한 일기입니다.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, WriteDrawDiaryActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

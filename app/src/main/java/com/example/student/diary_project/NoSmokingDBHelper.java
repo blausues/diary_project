@@ -21,7 +21,7 @@ import java.util.List;
 
 public class NoSmokingDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "diary.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private SQLiteDatabase db;
 
@@ -34,8 +34,8 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 테이블 생성
-        String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE " +
-                "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT, THEME INTEGER DEFAULT 2)";
+        String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE" +
+                "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT, THEME INTEGER DEFAULT 2);";
         db.execSQL(sql);
     }
 
@@ -50,7 +50,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
 
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {
-        String sql = "SELECT WRITE_DATE FROM NOSMOKING_TABLE";
+        String sql = "SELECT WRITE_DATE FROM NOSMOKING_TABLE;";
 
         Cursor cursor = db.rawQuery(sql, null);
 
@@ -72,7 +72,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
     // 금연 일기 최근에 쓴 것 불러오기
     public NoSmokingVO selectNoSmokingLastDate() {
         String sql = "SELECT START_DATE, GIVE_UP FROM NOSMOKING_TABLE WHERE WRITE_DATE = " +
-                "(SELECT MAX(WRITE_DATE) FROM NOSMOKING_TABLE)";
+                "(SELECT MAX(WRITE_DATE) FROM NOSMOKING_TABLE);";
 
         Cursor cursor = db.rawQuery(sql, null);
 

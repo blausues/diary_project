@@ -1,6 +1,7 @@
 package com.example.student.diary_project;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,8 +24,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.student.diary_project.vo.DrawingVO;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,12 +50,15 @@ public class DrawDiaryActivity extends Activity {
     private EditText drawEdit;
     private GridView drawGridView;
     private TextView tvDate,tvContent;
+    private String selectDate;
 
-    private String year, month, day;
     private int checkColorMenu = 0;
 
     private DrawView drawView;
-    private String textContent;
+    private String textContent,filename;
+
+    private DrawDBHelper drawDBHelper;
+    private DrawingVO drawingVO;
 
     private Bitmap outputBitmap;
 
@@ -75,24 +83,25 @@ public class DrawDiaryActivity extends Activity {
         btnEdit = findViewById(R.id.btn_drawshow_edit);
 
         //////////////////////////////////////////////////////////////////////////////////
+        //액티비티 생성
+        drawDBHelper = new DrawDBHelper(this);
+        drawingVO = new DrawingVO();
+
+        //db불러오기
+        drawingVO = drawDBHelper.selectDrawDiary("2018-01-24");
+        filename = drawingVO.getDrawFileName();
+        tvDate.setText(drawingVO.getDrawDate());
+        tvContent.setText(drawingVO.getDrawContent());
+        drawEdit.setText(tvContent.getText());
 
         //////////////////////////////////////////////////////////////////////////////////
 
-        //선택한 일기 시간 표시
-        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+        //선택한 일기 일정 표시
 
-        year = yearSdf.format(new Date());
-        month = monthSdf.format(new Date());
-        day = daySdf.format(new Date());
-
-        tvDate.setText(year + "." + month + "." + day);
         ///////////////////////////////////////////////////////////////////////////
 
         //저장한 그림 가져오기
         screenShotOutput(outputBitmap);
-
 
         ///////////////////////////////////////////////////////////////////////////
 
@@ -105,6 +114,7 @@ public class DrawDiaryActivity extends Activity {
                 showPaint.setVisibility(View.VISIBLE);
                 btnUpdate.setVisibility(View.VISIBLE);
                 btnEdit.setVisibility(View.INVISIBLE);
+                keyboardDown();
             }
         });
 
@@ -115,9 +125,7 @@ public class DrawDiaryActivity extends Activity {
                 drawEdit.setVisibility(View.VISIBLE);
                 btnUpdate.setVisibility(View.VISIBLE);
 
-                InputMethodManager im = (InputMethodManager)getSystemService(DrawDiaryActivity.INPUT_METHOD_SERVICE);
-                im.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-
+                keyboardUp();
                 return false;
             }
         });
@@ -154,8 +162,8 @@ public class DrawDiaryActivity extends Activity {
                     drawGridView.setVisibility(View.VISIBLE);
                     drawGridView.setFocusable(true);
                     drawGridView.setFocusableInTouchMode(true);
-                    drawGridView.requestFocus();
                     drawGridView.bringToFront();
+                    drawGridView.requestFocus();
                     checkColorMenu = 1;
                 } else {
                     drawGridView.setVisibility(View.INVISIBLE);
@@ -187,6 +195,7 @@ public class DrawDiaryActivity extends Activity {
                 }
                 drawGridView.setVisibility(View.INVISIBLE);
                 checkColorMenu = 0;
+                keyboardDown();
             }
         });
 
@@ -194,6 +203,7 @@ public class DrawDiaryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 drawView.eraser(Color.WHITE);
+                keyboardDown();
             }
         });
 
@@ -201,6 +211,7 @@ public class DrawDiaryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 drawView.printBack();
+                keyboardDown();
             }
         });
 
@@ -208,6 +219,7 @@ public class DrawDiaryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 drawView.setClear();
+                keyboardDown();
             }
         });
 
@@ -216,6 +228,10 @@ public class DrawDiaryActivity extends Activity {
             public void onClick(View v) {
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
+                drawingVO.setDrawDate("2018-01-24");
+                drawingVO.setDrawContent(drawEdit.getText()+"");
+                drawDBHelper.updateDrawDiary(drawingVO);
+                keyboardDown();
             }
         });
     }
@@ -245,7 +261,6 @@ public class DrawDiaryActivity extends Activity {
     private File screenShotSave(Bitmap screenBitmap) {
 
         //String filename = new Random().nextInt(1000) + "screenshot.jpg";
-        String filename = 603 + "screenshot.jpg";
         File root = Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
         Toast.makeText(DrawDiaryActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
@@ -265,7 +280,7 @@ public class DrawDiaryActivity extends Activity {
 
     //불러오기
     private void screenShotOutput(Bitmap outputBitmap){
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/Test1/"+603+"screenshot.jpg";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/Test1/"+filename;
         Log.d("TAG", path);
         BitmapFactory.Options bo = new BitmapFactory.Options();
         outputBitmap = BitmapFactory.decodeFile(path, bo);
@@ -274,4 +289,18 @@ public class DrawDiaryActivity extends Activity {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //키보드
+
+    //키보드 올리기
+    public void keyboardUp(){
+        InputMethodManager im = (InputMethodManager)getSystemService(DrawDiaryActivity.INPUT_METHOD_SERVICE);
+        im.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        drawEdit.requestFocus();
+    }
+
+    //키보드 내리기
+    public void keyboardDown(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }
