@@ -3,6 +3,7 @@ package com.example.student.diary_project;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.example.student.diary_project.vo.AllDiaryVO;
 
@@ -26,7 +27,9 @@ public class AllDiaryAdapter extends ArrayAdapter<AllDiaryVO>{
     }
 
     class AllDiaryHolder {
-
+        TextView listDate;
+        TextView listContent;
+        TextView listTv;
     }
 
 
