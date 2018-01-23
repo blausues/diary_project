@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -84,13 +85,18 @@ public class WriteNoSmokingActivity extends Activity {
                 }
                 noSmokingVO.setPromise(editNoSmokingWritePromise.getText().toString());
 
-                noSmokingHelper.insertNoSmoking(noSmokingVO);
+                int result = noSmokingHelper.insertNoSmoking(noSmokingVO);
 
-                // helper 성공하면
-                Intent responseIntent = new Intent(WriteNoSmokingActivity.this, ShowNoSmokingActivity.class);
-                responseIntent.putExtra("writeDate", selectedDate);
+                if(result > 0) {
+                    // insert 성공
+                    Intent responseIntent = new Intent(WriteNoSmokingActivity.this, ShowNoSmokingActivity.class);
+                    responseIntent.putExtra("writeDate", selectedDate);
 
-                startActivity(responseIntent);
+                    startActivity(responseIntent);
+                } else {
+                    // insert 실패
+                    Toast.makeText(WriteNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
