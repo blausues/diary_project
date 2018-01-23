@@ -16,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.diary_project.vo.DrawingVO;
+import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
 
     private DrawDBHelper drawDBHelper;
     private DrawingVO drawingVO;
+
+    private int theme=4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +61,20 @@ public class MainActivity extends Activity {
         btnSetting = findViewById(R.id.btn_setting);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
-
+        //시작시 현재 월
         currentDate = new SimpleDateFormat("yyyy-MM");
 
         selectDate = currentDate.format(new Date());
 
         viewDate.setText(selectDate);
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        //첫 시작시 theme=4 현재 월 전체 일기 보여주기
+
+        List<NoSmokingVO> noSmokingVOList;
+        List<DrawingVO> drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+
 
         //일정 선택 ////////////////////////////////////////////////////////////////////////////////////////////////
         btnCalendar.setOnClickListener(new View.OnClickListener() {
