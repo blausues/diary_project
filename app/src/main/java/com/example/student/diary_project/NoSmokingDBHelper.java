@@ -34,7 +34,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 테이블 생성
-        String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE" +
+        String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE " +
                 "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT, THEME INTEGER DEFAULT 2);";
         db.execSQL(sql);
     }
