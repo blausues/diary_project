@@ -12,9 +12,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.student.diary_project.vo.AllDiaryVO;
 import com.example.student.diary_project.vo.DrawingVO;
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -22,6 +24,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,9 +42,13 @@ public class MainActivity extends Activity {
     private SimpleDateFormat currentDate;
 
     private DrawDBHelper drawDBHelper;
-    private DrawingVO drawingVO;
+    private List<DrawingVO> drawingVOList;
 
-    private int theme=4;
+    //리스트 생성 위해 필요한것
+    private ListView listview;
+    private AllDiaryAdapter adapter;
+    private int theme = 1;
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +57,6 @@ public class MainActivity extends Activity {
 
         //db액티비티 생성
         drawDBHelper = new DrawDBHelper(this);
-        drawingVO = new DrawingVO();
 
         //레이아웃 아이디 모음
 
@@ -59,6 +65,7 @@ public class MainActivity extends Activity {
         btnThema = findViewById(R.id.btn_thema);
         btnWrite = findViewById(R.id.btn_write);
         btnSetting = findViewById(R.id.btn_setting);
+        listview = findViewById(R.id.listview_diary);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
         //시작시 현재 월
@@ -72,8 +79,8 @@ public class MainActivity extends Activity {
         //첫 시작시 theme=4 현재 월 전체 일기 보여주기
 
         List<NoSmokingVO> noSmokingVOList;
-        List<DrawingVO> drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
-
+        drawingVOList = new ArrayList<>();
+        drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
 
 
         //일정 선택 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,12 +120,47 @@ public class MainActivity extends Activity {
                                 Date mDate = date.getDate();
                                 selectDate = currentDate.format(mDate);
 
+                                //리스트 생성
+                                adapter = new AllDiaryAdapter();
+                                listview.setAdapter(adapter);
+
+                                switch (theme) {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
+                                            DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+
+                                            adapter.addRead(allDiaryVO);
+                                        } else {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(selectDate);
+                                            allDiaryVO.setTheme(1);
+
+                                            adapter.addWrite(allDiaryVO);
+                                        }
+                                        break;
+                                    case 2:
+
+                                        break;
+                                    case 3:
+                                        break;
+                                    case 4:
+                                        break;
+
+                                }
+                                /////////////////////////////////////////////////////////////////////////////////
                                 viewDate.setText(selectDate);
 
                                 dialogDay.cancel();
                             }
                         });
                         dialogDay.show();
+
                         dialog.cancel();
                     }
                 });
@@ -171,11 +213,223 @@ public class MainActivity extends Activity {
                             public void onClick(View v) {
                                 selectDate = year + "-" + month;
                                 viewDate.setText(selectDate);
+
+                                //리스트 생성
+                                adapter = new AllDiaryAdapter();
+                                listview.setAdapter(adapter);
+
+                                switch (theme) {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+
+                                            drawingVOList = new ArrayList<>();
+                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                                            switch (month) {
+                                                case "01":
+                                                case "03":
+                                                case "05":
+                                                case "07":
+                                                case "08":
+                                                case "10":
+                                                case "12":
+                                                    for (int x = 1; x <= 31; x++) {
+                                                        if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                            allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
+                                                            allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
+                                                            allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+
+                                                            adapter.addRead(allDiaryVO);
+                                                        } else {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+
+                                                            if (x > 10) {
+                                                                String selDate = selectDate + "-" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            } else {
+                                                                String selDate = selectDate + "-0" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            }
+                                                            allDiaryVO.setTheme(1);
+
+                                                            adapter.addWrite(allDiaryVO);
+                                                        }
+                                                    }
+                                                    break;
+                                                case "04":
+                                                case "06":
+                                                case "09":
+                                                case "11":
+                                                    for (int x = 1; x <= 30; x++) {
+                                                        if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                            allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
+                                                            allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
+                                                            allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+
+                                                            adapter.addRead(allDiaryVO);
+                                                        } else {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+
+                                                            if (x > 10) {
+                                                                String selDate = selectDate + "-" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            } else {
+                                                                String selDate = selectDate + "-0" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            }
+                                                            allDiaryVO.setTheme(1);
+
+                                                            adapter.addWrite(allDiaryVO);
+                                                        }
+                                                    }
+                                                    break;
+                                                case "02":
+                                                    int iyear = Integer.parseInt(year);
+                                                    if (iyear % 4 == 0) {
+                                                        for (int x = 1; x <= 29; x++) {
+                                                            if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                                allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
+                                                                allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
+                                                                allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+
+                                                                adapter.addRead(allDiaryVO);
+                                                            } else {
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+
+                                                                if (x > 10) {
+                                                                    String selDate = selectDate + "-" + x;
+                                                                    allDiaryVO.setWriteDate(selDate);
+                                                                } else {
+                                                                    String selDate = selectDate + "-0" + x;
+                                                                    allDiaryVO.setWriteDate(selDate);
+                                                                }
+                                                                allDiaryVO.setTheme(1);
+
+                                                                adapter.addWrite(allDiaryVO);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        for (int x = 1; x <= 28; x++) {
+                                                            if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                                allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
+                                                                allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
+                                                                allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+
+                                                                adapter.addRead(allDiaryVO);
+                                                            } else {
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+
+                                                                if (x > 10) {
+                                                                    String selDate = selectDate + "-" + x;
+                                                                    allDiaryVO.setWriteDate(selDate);
+                                                                } else {
+                                                                    String selDate = selectDate + "-0" + x;
+                                                                    allDiaryVO.setWriteDate(selDate);
+                                                                }
+                                                                allDiaryVO.setTheme(1);
+
+                                                                adapter.addWrite(allDiaryVO);
+                                                            }
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                        } else {
+                                            switch (month) {
+                                                case "01":
+                                                case "03":
+                                                case "05":
+                                                case "07":
+                                                case "08":
+                                                case "10":
+                                                case "12":
+                                                    for (int x = 1; x <= 31; x++) {
+                                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                        if (x > 10) {
+                                                            String selDate = selectDate + "-" + x;
+                                                            allDiaryVO.setWriteDate(selDate);
+                                                        } else {
+                                                            String selDate = selectDate + "-0" + x;
+                                                            allDiaryVO.setWriteDate(selDate);
+                                                        }
+                                                        allDiaryVO.setTheme(1);
+
+                                                        adapter.addWrite(allDiaryVO);
+                                                    }
+                                                    break;
+                                                case "04":
+                                                case "06":
+                                                case "09":
+                                                case "11":
+                                                    for (int x = 1; x <= 30; x++) {
+                                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                        if (x > 10) {
+                                                            String selDate = selectDate + "-" + x;
+                                                            allDiaryVO.setWriteDate(selDate);
+                                                        } else {
+                                                            String selDate = selectDate + "-0" + x;
+                                                            allDiaryVO.setWriteDate(selDate);
+                                                        }
+                                                        allDiaryVO.setTheme(1);
+                                                        adapter.addWrite(allDiaryVO);
+                                                    }
+                                                    break;
+                                                case "02":
+                                                    int iyear = Integer.parseInt(year);
+                                                    if (iyear % 4 == 0) {
+                                                        for (int x = 1; x <= 29; x++) {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                            if (x > 10) {
+                                                                String selDate = selectDate + "-" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            } else {
+                                                                String selDate = selectDate + "-0" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            }
+                                                            allDiaryVO.setTheme(1);
+
+                                                            adapter.addWrite(allDiaryVO);
+                                                        }
+                                                    } else {
+                                                        for (int x = 1; x <= 28; x++) {
+                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                            if (x > 10) {
+                                                                String selDate = selectDate + "-" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            } else {
+                                                                String selDate = selectDate + "-0" + x;
+                                                                allDiaryVO.setWriteDate(selDate);
+                                                            }
+                                                            allDiaryVO.setTheme(1);
+
+                                                            adapter.addWrite(allDiaryVO);
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                        break;
+                                    case 2:
+                                        break;
+                                    case 3:
+                                        break;
+                                    case 4:
+                                        break;
+                                }
+                                /////////////////////////////////////////////////////////////////////////////////////
                                 dialogMonth.cancel();
                             }
                         });
 
-                        btnMonthRight.setOnClickListener(new View.OnClickListener() {
+                        btnMonthRight.setOnClickListener(new View.OnClickListener()
+
+                        {
                             @Override
                             public void onClick(View v) {
                                 int tMonth = Integer.parseInt(month);
@@ -200,7 +454,9 @@ public class MainActivity extends Activity {
 
 
                         WindowManager.LayoutParams lp1 = new WindowManager.LayoutParams();
-                        lp1.copyFrom(dialogMonth.getWindow().getAttributes());
+                        lp1.copyFrom(dialogMonth.getWindow().
+
+                                getAttributes());
                         lp1.width = 950;
                         lp1.height = 400;
                         dialogMonth.show();
@@ -211,7 +467,9 @@ public class MainActivity extends Activity {
                 });
                 /////////////////////////////////////////////////////////////////////
                 //년별
-                btnCalendarYear.setOnClickListener(new View.OnClickListener() {
+                btnCalendarYear.setOnClickListener(new View.OnClickListener()
+
+                {
                     @Override
                     public void onClick(View v) {
                         final Dialog dialogYear = new Dialog(v.getContext());
@@ -268,7 +526,9 @@ public class MainActivity extends Activity {
                 });
 
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.copyFrom(dialog.getWindow().
+
+                        getAttributes());
                 lp.width = 800;
                 lp.height = 200;
                 dialog.show();
@@ -278,17 +538,21 @@ public class MainActivity extends Activity {
         });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        btnThema.setOnClickListener(new View.OnClickListener() {
+        btnThema.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
             }
         });
 
-        btnWrite.setOnClickListener(new View.OnClickListener() {
+        btnWrite.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 if (drawDBHelper.selectDrawDiaryCount("2018-01-25") >= 1) {
-                    Toast.makeText(MainActivity.this,"이미 작성한 일기입니다.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "이미 작성한 일기입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(MainActivity.this, WriteDrawDiaryActivity.class);
                     startActivity(intent);
@@ -296,10 +560,13 @@ public class MainActivity extends Activity {
             }
         });
 
-        btnSetting.setOnClickListener(new View.OnClickListener() {
+        btnSetting.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
             }
         });
     }
+
 }

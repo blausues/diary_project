@@ -69,7 +69,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
 
     //일기 판별용 카운터
     public int selectDrawDiaryCount(String drawdate){
-        String sql = "SELECT COUNT(*) FROM DRAW_TABLE WHERE WRITE_DATE='"+drawdate+"';";
+        String sql = "SELECT COUNT(*) FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%"+drawdate+"%';";
         Cursor cursor = db.rawQuery(sql,null);
 
         int drawDiaryCount = 0;
@@ -82,7 +82,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
 
     //날짜별로 불러오기 drawdate는 불러올 날짜
     public List<DrawingVO> selectDrawDiaryList(String drawdate){
-        String sql = "SELECT WRITE_DATE,CONTENT,THEME FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%';";
+        String sql = "SELECT WRITE_DATE,CONTENT,THEME FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
         Cursor cursor = db.rawQuery(sql,null);
 
         List<DrawingVO> drawingVOList = new ArrayList<>();

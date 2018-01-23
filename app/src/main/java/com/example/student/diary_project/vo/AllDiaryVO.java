@@ -5,11 +5,13 @@ package com.example.student.diary_project.vo;
  */
 
 public class AllDiaryVO {
+    private int type;
     private String writeDate;
     private String content;
     private int theme;
 
-    public AllDiaryVO(String writeDate, String content, int theme) {
+    public AllDiaryVO(int type, String writeDate, String content, int theme) {
+        this.type = type;
         this.writeDate = writeDate;
         this.content = content;
         this.theme = theme;
@@ -42,12 +44,12 @@ public class AllDiaryVO {
         this.theme = theme;
     }
 
-    @Override
-    public String toString() {
-        return "AllDiaryVO{" +
-                "writeDate='" + writeDate + '\'' +
-                ", content='" + content + '\'' +
-                ", theme=" + theme +
-                '}';
+    public int getType() {
+        return type;
     }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
 }
