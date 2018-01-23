@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.student.diary_project.vo.DrawingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -47,17 +48,28 @@ public class WriteDrawDiaryActivity extends Activity {
     private EditText drawEdit;
     private GridView drawGridView;
 
-    private Date mDate;
-    private String year, month, day;
+    private String filename, writeDate;
+    private SimpleDateFormat currentDate;
     private int checkColorMenu = 0;
 
     private DrawView drawView;
+
+    private DrawDBHelper drawDBHelper;
+    private DrawingVO drawingVO;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_draw);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        //액티비티 생성
+
+        drawDBHelper = new DrawDBHelper(this);
+        drawingVO = new DrawingVO();
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
         //레이아웃 아이디 모음
         tvDate = findViewById(R.id.tv_draw_date);
@@ -71,27 +83,21 @@ public class WriteDrawDiaryActivity extends Activity {
         drawView = (DrawView) findViewById(R.id.draw_view);
 
         //////////////////////////////////////////////////////////////////////////////////
+        //작성할 일정 표시
+        currentDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        //현재 시간 표시
-        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+        writeDate = currentDate.format(new Date());
 
-        year = yearSdf.format(new Date());
-        month = monthSdf.format(new Date());
-        day = daySdf.format(new Date());
-
+        tvDate.setText(writeDate);
         //////////////////////////////////////////////////////////////////////////////////////
 
         /////////////////////////////////////////////////////////////////////////////
 
         //그리기 색상 표시 디자인하기 위해 그리드 뷰로 구성
         List<Integer> colorList = new ArrayList<>();
-
         for (
                 int x = 0;
                 x < 5; x++)
-
         {
             colorList.add(x);
         }
@@ -100,49 +106,12 @@ public class WriteDrawDiaryActivity extends Activity {
         drawGridView.setAdapter(adapter);
         ////////////////////////////////////////////////////////////////////////////
 
-        tvDate.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(v.getContext());
-                dialog.setContentView(R.layout.dialog_calendar_day);
-
-                //start 달력 데코 (주말 색 표시,오늘 날짜 색 표시)
-                MaterialCalendarView materialCalendarView = (MaterialCalendarView) dialog.findViewById(R.id.dialog_calendar);
-                materialCalendarView.addDecorators(
-                        new CalendarSaturdayDecorate(),
-                        new CalendarSundayDecorate(),
-                        new CalendarTodayDecorate());
-                //달력 데코 끝
-
-                materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-                    @Override
-                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                        SimpleDateFormat yearSdf = new SimpleDateFormat("yyyy");
-                        SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
-                        SimpleDateFormat daySdf = new SimpleDateFormat("dd");
-
-                        mDate = date.getDate();
-                        year = yearSdf.format(mDate);
-                        month = monthSdf.format(mDate);
-                        day = daySdf.format(mDate);
-
-                        tvDate.setText(year + "." + month + "." + day);
-
-                        dialog.cancel();
-                    }
-                });
-                dialog.show();
-            }
-        });
-
         btnColor.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick(View v) {
+                keyboardDown();
                 if (checkColorMenu == 0) {
                     drawGridView.setVisibility(View.VISIBLE);
                     drawGridView.setFocusable(true);
@@ -182,43 +151,44 @@ public class WriteDrawDiaryActivity extends Activity {
                 }
                 drawGridView.setVisibility(View.INVISIBLE);
                 checkColorMenu = 0;
+                keyboardDown();
             }
         });
 
-        btnEraser.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnEraser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawView.eraser(Color.WHITE);
+                keyboardDown();
             }
         });
 
-        btnPrev.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawView.printBack();
+                keyboardDown();
             }
         });
 
-        btnClear.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawView.setClear();
+                keyboardDown();
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
+                drawingVO.setDrawDate("2018-01-24");
+                drawingVO.setDrawContent(drawEdit.getText()+"");
+                drawingVO.setDrawFileName(filename);
+                drawDBHelper.insertDrawDiary(drawingVO);
+                keyboardDown();
             }
         });
     }
@@ -244,7 +214,7 @@ public class WriteDrawDiaryActivity extends Activity {
 
     private File screenShotSave(Bitmap screenBitmap) {
 
-        String filename = new Random().nextInt(1000) + "screenshot.jpg";
+        filename = new Random().nextInt(1000000000) + "s.jpg";
         File root = Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
         Toast.makeText(WriteDrawDiaryActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
@@ -253,12 +223,19 @@ public class WriteDrawDiaryActivity extends Activity {
         try {
             os = new FileOutputStream(file);
             screenBitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
-            Log.d("yyj", "save os");
             os.close();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
         return file;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //키보드
+
+    //키보드 내리기
+    public void keyboardDown() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), 0);
     }
 }

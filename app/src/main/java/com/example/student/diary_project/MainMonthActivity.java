@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.student.diary_project.vo.DietVO;
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -35,6 +36,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import im.dacer.androidcharts.LineView;
+
 /**
  * Created by student on 2018-01-10.
  */
@@ -45,13 +48,15 @@ public class MainMonthActivity extends Activity {
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
     private TextView tvProgress, tvMaxProgress;
     private ProgressBar pbDiary;
+    private LineView lineView;
 
     private int theme = 0;
 
     private List<CalendarDay> dates;
     private CalendarDay selectedDate = null;
 
-    private NoSmokingDBHelper helper;
+    private NoSmokingDBHelper noSmokingDBHelper;
+    private DietDBHelper dietDBHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +70,7 @@ public class MainMonthActivity extends Activity {
         tvProgress = findViewById(R.id.tv_progress);
         tvMaxProgress = findViewById(R.id.tv_max_progress);
         pbDiary = findViewById(R.id.pb_diary);
-
-        helper = new NoSmokingDBHelper(this);
+        lineView = findViewById(R.id.line_view);
 
         List<Calendar> tempDates = new ArrayList<>();
         dates = new ArrayList<>();
@@ -78,15 +82,15 @@ public class MainMonthActivity extends Activity {
         if(theme == 0) {
             Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
         } else if(theme == 1) {
-
+            Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
         } else if(theme == 2) {
-            tempDates = helper.selectNoSmokingAllDate();
+            noSmokingDBHelper = new NoSmokingDBHelper(this);
 
-            NoSmokingVO noSmokingVO = helper.selectNoSmokingLastDate();
+            tempDates = noSmokingDBHelper.selectNoSmokingAllDate();
 
-            Log.i("lyh", noSmokingVO+"");
+            NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingLastDate();
 
-            // theme = 2, 3이면 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
+            // 마지막으로 쓴 일기의 시작날짜를 가져와서 progressBar에 그리기
             if(noSmokingVO.getGiveUp() == 0 && noSmokingVO.getStartDate() != null) {
                 // giveUp 0:진행중, 1:포기
                 Date today = new Date();
@@ -105,7 +109,37 @@ public class MainMonthActivity extends Activity {
             tvMaxProgress.setVisibility(View.VISIBLE);
             pbDiary.setVisibility(View.VISIBLE);
         } else if(theme == 3) {
+            dietDBHelper = new DietDBHelper(this);
 
+            DietVO dietVO = new DietVO("2018-01-23", 40);
+            DietVO dietVO1 = new DietVO("2018-01-22", 43);
+            DietVO dietVO2 = new DietVO("2018-01-20", 42);
+            DietVO dietVO3 = new DietVO("2018-01-19", 70);
+            dietDBHelper.insertDiet(dietVO);
+            dietDBHelper.insertDiet(dietVO1);
+            dietDBHelper.insertDiet(dietVO2);dietDBHelper.insertDiet(dietVO3);
+
+            tempDates = dietDBHelper.selectDietAllDate();
+
+            // 최근 7일 체중 기록 가져오기
+            ArrayList<DietVO> dietVOS = dietDBHelper.selectDietWeek();
+
+            ArrayList<String> dateList = new ArrayList<>();
+            ArrayList<Float> weightList = new ArrayList<>();
+
+            for(int i=dietVOS.size()-1; i>=0; i--) {
+                dateList.add(dietVOS.get(i).getWriteDate().substring(5));
+                weightList.add(dietVOS.get(i).getWeight());
+            }
+            ArrayList<ArrayList<Float>> weightLists = new ArrayList<>();
+            weightLists.add(weightList);
+
+            lineView.setDrawDotLine(false); //optional
+            lineView.setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY); //optional
+            lineView.setBottomTextList(dateList);
+            lineView.setColorArray(new int[]{0xFF6799FF});
+            lineView.setFloatDataList(weightLists);
+            lineView.setVisibility(View.VISIBLE);
         } else if(theme == 4) {
             // 전체 리스트 화면으로 넘어가기
         }

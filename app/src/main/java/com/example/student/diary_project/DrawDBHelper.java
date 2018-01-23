@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DrawDBHelper extends SQLiteOpenHelper{
     private static final String DB_NAME = "diary.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private SQLiteDatabase db;
 
@@ -29,7 +29,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE IF NOT EXISTS DRAW_TABLE "
-                + "(WRITE_DATE DATE,PRIMARY KEY, CONTENT TEXT, FILENAME VARCHAR(50),THEME INTEGER);";
+                + "(WRITE_DATE DATE PRIMARY KEY, CONTENT TEXT, FILENAME VARCHAR(50),THEME INTEGER);";
         db.execSQL(sql);
     }
 
@@ -53,7 +53,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
 
     //읽을 일기 불러오기
     public DrawingVO selectDrawDiary(String drawdate){
-        String sql = "SELECT WRITE_DATE,CONTENT,FILENAME,THEME FROM DRAW_TABLE WHERE WRITE_DATE=" + drawdate + ";";
+        String sql = "SELECT WRITE_DATE,CONTENT,FILENAME,THEME FROM DRAW_TABLE WHERE WRITE_DATE='" + drawdate + "';";
         Cursor cursor = db.rawQuery(sql,null);
 
         DrawingVO drawingVO = new DrawingVO();
@@ -65,6 +65,19 @@ public class DrawDBHelper extends SQLiteOpenHelper{
             drawingVO.setTheme(cursor.getInt(3));
         }
         return drawingVO;
+    }
+
+    //일기 판별용 카운터
+    public int selectDrawDiaryCount(String drawdate){
+        String sql = "SELECT COUNT(*) FROM DRAW_TABLE WHERE WRITE_DATE='"+drawdate+"';";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        int drawDiaryCount = 0;
+
+        if(cursor.moveToNext()){
+            drawDiaryCount = cursor.getInt(0);
+        }
+        return drawDiaryCount;
     }
 
     //날짜별로 불러오기 drawdate는 불러올 날짜
@@ -94,7 +107,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
 
     //일기 삭제
     public void deleteDrawDiary(String draw_date){
-        String sql = "DELETE FROM DRAW_TABLE WHERE WRITE_DATE=" + draw_date +";";
+        String sql = "DELETE FROM DRAW_TABLE WHERE WRITE_DATE='" + draw_date +"';";
         db.execSQL(sql);
     }
 }
