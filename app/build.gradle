@@ -27,4 +27,5 @@ dependencies {
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.github.yongbeam:Android-Y-PhotoPicker:0.0.5'
+    compile 'im.dacer:AndroidCharts:1.0.4'
 }
