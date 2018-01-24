@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -52,8 +54,8 @@ import java.util.List;
 
 public class WriteNormalActivity extends Activity {
     private ImageView ivNormalWritePopup;
-    private ImageButton selectImage, btnNormalWriteNow;
-    private Button btnNormalWriteSave,btnNormalWritePopupCancel;
+    private ImageButton selectImage, btnNormalWriteNow, btnNormalWritePopupCancel;
+    private Button btnNormalWriteSave;
     private TextView tv_date;
     private EditText etWriteNormal;
     private long now;
@@ -87,17 +89,27 @@ public class WriteNormalActivity extends Activity {
         btnNormalWriteSave = findViewById(R.id.btn_normal_write_save);
         writeNormalLayout = findViewById(R.id.write_normal);
         showHideLayout = findViewById(R.id.write_normal_bottom_panel);
-        ivNormalWritePopup = findViewById(R.id.iv_popup_write_normal);
-        btnNormalWritePopupCancel=findViewById(R.id.bt_popup_write_normal);
 
         String pkg = getPackageName();
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+// 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, dm);
         int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, dm);
         pop_View = View.inflate(this, R.layout.popup_write_normal_show_image, null);
         popupWindow = new PopupWindow(pop_View, lang_width, lang_height, true);
+
+        ivNormalWritePopup = pop_View.findViewById(R.id.iv_popup_write_normal);
+        btnNormalWritePopupCancel = pop_View.findViewById(R.id.bt_popup_write_normal);
+
+        btnNormalWritePopupCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //        키보드 show,hide 이벤트
@@ -134,12 +146,12 @@ public class WriteNormalActivity extends Activity {
             plusImage.add(i, (ImageView) findViewById(tmpID));
         }
 
-        for (int i = 0; i < plusImage.size(); i++) {
+        for (int i = 0; i < plusImage.size(); i++) { // 이미지뷰 터치시 삭제 or 확대
             final int finalI = i;
-            plusImage.get(i).setOnClickListener(new ImageView.OnClickListener() {   // 사진 삭제, 확대기능
+            plusImage.get(i).setOnClickListener(new ImageView.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(showHideCheck == true) {
+                    if (showHideCheck == true) {
                         for (int a = finalI; a < selectedPhotos.size(); a++) {
                             if (plusImage.get(a + 1).getDrawable() != null) {
                                 selectedPhotos.remove(a);
@@ -162,12 +174,26 @@ public class WriteNormalActivity extends Activity {
                                 selectedPhotos.remove(a);
                             }
                         }
-                    }else{
+                    } else {
+                        if (null == ivNormalWritePopup) {
+                            Log.e("asd", "qweqwe");
+                        }
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(finalI)));
+                            ivNormalWritePopup.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (plusImage.get(finalI) != null) {
+                            popupWindow.showAtLocation(writeNormalLayout, Gravity.CENTER, 0, 0);
+                        } else {
 
+                        }
                     }
                 }
             });
         }
+
         selectImage.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +218,7 @@ public class WriteNormalActivity extends Activity {
                 writeNormalVO.setNormalWriteImagePath(selectedPhotos);
 
                 int result = normalWriteHelper.insertNormal(writeNormalVO);
-                if(result > 0) {
+                if (result > 0) {
                     // insert 성공
                     Intent responseIntent = new Intent(WriteNormalActivity.this, ShowNormalActivity.class);
                     startActivity(responseIntent);
@@ -210,7 +236,6 @@ public class WriteNormalActivity extends Activity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             if (data != null) {
                 ArrayList<String> addPhotos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.d("qwe", String.valueOf(getIndex()) + "//" + addPhotos.size() + "//" + selectedPhotos.size());
                 for (int a = 0; a < addPhotos.size(); a++) {
                     selectedPhotos.add(getIndex(), addPhotos.get(a));
                 }
