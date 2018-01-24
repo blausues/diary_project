@@ -16,13 +16,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
+        <activity android:name=".MainActivity">
+=======
         <activity android:name=".MainMonthActivity">
+>>>>>>> 88bcaf196ade5ab1e7736c1cae4c4498ac3ba57e
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+
+        <activity android:name=".MainMonthActivity" />
+=======
         <activity android:name=".MainActivity" />
+>>>>>>> 88bcaf196ade5ab1e7736c1cae4c4498ac3ba57e
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
@@ -32,6 +41,8 @@
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+<<<<<<< HEAD
+=======
             android:name=".DrawDiaryActivity"
             android:label="DrawDiaryActivity">
             <meta-data
@@ -39,10 +50,15 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+>>>>>>> 88bcaf196ade5ab1e7736c1cae4c4498ac3ba57e
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".WriteNoSmokingActivity" />
         <activity android:name=".WriteDietActivity" />
+<<<<<<< HEAD
+        <activity android:name=".DrawDiaryActivity" />
+=======
+>>>>>>> 88bcaf196ade5ab1e7736c1cae4c4498ac3ba57e
         <activity android:name=".WriteDrawDiaryActivity" />
     </application>
 </manifest>
