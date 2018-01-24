@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.student.diary_project.vo.NoSmokingVO;
 
@@ -20,8 +21,8 @@ import java.util.List;
  */
 
 public class NoSmokingDBHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "diary.db";
-    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "nosmoking.db";
+    private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
 
@@ -37,6 +38,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE " +
                 "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT, THEME INTEGER DEFAULT 2);";
         db.execSQL(sql);
+        Log.i("lyh", "노스모킹 생성됨");
     }
 
     @Override
@@ -46,8 +48,6 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 금연 일기
-
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {
         String sql = "SELECT WRITE_DATE FROM NOSMOKING_TABLE;";

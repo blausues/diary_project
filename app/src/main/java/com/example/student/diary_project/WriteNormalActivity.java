@@ -1,8 +1,10 @@
 package com.example.student.diary_project;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -12,17 +14,28 @@ import android.graphics.drawable.TransitionDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.request.target.SquaringDrawable;
+import com.example.student.diary_project.vo.NormalVO;
 import com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity;
 import com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity;
 import com.yongbeam.y_photopicker.util.photopicker.utils.YPhotoPickerIntent;
@@ -38,57 +51,119 @@ import java.util.List;
  */
 
 public class WriteNormalActivity extends Activity {
-    private ImageButton selectImage;
+    private ImageView ivNormalWritePopup;
+    private ImageButton selectImage, btnNormalWriteNow;
+    private Button btnNormalWriteSave,btnNormalWritePopupCancel;
     private TextView tv_date;
+    private EditText etWriteNormal;
     private long now;
     private Date date;
     private SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
     private ArrayList<ImageView> plusImage = new ArrayList<>();
     private int REQUEST_CODE = 1;
     private int tmpID;
-    public static ArrayList<String> selectedPhotos = new ArrayList<>();
+    private ArrayList<String> selectedPhotos = new ArrayList<>();
+    private WriteNormalDBHelper normalWriteHelper;
+    private NormalVO writeNormalVO;
+    private ConstraintLayout writeNormalLayout;
+    private RelativeLayout showHideLayout;
+    private SoftKeyboard softKeyboard;
+    private boolean showHideCheck = false;
+    private View pop_View;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_normal);
 
+        normalWriteHelper = new WriteNormalDBHelper(this);
         tv_date = findViewById(R.id.tv_write_normal_date);
         tv_date.setText(getTime());
         selectImage = findViewById(R.id.ib_select_image);
+        etWriteNormal = findViewById(R.id.et_wirte_normal);
+        btnNormalWriteNow = findViewById(R.id.btn_normal_write_now);
+        btnNormalWriteNow.setOnClickListener(new NowListener(etWriteNormal));
+        btnNormalWriteSave = findViewById(R.id.btn_normal_write_save);
+        writeNormalLayout = findViewById(R.id.write_normal);
+        showHideLayout = findViewById(R.id.write_normal_bottom_panel);
+        ivNormalWritePopup = findViewById(R.id.iv_popup_write_normal);
+        btnNormalWritePopupCancel=findViewById(R.id.bt_popup_write_normal);
 
-        String pkg = getPackageName();   // findViewById 반복문 돌리기
-        for (int i = 0; i < 6; i++) {
+        String pkg = getPackageName();
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, dm);
+        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, dm);
+        pop_View = View.inflate(this, R.layout.popup_write_normal_show_image, null);
+        popupWindow = new PopupWindow(pop_View, lang_width, lang_height, true);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//        키보드 show,hide 이벤트
+        InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+        softKeyboard = new SoftKeyboard(writeNormalLayout, controlManager);
+
+        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
+            @Override
+            public void onSoftKeyboardHide() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        showHideLayout.setVisibility(View.GONE);
+                        showHideCheck = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onSoftKeyboardShow() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        showHideLayout.setVisibility(View.VISIBLE);
+                        showHideCheck = true;
+                    }
+                });
+            }
+        });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        for (int i = 0; i < 6; i++) {    // 이미지뷰 finViewById 반복문
             tmpID = getResources().getIdentifier("iv_write_normal_plusImage" + i, "id", pkg);
             plusImage.add(i, (ImageView) findViewById(tmpID));
         }
 
         for (int i = 0; i < plusImage.size(); i++) {
             final int finalI = i;
-            plusImage.get(i).setOnClickListener(new ImageView.OnClickListener() {
+            plusImage.get(i).setOnClickListener(new ImageView.OnClickListener() {   // 사진 삭제, 확대기능
                 @Override
                 public void onClick(View v) {
-                    for (int a = finalI; a < selectedPhotos.size(); a++) {
-                        if (plusImage.get(a + 1).getDrawable() != null) {
-                            selectedPhotos.remove(a);
-                            for (int b = 0; b < 6; b++) {
-                                plusImage.get(b).setImageResource(0);
-                            }
-                            for (int i = 0; i < selectedPhotos.size(); i++) {
-                                if (plusImage.get(i).getDrawable() == null) {
-                                    try {
-                                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
-                                        plusImage.get(i).setImageBitmap(bitmap);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                    if(showHideCheck == true) {
+                        for (int a = finalI; a < selectedPhotos.size(); a++) {
+                            if (plusImage.get(a + 1).getDrawable() != null) {
+                                selectedPhotos.remove(a);
+                                for (int b = 0; b < 6; b++) {
+                                    plusImage.get(b).setImageResource(0);
+                                }
+                                for (int i = 0; i < selectedPhotos.size(); i++) {
+                                    if (plusImage.get(i).getDrawable() == null) {
+                                        try {
+                                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                                            plusImage.get(i).setImageBitmap(bitmap);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
+                                break;
+                            } else {
+                                plusImage.get(a).setImageResource(0);
+                                selectedPhotos.remove(a);
                             }
-                            break;
-                        } else {
-                            plusImage.get(a).setImageResource(0);
-                            selectedPhotos.remove(a);
                         }
+                    }else{
+
                     }
                 }
             });
@@ -103,9 +178,27 @@ public class WriteNormalActivity extends Activity {
                     intent.setMaxSelectCount(5);
                     intent.setShowCamera(true);
                     intent.setShowGif(true);
-                    intent.setSelectCheckBox(false);
+                    intent.setSelectCheckBox(true);
                     intent.setMaxGrideItemCount(3);
                     startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
+        });
+        btnNormalWriteSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                writeNormalVO.setNormalWriteDate(getTime().toString());
+                writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
+                writeNormalVO.setNormalWriteImagePath(selectedPhotos);
+
+                int result = normalWriteHelper.insertNormal(writeNormalVO);
+                if(result > 0) {
+                    // insert 성공
+                    Intent responseIntent = new Intent(WriteNormalActivity.this, ShowNormalActivity.class);
+                    startActivity(responseIntent);
+                } else {
+                    // insert 실패
+                    Toast.makeText(WriteNormalActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,19 +210,20 @@ public class WriteNormalActivity extends Activity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             if (data != null) {
                 ArrayList<String> addPhotos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.d("qwe", String.valueOf(getIndex())+"//"+addPhotos.size()+"//"+selectedPhotos.size());
-                for (int i = getIndex(); i < addPhotos.size()+selectedPhotos.size(); i++) {
+                Log.d("qwe", String.valueOf(getIndex()) + "//" + addPhotos.size() + "//" + selectedPhotos.size());
+                for (int a = 0; a < addPhotos.size(); a++) {
+                    selectedPhotos.add(getIndex(), addPhotos.get(a));
+                }
+                for (int i = getIndex(); i < selectedPhotos.size(); i++) {
                     if (plusImage.get(i).getDrawable() == null) {
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(addPhotos.get(i)));
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
                             plusImage.get(i).setImageBitmap(bitmap);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                selectedPhotos = addPhotos;
             }
         }
     }
@@ -145,19 +239,20 @@ public class WriteNormalActivity extends Activity {
         return uri;
     }
 
-    private String getTime() {   // 맨 위에 현재 날짜 뽑아 오기.
-        now = System.currentTimeMillis();
-        date = new Date(now);
-        return formate.format(date);
-    }
-    private int getIndex(){ // 인덱스값 뽑아오는 메소드
+    private int getIndex() { // 이미지뷰리스트 인덱스값 뽑아오는 메소드
         int result = 0;
-        for (int i = 0 ; i <6 ;i++){
-            if(plusImage.get(i).getDrawable() == null){
+        for (int i = 0; i < 6; i++) {
+            if (plusImage.get(i).getDrawable() == null) {
                 result = i;
                 break;
             }
         }
-        return  result;
+        return result;
+    }
+
+    private String getTime() {   // 맨 위에 현재 날짜 뽑아 오기.
+        now = System.currentTimeMillis();
+        date = new Date(now);
+        return formate.format(date);
     }
 }
