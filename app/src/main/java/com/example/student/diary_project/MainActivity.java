@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
     private List<DietVO> dietVOList;
     private AllDiaryAdapter adapter;
     private List<AllDiaryVO> tmpAllList;
-    private int theme = 0;
+    private int theme = 4;
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -217,8 +217,74 @@ public class MainActivity extends Activity {
                                         }
                                         break;
                                     case 4:
-                                        break;
+                                        //리스트
+                                        List<AllDiaryVO> allDiaryVOList = new ArrayList<>();
 
+                                        //일반 일기
+                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
+                                            NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                            allDiaryVO.setTheme(normalVO.getTheme());
+
+                                            adapter.addRead(allDiaryVO);
+                                        } else {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(selectDate);
+                                            allDiaryVO.setTheme(0);
+
+                                            adapter.addWrite(allDiaryVO);
+                                        }
+                                        //그림 일기
+                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
+                                            DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+
+                                            adapter.addRead(allDiaryVO);
+                                        } else {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(selectDate);
+                                            allDiaryVO.setTheme(1);
+
+                                            adapter.addWrite(allDiaryVO);
+                                        }
+                                        //금연 일기
+                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
+                                            NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                            allDiaryVO.setContent(noSmokingVO.getPromise());
+                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                                            adapter.addRead(allDiaryVO);
+                                        } else {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(selectDate);
+                                            allDiaryVO.setTheme(2);
+
+                                            adapter.addWrite(allDiaryVO);
+                                        }
+                                        //다이어트 일기
+                                        if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
+                                            DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                            allDiaryVO.setContent(dietVO.getMemo());
+                                            allDiaryVO.setTheme(dietVO.getTheme());
+
+                                            adapter.addRead(allDiaryVO);
+                                        } else {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setWriteDate(selectDate);
+                                            allDiaryVO.setTheme(3);
+
+                                            adapter.addWrite(allDiaryVO);
+                                        }
+                                        break;
                                 }
                                 /////////////////////////////////////////////////////////////////////////////////
                                 viewDate.setText(selectDate);
