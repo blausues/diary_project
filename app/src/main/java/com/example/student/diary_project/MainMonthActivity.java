@@ -174,6 +174,24 @@ public class MainMonthActivity extends Activity {
                         } else if(theme == 3) {
 
                         }
+                    } else {
+                        Intent intent = new Intent();
+
+                        selectedDate = calendarView.getSelectedDate();
+
+                        // 작성하려는 날짜 intent에 담기
+                        intent.putExtra("selectedDate", selectedDate);
+
+                        if(theme == 0) {
+                            intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
+                        } else if(theme == 1) {
+
+                        } else if(theme == 2) {
+                            intent.setClass(MainMonthActivity.this, WriteNoSmokingActivity.class);
+                        } else if(theme == 3) {
+                            intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
+                        }
+                        startActivity(intent);
                     }
                 }
             }
@@ -193,14 +211,7 @@ public class MainMonthActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
 
-                selectedDate = calendarView.getSelectedDate();
-
-                // 작성하려는 날짜 intent에 담기
-                if(selectedDate == null) {
-                    intent.putExtra("selectedDate", CalendarDay.from(new Date()));
-                } else {
-                    intent.putExtra("selectedDate", selectedDate);
-                }
+                intent.putExtra("selectedDate", CalendarDay.from(new Date()));
 
                 if(theme == 0) {
                     intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
