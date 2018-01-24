@@ -184,7 +184,7 @@ public class WriteDrawDiaryActivity extends Activity {
             public void onClick(View v) {
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
-                drawingVO.setDrawDate("2018-01-24");
+                drawingVO.setDrawDate("2018-01-25");
                 drawingVO.setDrawContent(drawEdit.getText()+"");
                 drawingVO.setDrawFileName(filename);
                 drawDBHelper.insertDrawDiary(drawingVO);

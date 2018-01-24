@@ -39,7 +39,6 @@ public class DietDBHelper extends SQLiteOpenHelper {
                 "(WRITE_DATE DATE PRIMARY KEY, WEIGHT REAL, PHOTO TEXT, MENU1 TEXT, KCAL1 REAL, MENU2 TEXT, KCAL2 REAL, " +
                 "MENU3 TEXT, KCAL3 REAL, MEMO TEXT, THEME INTEGER DEFAULT 3);";
         db.execSQL(sql);
-        Log.i("lyh", "생성됨");
     }
 
     @Override
@@ -47,7 +46,6 @@ public class DietDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS DIET_TABLE");
         onCreate(db);
     }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //메인화면 리스트 불러오기 위한 db 내가 따로 작성 했어요
     //일기 판별용 카운터
@@ -103,9 +101,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
         }
         return dietVOArrayList;
     }
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectDietAllDate() {
         String sql = "SELECT WRITE_DATE FROM DIET_TABLE;";
@@ -145,6 +141,10 @@ public class DietDBHelper extends SQLiteOpenHelper {
         return dietVOS;
     }
 
+    // 해당 달에 쓴 일기에서 날짜, 체중 불러오기
+
+    // 해당 날짜에 쓴 일기 불러오기
+
     public int insertDiet(DietVO dietVO) {
         ContentValues values = new ContentValues();
 
@@ -161,4 +161,21 @@ public class DietDBHelper extends SQLiteOpenHelper {
 
         return (int) db.insert("DIET_TABLE", null, values);
     }
+
+    public int updateDiet(DietVO dietVO) {
+        ContentValues values = new ContentValues();
+
+        values.put("WEIGHT", dietVO.getWeight());
+        values.put("PHOTO", dietVO.getPhoto());
+        values.put("MENU1", dietVO.getMenu1());
+        values.put("KCAL1", dietVO.getKcal1());
+        values.put("MENU2", dietVO.getMenu2());
+        values.put("KCAL2", dietVO.getKcal2());
+        values.put("MENU3", dietVO.getMenu3());
+        values.put("KCAL3", dietVO.getKcal3());
+        values.put("MEMO", dietVO.getMemo());
+
+        return db.update("DIET_TABLE", values, "WRITE_DATE = ?", new String[]{dietVO.getWriteDate()});
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

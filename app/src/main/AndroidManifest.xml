@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
         <activity android:name=".MainActivity"/>
+=======
+>>>>>>> 5b16e1490c3bfc605ffe8b2de9d817e935b385da
         <activity android:name=".MainMonthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +27,10 @@
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
+=======
+        <activity android:name=".MainActivity" />
+>>>>>>> 5b16e1490c3bfc605ffe8b2de9d817e935b385da
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
@@ -42,7 +49,6 @@
         <activity
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".WriteNoSmokingActivity" />
         <activity android:name=".WriteDietActivity" />
         <activity android:name=".WriteDrawDiaryActivity" />
     </application>
