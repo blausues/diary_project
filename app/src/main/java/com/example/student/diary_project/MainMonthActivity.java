@@ -86,7 +86,6 @@ public class MainMonthActivity extends Activity {
 
         } else if(theme == 1) {
             writeNormalDBHelper = new WriteNormalDBHelper(this);
-
             Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
             tempDates = writeNormalDBHelper.selectNormalAllDate();
         } else if(theme == 2) {
