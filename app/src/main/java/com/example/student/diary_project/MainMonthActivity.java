@@ -203,7 +203,7 @@ public class MainMonthActivity extends Activity {
                 }
 
                 if(theme == 0) {
-
+                    intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
                 } else if(theme == 1) {
 
                 } else if(theme == 2) {
