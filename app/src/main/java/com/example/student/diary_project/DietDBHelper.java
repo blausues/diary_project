@@ -66,7 +66,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
 
     //일별 선택 및 읽을 일기 불러오기
     public DietVO selectDietDiary(String drawdate){
-        String sql = "SELECT * FROM DRAW_TABLE WHERE WRITE_DATE='" + drawdate + "';";
+        String sql = "SELECT * FROM DIET_TABLE WHERE WRITE_DATE='" + drawdate + "';";
         Cursor cursor = db.rawQuery(sql,null);
 
         DietVO dietVO = new DietVO();
