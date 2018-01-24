@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 public class DrawDBHelper extends SQLiteOpenHelper{
-    private static final String DB_NAME = "diary.db";
-    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "draw.db";
+    private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
 

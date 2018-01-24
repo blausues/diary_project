@@ -16,32 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<<<<<<< HEAD
-        <activity android:name=".MainActivity">
-=======
-<<<<<<< HEAD
-        <activity android:name=".WriteNormalActivity"
-            android:windowSoftInputMode="adjustResize">
-=======
+
         <activity android:name=".MainMonthActivity">
->>>>>>> 800eee5b3bc09be12b47e5a434b817731f40ff71
->>>>>>> ee1221253f1c1dcafe7d95bb7708e38e67df4cfd
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity android:name=".MainMonthActivity" />
-=======
-        <activity android:name=".WriteNormalActivity" />
-<<<<<<< HEAD
-        <activity android:name=".MainMonthActivity" />
-=======
         <activity android:name=".MainActivity" />
->>>>>>> 800eee5b3bc09be12b47e5a434b817731f40ff71
->>>>>>> ee1221253f1c1dcafe7d95bb7708e38e67df4cfd
-
+        <activity android:name=".WriteNormalActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -49,24 +33,11 @@
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-<<<<<<< HEAD
-            android:name=".DrawDiaryActivity"
-            android:label="DrawDiaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-=======
->>>>>>> 800eee5b3bc09be12b47e5a434b817731f40ff71
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".WriteNoSmokingActivity" />
         <activity android:name=".WriteDietActivity" />
-<<<<<<< HEAD
-=======
         <activity android:name=".DrawDiaryActivity" />
->>>>>>> 800eee5b3bc09be12b47e5a434b817731f40ff71
         <activity android:name=".WriteDrawDiaryActivity" />
     </application>
 </manifest>
