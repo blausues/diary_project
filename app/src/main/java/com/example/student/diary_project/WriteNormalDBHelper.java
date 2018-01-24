@@ -17,13 +17,12 @@ import java.util.List;
  */
 
 public class WriteNormalDBHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "diary.db";
+    private static final String DB_NAME = "normalDiary.db";
     private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
     public WriteNormalDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-
         db = getWritableDatabase();
     }
 
