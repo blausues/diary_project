@@ -46,8 +46,59 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS NOSMOKING_TABLE");
         onCreate(db);
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //메인화면 리스트 불러오기 위한 db 내가 따로 작성 했어요
+    //일기 판별용 카운터
+    public int selectNoSmokingDiaryCount(String drawdate) {
+        String sql = "SELECT COUNT(*) FROM NOSMOKING_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%';";
+        Cursor cursor = db.rawQuery(sql, null);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        int noSmokingDiaryCount = 0;
+
+        if (cursor.moveToNext()) {
+            noSmokingDiaryCount = cursor.getInt(0);
+        }
+        Log.d("jw", "db실행" + noSmokingDiaryCount);
+        return noSmokingDiaryCount;
+    }
+
+    //일별 선택 및 읽을 일기 불러오기
+    public NoSmokingVO selectNoSmokingDiary(String drawdate){
+        String sql = "SELECT * FROM NOSMOKING_TABLE WHERE WRITE_DATE='" + drawdate + "';";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        NoSmokingVO noSmokingVO = new NoSmokingVO();
+
+        if(cursor.moveToNext()){
+            noSmokingVO.setWriteDate(cursor.getString(0));
+            noSmokingVO.setStartDate(cursor.getString(1));
+            noSmokingVO.setGiveUp(cursor.getInt(2));
+            noSmokingVO.setPromise(cursor.getString(3));
+            noSmokingVO.setTheme(cursor.getInt(4));
+        }
+        return noSmokingVO;
+    }
+
+    //날짜별로 불러오기 drawdate는 불러올 날짜
+    public List<NoSmokingVO> selectNoSmokingDiaryList(String drawdate){
+        String sql = "SELECT WRITE_DATE,PROMISE,THEME FROM NOSMOKING_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        List<NoSmokingVO> noSmokingVOArrayList = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            NoSmokingVO noSmokingVO = new NoSmokingVO();
+            noSmokingVO.setWriteDate(cursor.getString(0));
+            noSmokingVO.setPromise(cursor.getString(1));
+            noSmokingVO.setTheme(cursor.getInt(2));
+            noSmokingVOArrayList.add(noSmokingVO);
+        }
+        return noSmokingVOArrayList;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {
         String sql = "SELECT WRITE_DATE FROM NOSMOKING_TABLE;";

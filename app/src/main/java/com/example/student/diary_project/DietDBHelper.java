@@ -48,7 +48,64 @@ public class DietDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //메인화면 리스트 불러오기 위한 db 내가 따로 작성 했어요
+    //일기 판별용 카운터
+    public int selectDietDiaryCount(String drawdate) {
+        String sql = "SELECT COUNT(*) FROM DIET_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%';";
+        Cursor cursor = db.rawQuery(sql, null);
+
+        int drawDiaryCount = 0;
+
+        if (cursor.moveToNext()) {
+            drawDiaryCount = cursor.getInt(0);
+        }
+        Log.d("jw", "db실행" + drawDiaryCount);
+        return drawDiaryCount;
+    }
+
+    //일별 선택 및 읽을 일기 불러오기
+    public DietVO selectDietDiary(String drawdate){
+        String sql = "SELECT * FROM DRAW_TABLE WHERE WRITE_DATE='" + drawdate + "';";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        DietVO dietVO = new DietVO();
+
+        if(cursor.moveToNext()){
+            dietVO.setWriteDate(cursor.getString(0));
+            dietVO.setWeight(cursor.getFloat(1));
+            dietVO.setPhoto(cursor.getString(2));
+            dietVO.setMenu1(cursor.getString(3));
+            dietVO.setKcal1(cursor.getFloat(4));
+            dietVO.setMenu2(cursor.getString(5));
+            dietVO.setKcal2(cursor.getFloat(6));
+            dietVO.setMenu3(cursor.getString(7));
+            dietVO.setKcal3(cursor.getFloat(8));
+            dietVO.setMemo(cursor.getString(9));
+            dietVO.setTheme(cursor.getInt(10));
+        }
+        return dietVO;
+    }
+
+    //날짜별로 불러오기 drawdate는 불러올 날짜
+    public List<DietVO> selectDietDiaryList(String drawdate){
+        String sql = "SELECT WRITE_DATE,MEMO,THEME FROM DIET_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        List<DietVO> dietVOArrayList = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            DietVO dietVO = new DietVO();
+            dietVO.setWriteDate(cursor.getString(0));
+            dietVO.setMemo(cursor.getString(1));
+            dietVO.setTheme(cursor.getInt(2));
+            dietVOArrayList.add(dietVO);
+        }
+        return dietVOArrayList;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectDietAllDate() {
         String sql = "SELECT WRITE_DATE FROM DIET_TABLE;";
@@ -77,7 +134,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
         ArrayList<DietVO> dietVOS = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, null);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             DietVO dietVO = new DietVO();
 
             dietVO.setWriteDate(cursor.getString(0));

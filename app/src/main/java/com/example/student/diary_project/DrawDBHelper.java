@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.student.diary_project.vo.DrawingVO;
 
@@ -77,6 +78,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
         if(cursor.moveToNext()){
             drawDiaryCount = cursor.getInt(0);
         }
+        Log.d("jw","db실행"+drawDiaryCount);
         return drawDiaryCount;
     }
 

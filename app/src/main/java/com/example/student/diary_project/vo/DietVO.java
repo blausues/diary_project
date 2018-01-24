@@ -16,6 +16,9 @@ public class DietVO {
     private float kcal3;
     private String memo;
 
+    //테마 필요해서 생성했어요
+    private int theme;
+    ////////////////////////////////
     public DietVO() {}
 
     public DietVO(String writeDate, float weight) {
@@ -103,6 +106,15 @@ public class DietVO {
         this.memo = memo;
     }
 
+    //테마 생성
+    public int getTheme() {
+        return theme;
+    }
+
+    public void setTheme(int theme) {
+        this.theme = theme;
+    }
+    ///////////////////////////////////////////////
     @Override
     public String toString() {
         return "DietVO{" +
