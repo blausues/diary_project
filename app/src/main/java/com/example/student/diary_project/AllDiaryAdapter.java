@@ -2,6 +2,7 @@ package com.example.student.diary_project;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,12 +97,15 @@ public class AllDiaryAdapter extends BaseAdapter {
 
                 holder.listAddDate.setText(allDiaryVO.getWriteDate());
                 if (allDiaryVO.getTheme() == 0) {
+                    holder.listAddTv.setTextColor(Color.rgb(255,165,000));
                     holder.listAddTv.setText("일반");
                 } else if (allDiaryVO.getTheme() == 1) {
+                    holder.listAddTv.setTextColor(Color.rgb(250,128,114));
                     holder.listAddTv.setText("그림");
                 } else if (allDiaryVO.getTheme() == 2) {
                     holder.listAddTv.setText("금연");
                 } else {
+                    holder.listAddTv.setTextColor(Color.rgb(244,164,96));
                     holder.listAddTv.setText("다이어트");
                 }
                 break;

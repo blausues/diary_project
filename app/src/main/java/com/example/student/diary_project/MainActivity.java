@@ -28,6 +28,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +92,6 @@ public class MainActivity extends Activity {
         selectDate = currentDate.format(new Date());
 
         viewDate.setText(selectDate);
-
 
 
         //쓰기 눌렀을때 현재 날짜로 바로 가게
@@ -218,71 +219,56 @@ public class MainActivity extends Activity {
                                         break;
                                     case 4:
                                         //리스트
-                                        List<AllDiaryVO> allDiaryVOList = new ArrayList<>();
+                                        tmpAllList = new ArrayList<>();
 
-                                        //일반 일기
+                                        for (int dayTheme = 0; dayTheme <= 3; dayTheme++) {
+                                            AllDiaryVO allDiary = new AllDiaryVO();
+                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                            allDiary.setWriteDate(selectDate);
+                                            allDiary.setTheme(dayTheme); // 일반일기 테마
+                                            tmpAllList.add(allDiary);
+                                        }
+
                                         if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
                                             NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
                                             AllDiaryVO allDiaryVO = new AllDiaryVO();
                                             allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
                                             allDiaryVO.setContent(normalVO.getNormalWriteContent());
                                             allDiaryVO.setTheme(normalVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(0);
-
-                                            adapter.addWrite(allDiaryVO);
+                                            tmpAllList.set(0, allDiaryVO);
                                         }
-                                        //그림 일기
+
                                         if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
                                             DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
                                             AllDiaryVO allDiaryVO = new AllDiaryVO();
                                             allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                                             allDiaryVO.setContent(drawingVO.getDrawContent());
                                             allDiaryVO.setTheme(drawingVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(1);
-
-                                            adapter.addWrite(allDiaryVO);
+                                            tmpAllList.set(1, allDiaryVO);
                                         }
-                                        //금연 일기
+
                                         if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
                                             NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
                                             AllDiaryVO allDiaryVO = new AllDiaryVO();
                                             allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                                             allDiaryVO.setContent(noSmokingVO.getPromise());
                                             allDiaryVO.setTheme(noSmokingVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(2);
-
-                                            adapter.addWrite(allDiaryVO);
+                                            tmpAllList.set(2, allDiaryVO);
                                         }
-                                        //다이어트 일기
+
                                         if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
                                             DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
                                             AllDiaryVO allDiaryVO = new AllDiaryVO();
                                             allDiaryVO.setWriteDate(dietVO.getWriteDate());
                                             allDiaryVO.setContent(dietVO.getMemo());
                                             allDiaryVO.setTheme(dietVO.getTheme());
+                                            tmpAllList.set(3, allDiaryVO);
+                                        }
 
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(3);
-
-                                            adapter.addWrite(allDiaryVO);
+                                        // 월 데이터 전체 어댑터에 전달하기.
+                                        adapter.dataClear();
+                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                            adapter.justAdd(allDiaryVO);
                                         }
                                         break;
                                 }
@@ -299,7 +285,9 @@ public class MainActivity extends Activity {
                 });
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //월별
-                btnCalendarMonth.setOnClickListener(new View.OnClickListener() {
+                btnCalendarMonth.setOnClickListener(new View.OnClickListener()
+
+                {
                     @Override
                     public void onClick(View v) {
                         final Dialog dialogMonth = new Dialog(v.getContext());
@@ -358,7 +346,7 @@ public class MainActivity extends Activity {
                                 switch (theme) {
                                     case 0:
                                         if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw","실행");
+                                            Log.d("ggw", "실행");
                                             normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
 
                                             switch (month) {
@@ -503,7 +491,7 @@ public class MainActivity extends Activity {
                                                     }
                                             }
                                         } else {
-                                            Log.d("ggw","안실행");
+                                            Log.d("ggw", "안실행");
                                             switch (month) {
                                                 case "01":
                                                 case "03":
@@ -589,7 +577,7 @@ public class MainActivity extends Activity {
                                         break;
                                     case 1:
                                         if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw","실행");
+                                            Log.d("ggw", "실행");
                                             drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
 
                                             switch (month) {
@@ -734,7 +722,7 @@ public class MainActivity extends Activity {
                                                     }
                                             }
                                         } else {
-                                            Log.d("ggw","안실행");
+                                            Log.d("ggw", "안실행");
                                             switch (month) {
                                                 case "01":
                                                 case "03":
@@ -820,7 +808,7 @@ public class MainActivity extends Activity {
                                         break;
                                     case 2:
                                         if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw","실행");
+                                            Log.d("ggw", "실행");
                                             noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
 
                                             switch (month) {
@@ -965,7 +953,7 @@ public class MainActivity extends Activity {
                                                     }
                                             }
                                         } else {
-                                            Log.d("ggw","안실행");
+                                            Log.d("ggw", "안실행");
                                             switch (month) {
                                                 case "01":
                                                 case "03":
@@ -1051,7 +1039,7 @@ public class MainActivity extends Activity {
                                         break;
                                     case 3:
                                         if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw","실행");
+                                            Log.d("ggw", "실행");
                                             dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
 
                                             switch (month) {
@@ -1196,7 +1184,7 @@ public class MainActivity extends Activity {
                                                     }
                                             }
                                         } else {
-                                            Log.d("ggw","안실행");
+                                            Log.d("ggw", "안실행");
                                             switch (month) {
                                                 case "01":
                                                 case "03":
@@ -1281,6 +1269,11 @@ public class MainActivity extends Activity {
                                         }
                                         break;
                                     case 4:
+                                        normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+                                        noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+                                        drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+                                        dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
                                         break;
                                 }
                                 /////////////////////////////////////////////////////////////////////////////////////
@@ -1361,6 +1354,170 @@ public class MainActivity extends Activity {
                             public void onClick(View v) {
                                 selectDate = year;
                                 viewDate.setText(selectDate);
+
+                                switch (theme) {
+                                    case 0:
+                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                                            normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (NormalVO normalVO : normalVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                                allDiaryVO.setTheme(normalVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+
+                                            adapter.dataClear();
+                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                                adapter.justAdd(allDiaryVO);
+                                            }
+                                        }else{
+
+                                        }
+                                        break;
+                                    case 1:
+                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (DrawingVO drawingVO : drawingVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                                allDiaryVO.setContent(drawingVO.getDrawContent());
+                                                allDiaryVO.setTheme(drawingVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+
+                                            adapter.dataClear();
+                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                                adapter.justAdd(allDiaryVO);
+                                            }
+                                        }
+                                        break;
+                                    case 2:
+                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                                            noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                                allDiaryVO.setContent(noSmokingVO.getPromise());
+                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+
+                                            adapter.dataClear();
+                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                                adapter.justAdd(allDiaryVO);
+                                            }
+                                        }
+                                        break;
+                                    case 3:
+                                        if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                                            dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (DietVO dietVO : dietVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                                allDiaryVO.setContent(dietVO.getMemo());
+                                                allDiaryVO.setTheme(dietVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+
+                                            adapter.dataClear();
+                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                                adapter.justAdd(allDiaryVO);
+                                            }
+                                        }
+                                        break;
+                                    case 4:
+                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                                            normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (NormalVO normalVO : normalVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                                allDiaryVO.setTheme(normalVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+                                        }
+
+                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (DrawingVO drawingVO : drawingVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                                allDiaryVO.setContent(drawingVO.getDrawContent());
+                                                allDiaryVO.setTheme(drawingVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+                                        }
+
+                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                                            noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                                allDiaryVO.setContent(noSmokingVO.getPromise());
+                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+                                        }
+
+                                        if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                                            dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
+                                            tmpAllList = new ArrayList<>();
+
+                                            for (DietVO dietVO : dietVOList) {
+                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                                allDiaryVO.setContent(dietVO.getMemo());
+                                                allDiaryVO.setTheme(dietVO.getTheme());
+
+                                                tmpAllList.add(allDiaryVO);
+                                            }
+                                        }
+
+                                        Collections.sort(tmpAllList, new NoAscCompare());
+//                                        adapter.dataClear();
+                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                            adapter.justAdd(allDiaryVO);
+                                        }
+                                        break;
+                                }
                                 dialogYear.cancel();
                             }
                         });
@@ -1412,9 +1569,9 @@ public class MainActivity extends Activity {
         {
             @Override
             public void onClick(View v) {
-                switch (theme){
+                switch (theme) {
                     case 0:
-                        if(normalDBHelper.selectNormalDiaryCount(todayDate)>=1){
+                        if (normalDBHelper.selectNormalDiaryCount(todayDate) >= 1) {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteNormalActivity.class);
@@ -1430,7 +1587,7 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case 2:
-                        if(noSmokingDBHelper.selectNoSmokingDiaryCount(todayDate)>=1){
+                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(todayDate) >= 1) {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteNoSmokingActivity.class);
@@ -1438,7 +1595,7 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case 3:
-                        if(dietDBHelper.selectDietDiaryCount(todayDate)>=1){
+                        if (dietDBHelper.selectDietDiaryCount(todayDate) >= 1) {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteDietActivity.class);
@@ -1456,6 +1613,15 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
             }
         });
+    }
+
+    static class NoAscCompare implements Comparator<AllDiaryVO> {
+
+        @Override
+        public int compare(AllDiaryVO a1, AllDiaryVO a2) {
+            return a1.getWriteDate().compareTo(a2.getWriteDate());
+        }
+
     }
 
 }
