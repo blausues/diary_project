@@ -38,7 +38,6 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         String sql = "CREATE TABLE IF NOT EXISTS NOSMOKING_TABLE " +
                 "(WRITE_DATE DATE PRIMARY KEY, START_DATE DATE, GIVE_UP INTEGER, PROMISE TEXT, THEME INTEGER DEFAULT 2);";
         db.execSQL(sql);
-        Log.i("lyh", "노스모킹 생성됨");
     }
 
     @Override
@@ -95,9 +94,6 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         }
         return noSmokingVOArrayList;
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {
@@ -108,7 +104,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         List<Calendar> dates = new ArrayList<>();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             Calendar calendar = Calendar.getInstance();
 
             Date date = transFormat.parse(cursor.getString(0), new ParsePosition(0));

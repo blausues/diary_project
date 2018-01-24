@@ -9,7 +9,11 @@ import android.util.Log;
 
 import com.example.student.diary_project.vo.NormalVO;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +25,7 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
+
     public WriteNormalDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         db = getWritableDatabase();
@@ -29,7 +34,7 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE IF NOT EXISTS NORMAL_TABLE " +
-                "(WRITE_DATE DATE PRIMARY KEY, NORMAL_CONTENT TEXT,IMAGE_PATH_0 TEXT, IMAGE_PATH_1 TEXT,IMAGE_PATH_2 TEXT,IMAGE_PATH_3 TEXT,IMAGE_PATH_4 TEXT, THEME INTEGER DEFAULT 0)";
+                "(WRITE_DATE DATE PRIMARY KEY, NORMAL_CONTENT TEXT,IMAGE_PATH TEXT, THEME INTEGER DEFAULT 0)";
         db.execSQL(sql);
     }
 
@@ -56,14 +61,14 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
     //일별 선택 및 읽을 일기 불러오기
-    public NormalVO selectNormalDiary(String drawdate){
+    public NormalVO selectNormalDiary(String drawdate) {
         String sql = "SELECT * FROM NORMAL_TABLE WHERE WRITE_DATE='" + drawdate + "';";
-        Cursor cursor = db.rawQuery(sql,null);
+        Cursor cursor = db.rawQuery(sql, null);
 
         NormalVO normalVO = new NormalVO();
         ArrayList<String> imagePathList = new ArrayList<>();
 
-        if(cursor.moveToNext()){
+        if (cursor.moveToNext()) {
             normalVO.setNormalWriteDate(cursor.getString(0));
             normalVO.setNormalWriteContent(cursor.getString(1));
             imagePathList.add(cursor.getString(2));
@@ -78,13 +83,13 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
     //날짜별로 불러오기 drawdate는 불러올 날짜
-    public List<NormalVO> selectNormalDiaryList(String drawdate){
+    public List<NormalVO> selectNormalDiaryList(String drawdate) {
         String sql = "SELECT WRITE_DATE,NORMAL_CONTENT,THEME FROM NORMAL_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
-        Cursor cursor = db.rawQuery(sql,null);
+        Cursor cursor = db.rawQuery(sql, null);
 
         List<NormalVO> normalVOArrayList = new ArrayList<>();
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             NormalVO normalVO = new NormalVO();
             normalVO.setNormalWriteDate(cursor.getString(0));
             normalVO.setNormalWriteContent(cursor.getString(1));
@@ -98,16 +103,56 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public List<Calendar> selectNormalAllDate() {
+        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE;";
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        List<Calendar> dates = new ArrayList<>();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        while (cursor.moveToNext()) {
+            Calendar calendar = Calendar.getInstance();
+
+            Date date = transFormat.parse(cursor.getString(0), new ParsePosition(0));
+
+            calendar.setTime(date);
+
+            dates.add(calendar);
+        }
+        return dates;
+    }
+
+    public int selectWriteDate(String writeDate) {
+        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE WHERE " + writeDate + "";
+        int mode = 0;
+        String result = null;
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            result = cursor.getString(0);
+        }
+        if (result != null) {
+            mode = 1;
+        } else {
+            mode = 0;
+        }
+        return mode;
+    }
+    public int update(NormalVO normalVO){
+        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE='"+normalVO.getNormalWriteDate()+"'";
+        db.execSQL(sql);
+        db.close();
+
+        return 1;
+    }
+
+
     public int insertNormal(NormalVO normalVO) {
         ContentValues values = new ContentValues();
 
         values.put("WRITE_DATE", normalVO.getNormalWriteDate());
-        values.put("NORMAL_CONTEN", normalVO.getNormalWriteContent());
-        values.put("IMAGE_PATH_0",normalVO.getNormalWriteImagePath().get(0));
-        values.put("IMAGE_PATH_1",normalVO.getNormalWriteImagePath().get(1));
-        values.put("IMAGE_PATH_2",normalVO.getNormalWriteImagePath().get(2));
-        values.put("IMAGE_PATH_3",normalVO.getNormalWriteImagePath().get(3));
-        values.put("IMAGE_PATH_4",normalVO.getNormalWriteImagePath().get(4));
+        values.put("NORMAL_CONTENT", normalVO.getNormalWriteContent());
+        values.put("IMAGE_PATH", String.valueOf(normalVO.getNormalWriteImagePath()));
 
         return (int) db.insert("NORMAL_TABLE", null, values);
     }

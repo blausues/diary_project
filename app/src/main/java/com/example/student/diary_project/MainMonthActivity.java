@@ -25,6 +25,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.text.ParsePosition;
@@ -53,8 +54,8 @@ public class MainMonthActivity extends Activity {
     private int theme = 0;
 
     private List<CalendarDay> dates;
-    private CalendarDay selectedDate = null;
 
+    private WriteNormalDBHelper writeNormalDBHelper;
     private NoSmokingDBHelper noSmokingDBHelper;
     private DietDBHelper dietDBHelper;
 
@@ -81,8 +82,12 @@ public class MainMonthActivity extends Activity {
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
             Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
+
+
         } else if(theme == 1) {
+            writeNormalDBHelper = new WriteNormalDBHelper(this);
             Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
+            tempDates = writeNormalDBHelper.selectNormalAllDate();
         } else if(theme == 2) {
             noSmokingDBHelper = new NoSmokingDBHelper(this);
 
@@ -135,7 +140,7 @@ public class MainMonthActivity extends Activity {
             weightLists.add(weightList);
 
             lineView.setDrawDotLine(false); //optional
-            lineView.setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY); //optional
+            lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
             lineView.setBottomTextList(dateList);
             lineView.setColorArray(new int[]{0xFF6799FF});
             lineView.setFloatDataList(weightLists);
@@ -154,25 +159,39 @@ public class MainMonthActivity extends Activity {
         calendarView.addDecorator(new EventDecorator(Color.RED, dates));
         calendarView.addDecorators(new CalendarSundayDecorate(), new CalendarSaturdayDecorate(), new CalendarTodayDecorate());
 
+        // 달 변경 시, 밑에 체중 그래프 바꿔주기
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                Toast.makeText(MainMonthActivity.this, ""+date, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // 달력 클릭 시, 일기 읽는 화면으로
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                for (int i = 0; i < dates.size(); i++) {
-                    if (theme == 0) {
+                if (theme == 0) {
 
-                    } else if (theme == 1) {
-
-                    } else if (theme == 2) {
-                        Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
-
-                        intent.putExtra("writeDate", date);
-                        startActivity(intent);
-
-                        break;
-                    } else if (theme == 3) {
-
+                } else if (theme == 1) {
+                    // 준완이는 show랑 write 나눈다고 해서 이렇게 해놓음
+                    for (int i = 0; i < dates.size(); i++) {
+                        if (dates.get(i).equals(date)) {
+                            // 달력에 일기 있으면 show로
+                        } else {
+                            // 없으면 write로
+                        }
                     }
+                } else if (theme == 2) {
+                    Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
+
+                    intent.putExtra("selectedDate", date);
+                    startActivity(intent);
+                } else if (theme == 3) {
+                    Intent intent = new Intent(MainMonthActivity.this, ShowDietActivity.class);
+
+                    intent.putExtra("selectedDate", date);
+                    startActivity(intent);
                 }
             }
         });
@@ -185,13 +204,13 @@ public class MainMonthActivity extends Activity {
             }
         });
 
-        // 글쓰기 버튼 클릭 시, 일기 쓰는 화면으로
+        // 글쓰기 버튼 클릭 시, 오늘 자 일기 쓰는 화면으로
         btnMonthWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
 
-                intent.putExtra("writeDate", CalendarDay.from(new Date()));
+                intent.putExtra("selectedDate", CalendarDay.from(new Date()));
 
                 if(theme == 0) {
                     intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
