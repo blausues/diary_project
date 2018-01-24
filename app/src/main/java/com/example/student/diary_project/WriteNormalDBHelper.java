@@ -9,7 +9,11 @@ import android.util.Log;
 
 import com.example.student.diary_project.vo.NormalVO;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,11 +103,30 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public List<Calendar> selectNormalAllDate() {
+        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE;";
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        List<Calendar> dates = new ArrayList<>();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        while(cursor.moveToNext()) {
+            Calendar calendar = Calendar.getInstance();
+
+            Date date = transFormat.parse(cursor.getString(0), new ParsePosition(0));
+
+            calendar.setTime(date);
+
+            dates.add(calendar);
+        }
+        return dates;
+    }
     public int insertNormal(NormalVO normalVO) {
         ContentValues values = new ContentValues();
 
         values.put("WRITE_DATE", normalVO.getNormalWriteDate());
-        values.put("NORMAL_CONTEN", normalVO.getNormalWriteContent());
+        values.put("NORMAL_CONTENT", normalVO.getNormalWriteContent());
         values.put("IMAGE_PATH_0",normalVO.getNormalWriteImagePath().get(0));
         values.put("IMAGE_PATH_1",normalVO.getNormalWriteImagePath().get(1));
         values.put("IMAGE_PATH_2",normalVO.getNormalWriteImagePath().get(2));

@@ -55,6 +55,7 @@ public class MainMonthActivity extends Activity {
     private List<CalendarDay> dates;
     private CalendarDay selectedDate = null;
 
+    private WriteNormalDBHelper writeNormalDBHelper;
     private NoSmokingDBHelper noSmokingDBHelper;
     private DietDBHelper dietDBHelper;
 
@@ -81,8 +82,13 @@ public class MainMonthActivity extends Activity {
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
             Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
+
+
         } else if(theme == 1) {
+            writeNormalDBHelper = new WriteNormalDBHelper(this);
+
             Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
+            tempDates = writeNormalDBHelper.selectNormalAllDate();
         } else if(theme == 2) {
             noSmokingDBHelper = new NoSmokingDBHelper(this);
 

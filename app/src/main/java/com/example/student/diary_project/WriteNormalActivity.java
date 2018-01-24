@@ -213,6 +213,7 @@ public class WriteNormalActivity extends Activity {
         btnNormalWriteSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                writeNormalVO = new NormalVO();
                 writeNormalVO.setNormalWriteDate(getTime().toString());
                 writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
                 writeNormalVO.setNormalWriteImagePath(selectedPhotos);

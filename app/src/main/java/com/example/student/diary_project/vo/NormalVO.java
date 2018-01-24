@@ -13,14 +13,14 @@ public class NormalVO {
     private ArrayList<String> normalWriteImagePath;
     private int theme;
 
+    public NormalVO(){
+
+    }
     public NormalVO(String normalWriteDate, String normalWriteContent, ArrayList<String> normalWriteImagePath, int theme) {
         this.normalWriteDate = normalWriteDate;
         this.normalWriteContent = normalWriteContent;
         this.normalWriteImagePath = normalWriteImagePath;
         this.theme = theme;
-    }
-    public  NormalVO(){
-
     }
 
     public String getNormalWriteDate() {
