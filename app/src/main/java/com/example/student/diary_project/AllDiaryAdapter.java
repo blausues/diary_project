@@ -19,14 +19,13 @@ import java.util.List;
 
 public class AllDiaryAdapter extends BaseAdapter {
     //두개의 아이템 뷰를 하나의 리스트뷰에서 구현하기 위해 타입 지정
-    private static final int ITEM_VIEW_TYPE_READ = 0;
-    private static final int ITEM_VIEW_TYPE_WRITE = 1;
-    private static final int ITEM_VIEW_TYPE_MAX = 2;
+    public static final int ITEM_VIEW_TYPE_READ = 0;
+    public static final int ITEM_VIEW_TYPE_WRITE = 1;
+    public static final int ITEM_VIEW_TYPE_MAX = 2;
     /////////////////////////////////////////////////////////////////////
     private List<AllDiaryVO> allDiaryVOArrayList = new ArrayList<>();
 
-    public AllDiaryAdapter() {
-    }
+    public  AllDiaryAdapter(){}
 
     class AllDiaryHolder {
         TextView listDate;
@@ -127,5 +126,13 @@ public class AllDiaryAdapter extends BaseAdapter {
         allDiary.setTheme(allDiaryVO.getTheme());
 
         allDiaryVOArrayList.add(allDiary);
+    }
+/////////////////////////////////////////////////////////////////////////
+    public void justAdd(AllDiaryVO allDiaryVO){
+        allDiaryVOArrayList.add(allDiaryVO);
+    }
+
+    public void dataClear(){
+        allDiaryVOArrayList.clear();
     }
 }

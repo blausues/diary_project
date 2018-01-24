@@ -25,7 +25,9 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -215,6 +217,8 @@ public class MainActivity extends Activity {
                                 viewDate.setText(selectDate);
 
                                 //리스트 생성
+                                List<AllDiaryVO> tmpAllList
+
                                 adapter = new AllDiaryAdapter();
                                 listview.setAdapter(adapter);
 
@@ -224,7 +228,6 @@ public class MainActivity extends Activity {
                                     case 1:
                                         if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
 
-                                            drawingVOList = new ArrayList<>();
                                             drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
 
                                             switch (month) {
@@ -235,56 +238,70 @@ public class MainActivity extends Activity {
                                                 case "08":
                                                 case "10":
                                                 case "12":
-                                                    for (int x = 1; x <= 31; x++) {
-                                                        if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
-                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                            allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
-                                                            allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
-                                                            allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+                                                    tmpAllList = new ArrayList<>();
+                                                    // 빈 일기아이템 채우기
+                                                    for(int day=1; day<=31; day++){
+                                                        AllDiaryVO allDiary = new AllDiaryVO();
+                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                                        String date = selectDate+"-"+(day/10)+""+(day%10);
+                                                        allDiary.setWriteDate(date);
+                                                        allDiary.setTheme(1); // 그림일기 테마
+                                                        tmpAllList.add(allDiary);
+                                                    }
 
-                                                            adapter.addRead(allDiaryVO);
-                                                        } else {
-                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-
-                                                            if (x > 10) {
-                                                                String selDate = selectDate + "-" + x;
-                                                                allDiaryVO.setWriteDate(selDate);
-                                                            } else {
-                                                                String selDate = selectDate + "-0" + x;
-                                                                allDiaryVO.setWriteDate(selDate);
+                                                    // 일기 있는거 대체하기
+                                                    for(DrawingVO drawingVO: drawingVOList){
+                                                        for(int i=0; i<tmpAllList.size(); i++){
+                                                            if(drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())){
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                                                allDiaryVO.setContent(drawingVO.getDrawContent());
+                                                                allDiaryVO.setTheme(drawingVO.getTheme());
+                                                                tmpAllList.set(i, allDiaryVO);
+                                                                break;
                                                             }
-                                                            allDiaryVO.setTheme(1);
-
-                                                            adapter.addWrite(allDiaryVO);
                                                         }
+                                                    }
+                                                    // 월 데이터 전체 어댑터에 전달하기.
+                                                    adapter.dataClear();
+                                                    for(AllDiaryVO allDiaryVO: tmpAllList){
+                                                        adapter.justAdd(allDiaryVO);
                                                     }
                                                     break;
                                                 case "04":
                                                 case "06":
                                                 case "09":
                                                 case "11":
-                                                    for (int x = 1; x <= 30; x++) {
-                                                        if (!drawingVOList.get(x - 1).getDrawDate().equals(null)) {
-                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                            allDiaryVO.setWriteDate(drawingVOList.get(x).getDrawDate());
-                                                            allDiaryVO.setContent(drawingVOList.get(x).getDrawContent());
-                                                            allDiaryVO.setTheme(drawingVOList.get(x).getTheme());
+                                                    tmpAllList = new ArrayList<>();
+                                                    // 빈 일기아이템 채우기
+                                                    for(int day=1; day<=30; day++){
+                                                        AllDiaryVO allDiary = new AllDiaryVO();
+                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                                        String date = selectDate+"-"+(day/10)+""+(day%10);
+                                                        allDiary.setWriteDate(date);
+                                                        allDiary.setTheme(1); // 그림일기 테마
+                                                        tmpAllList.add(allDiary);
+                                                    }
 
-                                                            adapter.addRead(allDiaryVO);
-                                                        } else {
-                                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-
-                                                            if (x > 10) {
-                                                                String selDate = selectDate + "-" + x;
-                                                                allDiaryVO.setWriteDate(selDate);
-                                                            } else {
-                                                                String selDate = selectDate + "-0" + x;
-                                                                allDiaryVO.setWriteDate(selDate);
+                                                    // 일기 있는거 대체하기
+                                                    for(DrawingVO drawingVO: drawingVOList){
+                                                        for(int i=0; i<tmpAllList.size(); i++){
+                                                            if(drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())){
+                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                                                allDiaryVO.setContent(drawingVO.getDrawContent());
+                                                                allDiaryVO.setTheme(drawingVO.getTheme());
+                                                                tmpAllList.set(i, allDiaryVO);
+                                                                break;
                                                             }
-                                                            allDiaryVO.setTheme(1);
-
-                                                            adapter.addWrite(allDiaryVO);
                                                         }
+                                                    }
+                                                    // 월 데이터 전체 어댑터에 전달하기.
+                                                    adapter.dataClear();
+                                                    for(AllDiaryVO allDiaryVO: tmpAllList){
+                                                        adapter.justAdd(allDiaryVO);
                                                     }
                                                     break;
                                                 case "02":
