@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.student.diary_project.vo.DrawingVO;
 
@@ -16,8 +17,8 @@ import java.util.List;
  */
 
 public class DrawDBHelper extends SQLiteOpenHelper{
-    private static final String DB_NAME = "diary.db";
-    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "draw.db";
+    private static final int DB_VERSION = 1;
 
     private SQLiteDatabase db;
 
@@ -69,7 +70,7 @@ public class DrawDBHelper extends SQLiteOpenHelper{
 
     //일기 판별용 카운터
     public int selectDrawDiaryCount(String drawdate){
-        String sql = "SELECT COUNT(*) FROM DRAW_TABLE WHERE WRITE_DATE='"+drawdate+"';";
+        String sql = "SELECT COUNT(*) FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%"+drawdate+"%';";
         Cursor cursor = db.rawQuery(sql,null);
 
         int drawDiaryCount = 0;
@@ -77,12 +78,13 @@ public class DrawDBHelper extends SQLiteOpenHelper{
         if(cursor.moveToNext()){
             drawDiaryCount = cursor.getInt(0);
         }
+        Log.d("jw","db실행"+drawDiaryCount);
         return drawDiaryCount;
     }
 
     //날짜별로 불러오기 drawdate는 불러올 날짜
     public List<DrawingVO> selectDrawDiaryList(String drawdate){
-        String sql = "SELECT WRITE_DATE,CONTENT,THEME FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%';";
+        String sql = "SELECT WRITE_DATE,CONTENT,THEME FROM DRAW_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
         Cursor cursor = db.rawQuery(sql,null);
 
         List<DrawingVO> drawingVOList = new ArrayList<>();

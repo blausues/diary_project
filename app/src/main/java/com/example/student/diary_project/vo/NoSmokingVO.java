@@ -12,6 +12,9 @@ public class NoSmokingVO {
     private int giveUp;
     private String promise;
 
+    //테마 필요해서 생성했어요
+    private int theme;
+    /////////////////////////////////
     public NoSmokingVO() {}
 
     public NoSmokingVO(String writeDate, String startDate, int giveUp, String promise) {
@@ -51,6 +54,14 @@ public class NoSmokingVO {
 
     public void setPromise(String promise) {
         this.promise = promise;
+    }
+
+    public int getTheme() {
+        return theme;
+    }
+
+    public void setTheme(int theme) {
+        this.theme = theme;
     }
 
     @Override

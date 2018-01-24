@@ -269,7 +269,7 @@ public class DrawDiaryActivity extends Activity {
         try {
             os = new FileOutputStream(file);
             screenBitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
-            Log.d("yyj", "save os");
+            Log.d("jw", "save os");
             os.close();
         } catch (IOException e) {
             e.printStackTrace();
