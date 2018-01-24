@@ -25,11 +25,11 @@ import java.util.Date;
  */
 
 public class WriteNoSmokingActivity extends Activity {
-    private TextView tvNoSmokingWriteWriteDate, tvNoSmokingWriteStartDate;
-    private EditText editNoSmokingWritePromise;
-    private CheckBox checkNoSmokingWriteGiveup;
-    private Button btnNoSmokingWriteSave;
-    private ImageButton btnNoSmokingWriteNow;
+    private TextView tvNoSmokingWriteDate, tvNoSmokingStartDate, tvNoSmokingPromise;
+    private EditText editNoSmokingPromise;
+    private CheckBox checkNoSmokingGiveup;
+    private Button btnNoSmokingSave;
+    private ImageButton btnNoSmokingNow;
 
     private NoSmokingDBHelper noSmokingHelper;
 
@@ -38,16 +38,20 @@ public class WriteNoSmokingActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_nosmoking);
+        setContentView(R.layout.activity_show_nosmoking);
 
-        tvNoSmokingWriteWriteDate = findViewById(R.id.tv_nosmoking_write_writedate);
-        tvNoSmokingWriteStartDate = findViewById(R.id.tv_nosmoking_write_startdate);
-        editNoSmokingWritePromise = findViewById(R.id.edit_nosmoking_write_promise);
-        checkNoSmokingWriteGiveup = findViewById(R.id.check_nosmoking_write_giveup);
-        btnNoSmokingWriteNow = findViewById(R.id.btn_nosmoking_write_now);
-        btnNoSmokingWriteSave = findViewById(R.id.btn_nosmoking_write_save);
+        tvNoSmokingWriteDate = findViewById(R.id.tv_nosmoking_writedate);
+        tvNoSmokingStartDate = findViewById(R.id.tv_nosmoking_startdate);
+        tvNoSmokingPromise = findViewById(R.id.tv_nosmoking_promise);
+        editNoSmokingPromise = findViewById(R.id.edit_nosmoking_promise);
+        checkNoSmokingGiveup = findViewById(R.id.check_nosmoking_giveup);
+        btnNoSmokingNow = findViewById(R.id.btn_nosmoking_now);
+        btnNoSmokingSave = findViewById(R.id.btn_nosmoking_save);
 
         noSmokingHelper = new NoSmokingDBHelper(this);
+
+        tvNoSmokingPromise.setVisibility(View.GONE);
+        editNoSmokingPromise.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
         final CalendarDay selectedDate = intent.getParcelableExtra("selectedDate");
@@ -64,35 +68,33 @@ public class WriteNoSmokingActivity extends Activity {
             Date startDate = sdf.parse(noSmokingVO.getStartDate(), new ParsePosition(0));
             int dDay = (int) Math.floor((selectedDate.getDate().getTime() - startDate.getTime()) / 86400000) + 1;
 
-            tvNoSmokingWriteStartDate.setText("금연 시작 "+sdf2.format(startDate)+" D+"+dDay);
+            tvNoSmokingStartDate.setText("금연 시작 "+sdf2.format(startDate)+" D+"+dDay);
         } else {
             // 포기한 뒤 새로 쓰거나, 아예 처음 금연일기를 쓰는 경우
-            tvNoSmokingWriteStartDate.setText("금연 오늘부터 시작! D+1");
+            tvNoSmokingStartDate.setText("금연 오늘부터 시작! D+1");
             noSmokingVO.setStartDate(writeDateStr);
         }
-        tvNoSmokingWriteWriteDate.setText(sdf2.format(selectedDate.getDate()));
+        tvNoSmokingWriteDate.setText(sdf2.format(selectedDate.getDate()));
 
-        btnNoSmokingWriteNow.setOnClickListener(new NowListener(editNoSmokingWritePromise));
+        btnNoSmokingNow.setOnClickListener(new NowListener(editNoSmokingPromise));
 
-        btnNoSmokingWriteSave.setOnClickListener(new View.OnClickListener() {
+        btnNoSmokingSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DB에 insert 작업
-                if(checkNoSmokingWriteGiveup.isChecked() == false) {
+                if(checkNoSmokingGiveup.isChecked() == false) {
                     noSmokingVO.setGiveUp(0);
                 } else {
                     noSmokingVO.setGiveUp(1);
                 }
-                noSmokingVO.setPromise(editNoSmokingWritePromise.getText().toString());
+                noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 
                 int result = noSmokingHelper.insertNoSmoking(noSmokingVO);
 
                 if(result > 0) {
                     // insert 성공
-                    Intent responseIntent = new Intent(WriteNoSmokingActivity.this, ShowNoSmokingActivity.class);
-                    responseIntent.putExtra("writeDate", selectedDate);
-
-                    startActivity(responseIntent);
+                    tvNoSmokingPromise.setVisibility(View.VISIBLE);
+                    editNoSmokingPromise.setVisibility(View.GONE);
                 } else {
                     // insert 실패
                     Toast.makeText(WriteNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
