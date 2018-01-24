@@ -159,39 +159,19 @@ public class MainMonthActivity extends Activity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 for (int i = 0; i < dates.size(); i++) {
-                    if (dates.get(i).equals(date)) {
-                        if(theme == 0) {
+                    if (theme == 0) {
 
-                        } else if(theme == 1) {
+                    } else if (theme == 1) {
 
-                        } else if(theme == 2) {
-                            Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
+                    } else if (theme == 2) {
+                        Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
 
-                            intent.putExtra("writeDate", date);
-                            startActivity(intent);
-
-                            break;
-                        } else if(theme == 3) {
-
-                        }
-                    } else {
-                        Intent intent = new Intent();
-
-                        selectedDate = calendarView.getSelectedDate();
-
-                        // 작성하려는 날짜 intent에 담기
-                        intent.putExtra("selectedDate", selectedDate);
-
-                        if(theme == 0) {
-                            intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
-                        } else if(theme == 1) {
-
-                        } else if(theme == 2) {
-                            intent.setClass(MainMonthActivity.this, WriteNoSmokingActivity.class);
-                        } else if(theme == 3) {
-                            intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
-                        }
+                        intent.putExtra("writeDate", date);
                         startActivity(intent);
+
+                        break;
+                    } else if (theme == 3) {
+
                     }
                 }
             }
@@ -211,14 +191,14 @@ public class MainMonthActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
 
-                intent.putExtra("selectedDate", CalendarDay.from(new Date()));
+                intent.putExtra("writeDate", CalendarDay.from(new Date()));
 
                 if(theme == 0) {
                     intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
                 } else if(theme == 1) {
 
                 } else if(theme == 2) {
-                    intent.setClass(MainMonthActivity.this, WriteNoSmokingActivity.class);
+                    intent.setClass(MainMonthActivity.this, ShowNoSmokingActivity.class);
                 } else if(theme == 3) {
                     intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
                 }
