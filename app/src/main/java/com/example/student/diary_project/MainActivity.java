@@ -1355,6 +1355,9 @@ public class MainActivity extends Activity {
                                 selectDate = year;
                                 viewDate.setText(selectDate);
 
+                                adapter = new AllDiaryAdapter();
+                                listview.setAdapter(adapter);
+
                                 switch (theme) {
                                     case 0:
                                         if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
@@ -1376,8 +1379,6 @@ public class MainActivity extends Activity {
                                             for (AllDiaryVO allDiaryVO : tmpAllList) {
                                                 adapter.justAdd(allDiaryVO);
                                             }
-                                        }else{
-
                                         }
                                         break;
                                     case 1:
@@ -1447,10 +1448,9 @@ public class MainActivity extends Activity {
                                         }
                                         break;
                                     case 4:
+                                        tmpAllList = new ArrayList<>();
                                         if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
                                             normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
 
                                             for (NormalVO normalVO : normalVOList) {
                                                 AllDiaryVO allDiaryVO = new AllDiaryVO();
@@ -1466,8 +1466,6 @@ public class MainActivity extends Activity {
                                         if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
                                             drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
 
-                                            tmpAllList = new ArrayList<>();
-
                                             for (DrawingVO drawingVO : drawingVOList) {
                                                 AllDiaryVO allDiaryVO = new AllDiaryVO();
                                                 allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
@@ -1481,8 +1479,6 @@ public class MainActivity extends Activity {
 
                                         if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
                                             noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
 
                                             for (NoSmokingVO noSmokingVO : noSmokingVOList) {
                                                 AllDiaryVO allDiaryVO = new AllDiaryVO();
@@ -1498,8 +1494,6 @@ public class MainActivity extends Activity {
                                         if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
                                             dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
 
-                                            tmpAllList = new ArrayList<>();
-
                                             for (DietVO dietVO : dietVOList) {
                                                 AllDiaryVO allDiaryVO = new AllDiaryVO();
                                                 allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
@@ -1512,7 +1506,7 @@ public class MainActivity extends Activity {
                                         }
 
                                         Collections.sort(tmpAllList, new NoAscCompare());
-//                                        adapter.dataClear();
+                                        adapter.dataClear();
                                         for (AllDiaryVO allDiaryVO : tmpAllList) {
                                             adapter.justAdd(allDiaryVO);
                                         }
@@ -1590,7 +1584,7 @@ public class MainActivity extends Activity {
                         if (noSmokingDBHelper.selectNoSmokingDiaryCount(todayDate) >= 1) {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(MainActivity.this, WriteNoSmokingActivity.class);
+                            Intent intent = new Intent(MainActivity.this, ShowNoSmokingActivity.class);
                             startActivity(intent);
                         }
                         break;

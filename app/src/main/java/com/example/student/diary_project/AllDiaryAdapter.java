@@ -81,12 +81,15 @@ public class AllDiaryAdapter extends BaseAdapter {
                 holder.listDate.setText(allDiaryVO.getWriteDate());
                 holder.listContent.setText(allDiaryVO.getContent());
                 if (allDiaryVO.getTheme() == 0) {
+                    holder.listTv.setTextColor(Color.rgb(255,165,000));
                     holder.listTv.setText("일반");
                 } else if (allDiaryVO.getTheme() == 1) {
+                    holder.listTv.setTextColor(Color.rgb(250,128,114));
                     holder.listTv.setText("그림");
                 } else if (allDiaryVO.getTheme() == 2) {
                     holder.listTv.setText("금연");
                 } else {
+                    holder.listTv.setTextColor(Color.rgb(244,164,96));
                     holder.listTv.setText("다이어트");
                 }
                 break;
