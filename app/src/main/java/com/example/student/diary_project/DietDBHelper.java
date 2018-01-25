@@ -142,8 +142,45 @@ public class DietDBHelper extends SQLiteOpenHelper {
     }
 
     // 해당 달에 쓴 일기에서 날짜, 체중 불러오기
+    public ArrayList<DietVO> selectDietMonth(String selectedMonth){
+        String sql = "SELECT WRITE_DATE, WEIGHT FROM DIET_TABLE WHERE WRITE_DATE LIKE '%" + selectedMonth + "%' ORDER BY WRITE_DATE ASC;";
+
+        ArrayList<DietVO> dietVOS = new ArrayList<>();
+        Cursor cursor = db.rawQuery(sql, null);
+
+        while (cursor.moveToNext()) {
+            DietVO dietVO = new DietVO();
+
+            dietVO.setWriteDate(cursor.getString(0));
+            dietVO.setWeight(cursor.getFloat(1));
+
+            dietVOS.add(dietVO);
+        }
+        return dietVOS;
+    }
 
     // 해당 날짜에 쓴 일기 불러오기
+    public DietVO selectDietDate(String date) {
+        String sql = "SELECT * FROM DIET_TABLE WHERE WRITE_DATE = '" + date + "'";
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        DietVO dietVO = new DietVO();
+
+        if(cursor.moveToNext()) {
+            dietVO.setWriteDate(cursor.getString(0));
+            dietVO.setWeight(cursor.getFloat(1));
+            dietVO.setPhoto(cursor.getString(2));
+            dietVO.setMenu1(cursor.getString(3));
+            dietVO.setKcal1(cursor.getFloat(4));
+            dietVO.setMenu2(cursor.getString(5));
+            dietVO.setKcal2(cursor.getFloat(6));
+            dietVO.setMenu3(cursor.getString(7));
+            dietVO.setKcal3(cursor.getFloat(8));
+            dietVO.setMemo(cursor.getString(9));
+        }
+        return dietVO;
+    }
 
     public int insertDiet(DietVO dietVO) {
         ContentValues values = new ContentValues();

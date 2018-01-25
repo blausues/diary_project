@@ -58,9 +58,9 @@ public class ShowNoSmokingActivity extends Activity {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 
         Intent intent = getIntent();
+        final String writeDateStr = intent.getStringExtra("selectedDate");
 
-        CalendarDay selectedDate = intent.getParcelableExtra("selectedDate");
-        String writeDateStr = sdf.format(selectedDate.getDate());
+        Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
 
         // 만약에 이 날짜에 쓴게 없으면 insert 모드로
         noSmokingVO = noSmokingHelper.selectNoSmokingDate(writeDateStr);
@@ -70,7 +70,7 @@ public class ShowNoSmokingActivity extends Activity {
         } else {
             mode = 1;
         }
-        tvNoSmokingWriteDate.setText(sdf2.format(selectedDate.getDate()));
+        tvNoSmokingWriteDate.setText(sdf2.format(writeDate));
 
         if(mode == 0) {
             // insert
@@ -84,7 +84,7 @@ public class ShowNoSmokingActivity extends Activity {
             if(beforeNoSmokingVO.getGiveUp() == 0 && beforeNoSmokingVO.getStartDate() != null) {
                 // 진행중
                 Date startDate = sdf.parse(beforeNoSmokingVO.getStartDate(), new ParsePosition(0));
-                int dDay = (int) Math.floor((selectedDate.getDate().getTime() - startDate.getTime()) / 86400000) + 1;
+                int dDay = (int) Math.floor((writeDate.getTime() - startDate.getTime()) / 86400000) + 1;
 
                 tvNoSmokingStartDate.setText("금연 시작 "+sdf2.format(startDate)+" D+"+dDay);
                 noSmokingVO.setStartDate(beforeNoSmokingVO.getStartDate());
@@ -97,9 +97,9 @@ public class ShowNoSmokingActivity extends Activity {
             // update
             Date startDate = sdf.parse(noSmokingVO.getStartDate(), new ParsePosition(0));
 
-            int dDay = (int) Math.floor((selectedDate.getDate().getTime() - startDate.getTime()) / 86400000) + 1;
+            int dDay = (int) Math.floor((writeDate.getTime() - startDate.getTime()) / 86400000) + 1;
 
-            if(selectedDate.getDate().equals(startDate)) {
+            if(writeDate.equals(startDate)) {
                 tvNoSmokingStartDate.setText("금연 오늘부터 시작! D+1");
             } else {
                 tvNoSmokingStartDate.setText("금연 시작 "+sdf2.format(startDate)+" D+"+dDay);
@@ -156,8 +156,10 @@ public class ShowNoSmokingActivity extends Activity {
                     // DB에 insert 작업
                     if(checkNoSmokingGiveup.isChecked() == false) {
                         noSmokingVO.setGiveUp(0);
+                        noSmokingHelper.updateNoSmokingStartDateNoGiveUp(noSmokingVO.getWriteDate(), noSmokingVO.getStartDate());
                     } else {
                         noSmokingVO.setGiveUp(1);
+                        noSmokingHelper.updateNoSmokingStartDateNoGiveUp(noSmokingVO.getWriteDate(), noSmokingVO.getStartDate());
                     }
                     noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 

@@ -21,13 +21,13 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_group_month">
         <view
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             android:visibility="gone"
             class="im.dacer.androidcharts.LineView"
             android:id="@+id/line_view" />
@@ -59,7 +59,7 @@
         android:id="@+id/pb_diary"
         android:layout_width="match_parent"
         android:layout_height="12dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:visibility="invisible"/>
