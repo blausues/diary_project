@@ -35,8 +35,8 @@
         <activity
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".WriteDietActivity" />
         <activity android:name=".DrawDiaryActivity" />
         <activity android:name=".WriteDrawDiaryActivity" />
+        <activity android:name=".ShowDietActivity"/>
     </application>
 </manifest>
