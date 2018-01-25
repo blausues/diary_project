@@ -23,10 +23,7 @@
             </intent-filter>
         </activity>
 
-<<<<<<< HEAD
-=======
         <activity android:name=".MainActivity" />
->>>>>>> 9789c5dd3d86008000ab881315ce02a5636d8293
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
