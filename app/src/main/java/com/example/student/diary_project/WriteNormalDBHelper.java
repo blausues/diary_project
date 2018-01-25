@@ -148,9 +148,9 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         return (int) db.insert("NORMAL_TABLE", null, values);
     }
 
-    public ArrayList<NormalVO> selectAll(String writeDate){
-        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
-    }
+//    public ArrayList<NormalVO> selectAll(String writeDate){
+//        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
+//    }
 
     public int update(NormalVO normalVO){
         String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";

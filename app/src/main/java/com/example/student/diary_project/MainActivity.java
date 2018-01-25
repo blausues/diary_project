@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
     private List<DietVO> dietVOList;
     private AllDiaryAdapter adapter;
     private List<AllDiaryVO> tmpAllList;
-    private int theme = 3;
+    private int theme = 4;
     ///////////////////////////////////////////////////////////////////////////////////////////
     private int t0, t1, t2, t3 = 0;
 
