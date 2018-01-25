@@ -120,31 +120,53 @@ public class MainMonthActivity extends Activity {
             DietVO dietVO1 = new DietVO("2018-01-22", 43);
             DietVO dietVO2 = new DietVO("2018-01-20", 42);
             DietVO dietVO3 = new DietVO("2018-01-19", 70);
+            DietVO dietVO4 = new DietVO("2018-01-18", 70);
+            DietVO dietVO5 = new DietVO("2018-01-16", 70);
+            DietVO dietVO6 = new DietVO("2018-01-14", 70);
+            DietVO dietVO7 = new DietVO("2018-01-13", 40);
+            DietVO dietVO8 = new DietVO("2018-01-12", 43);
+            DietVO dietVO9 = new DietVO("2018-01-11", 42);
+            DietVO dietVO10 = new DietVO("2018-01-10", 70);
+            DietVO dietVO11= new DietVO("2018-01-09", 70);
+            DietVO dietVO12= new DietVO("2018-01-03", 70);
+            DietVO dietVO13= new DietVO("2017-12-01", 70);
             dietDBHelper.insertDiet(dietVO);
             dietDBHelper.insertDiet(dietVO1);
             dietDBHelper.insertDiet(dietVO2);dietDBHelper.insertDiet(dietVO3);
+            dietDBHelper.insertDiet(dietVO4);
+            dietDBHelper.insertDiet(dietVO5);dietDBHelper.insertDiet(dietVO6);
+            dietDBHelper.insertDiet(dietVO7);
+            dietDBHelper.insertDiet(dietVO8);
+            dietDBHelper.insertDiet(dietVO9);dietDBHelper.insertDiet(dietVO10);
+            dietDBHelper.insertDiet(dietVO11);
+            dietDBHelper.insertDiet(dietVO12);dietDBHelper.insertDiet(dietVO13);
 
             tempDates = dietDBHelper.selectDietAllDate();
 
-            // 최근 7일 체중 기록 가져오기
-            ArrayList<DietVO> dietVOS = dietDBHelper.selectDietWeek();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            // 이번 달 체중 기록 가져오기
+            ArrayList<DietVO> dietVOS = dietDBHelper.selectDietMonth(sdf.format(new Date()));
 
-            ArrayList<String> dateList = new ArrayList<>();
-            ArrayList<Float> weightList = new ArrayList<>();
+            if (dietVOS.size() > 0) {
+                ArrayList<String> dateList = new ArrayList<>();
+                ArrayList<Float> weightList = new ArrayList<>();
 
-            for(int i=dietVOS.size()-1; i>=0; i--) {
-                dateList.add(dietVOS.get(i).getWriteDate().substring(5));
-                weightList.add(dietVOS.get(i).getWeight());
+                for (int i = 0; i < dietVOS.size(); i++) {
+                    dateList.add(dietVOS.get(i).getWriteDate().substring(5));
+                    weightList.add(dietVOS.get(i).getWeight());
+                }
+                ArrayList<ArrayList<Float>> weightLists = new ArrayList<>();
+                weightLists.add(weightList);
+
+                lineView.setDrawDotLine(false); //optional
+                lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
+                lineView.setBottomTextList(dateList);
+                lineView.setColorArray(new int[]{0xFF6799FF});
+                lineView.setFloatDataList(weightLists);
+                lineView.setVisibility(View.VISIBLE);
+            } else {
+                lineView.setVisibility(View.GONE);
             }
-            ArrayList<ArrayList<Float>> weightLists = new ArrayList<>();
-            weightLists.add(weightList);
-
-            lineView.setDrawDotLine(false); //optional
-            lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
-            lineView.setBottomTextList(dateList);
-            lineView.setColorArray(new int[]{0xFF6799FF});
-            lineView.setFloatDataList(weightLists);
-            lineView.setVisibility(View.VISIBLE);
         } else if(theme == 4) {
             // 전체 리스트 화면으로 넘어가기
         }
@@ -163,7 +185,32 @@ public class MainMonthActivity extends Activity {
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                Toast.makeText(MainMonthActivity.this, ""+date, Toast.LENGTH_SHORT).show();
+                if (theme == 3) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                    // 이번 달 체중 기록 가져오기
+                    ArrayList<DietVO> dietVOS = dietDBHelper.selectDietMonth(sdf.format(date.getDate()));
+
+                    if (dietVOS.size() > 0) {
+                        ArrayList<String> dateList = new ArrayList<>();
+                        ArrayList<Float> weightList = new ArrayList<>();
+
+                        for (int i = 0; i < dietVOS.size(); i++) {
+                            dateList.add(dietVOS.get(i).getWriteDate().substring(5));
+                            weightList.add(dietVOS.get(i).getWeight());
+                        }
+                        ArrayList<ArrayList<Float>> weightLists = new ArrayList<>();
+                        weightLists.add(weightList);
+
+                        lineView.setDrawDotLine(false); //optional
+                        lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
+                        lineView.setBottomTextList(dateList);
+                        lineView.setColorArray(new int[]{0xFF6799FF});
+                        lineView.setFloatDataList(weightLists);
+                        lineView.setVisibility(View.VISIBLE);
+                    } else {
+                        lineView.setVisibility(View.GONE);
+                    }
+                }
             }
         });
 
@@ -171,6 +218,9 @@ public class MainMonthActivity extends Activity {
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String selectedDate = sdf.format(date.getDate());
+
                 if (theme == 0) {
 
                 } else if (theme == 1) {
@@ -185,12 +235,12 @@ public class MainMonthActivity extends Activity {
                 } else if (theme == 2) {
                     Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
 
-                    intent.putExtra("selectedDate", date);
+                    intent.putExtra("selectedDate", selectedDate);
                     startActivity(intent);
                 } else if (theme == 3) {
                     Intent intent = new Intent(MainMonthActivity.this, ShowDietActivity.class);
 
-                    intent.putExtra("selectedDate", date);
+                    intent.putExtra("selectedDate", selectedDate);
                     startActivity(intent);
                 }
             }
@@ -210,7 +260,10 @@ public class MainMonthActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
 
-                intent.putExtra("selectedDate", CalendarDay.from(new Date()));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String selectedDate = sdf.format(new Date());
+
+                intent.putExtra("selectedDate", selectedDate);
 
                 if(theme == 0) {
                     intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
@@ -306,4 +359,5 @@ public class MainMonthActivity extends Activity {
             startActivity(intent);
         }
     }
+
 }

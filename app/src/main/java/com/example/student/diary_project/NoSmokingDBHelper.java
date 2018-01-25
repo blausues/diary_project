@@ -185,7 +185,7 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         return db.update("NOSMOKING_TABLE", values, "WRITE_DATE = ?", new String[]{noSmokingVO.getWriteDate()});
     }
 
-    // giveUp이 0에서 1로 바뀌었을 때(포기했을 때)
+    // insert, update시 giveUp이 0에서 1로 바뀌었을 때(포기했을 때)
     // startDate가 같고 writeDate 후에 쓴 일기 중 가장 먼저 쓴 것으로 update
     public void updateNoSmokingStartDateGiveUp(String writeDate, String startDate) {
         String sql = "UPDATE NOSMOKING_TABLE SET START_DATE=" +

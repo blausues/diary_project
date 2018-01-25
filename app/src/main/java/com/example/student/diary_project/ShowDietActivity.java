@@ -19,14 +19,16 @@ import android.widget.Toast;
 import com.example.student.diary_project.vo.DietVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by student on 2018-01-18.
  */
 
 public class ShowDietActivity extends Activity {
-    private TextView tvDietWriteDate;
+    private TextView tvDietWriteDate, tvDietWeight, tvDietMemo;
     private EditText editDietWeight, editDietMemo;
     private TextView[] tvDietMenus = new TextView[3];
     private TextView[] tvDietKcals = new TextView[3];
@@ -48,7 +50,9 @@ public class ShowDietActivity extends Activity {
         setContentView(R.layout.activity_show_diet);
 
         tvDietWriteDate = findViewById(R.id.tv_diet_writedate);
+        tvDietWeight = findViewById(R.id.tv_diet_weight);
         editDietWeight = findViewById(R.id.edit_diet_weight);
+        tvDietMemo = findViewById(R.id.tv_diet_memo);
         editDietMemo = findViewById(R.id.edit_diet_memo);
         btnDietKcalTable = findViewById(R.id.btn_diet_kcal_table);
         btnDietSave = findViewById(R.id.btn_diet_save);
@@ -72,14 +76,24 @@ public class ShowDietActivity extends Activity {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 
         Intent intent = getIntent();
+        String writeDateStr = intent.getStringExtra("selectedDate");
 
-        CalendarDay selectedDate = intent.getParcelableExtra("selectedDate");
-        String writeDateStr = sdf.format(selectedDate.getDate());
+        Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
 
-        tvDietWriteDate.setText(sdf2.format(selectedDate.getDate()));
+        dietVO = dietDBHelper.selectDietDate(writeDateStr);
+        if(dietVO.getWriteDate() == null) {
+            mode = 0;
+            dietVO.setWriteDate(writeDateStr);
+        } else {
+            mode = 1;
+        }
+        tvDietWriteDate.setText(sdf2.format(writeDate));
 
-        dietVO = new DietVO();
-        dietVO.setWriteDate(writeDateStr);
+        if(mode == 0) {
+
+        } else if(mode == 1) {
+            
+        }
 
         btnDietKcalTable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +116,12 @@ public class ShowDietActivity extends Activity {
         btnDietSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mode == 0) {
+
+                    mode = 1;
+                } else if(mode == 1) {
+
+                }
                 dietVO.setWeight(Float.parseFloat(editDietWeight.getText().toString()));
                 dietVO.setMenu1(editDietMenus[0].getText().toString());
                 dietVO.setMenu2(editDietMenus[1].getText().toString());
@@ -120,6 +140,13 @@ public class ShowDietActivity extends Activity {
                 }
             }
         });
+    }
 
+    private class tvClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            // tv 클릭 시, edit 나타내기
+        }
     }
 }
