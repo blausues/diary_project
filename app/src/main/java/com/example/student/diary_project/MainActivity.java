@@ -62,8 +62,9 @@ public class MainActivity extends Activity {
     private List<DietVO> dietVOList;
     private AllDiaryAdapter adapter;
     private List<AllDiaryVO> tmpAllList;
-    private int theme = 4;
+    private int theme = 3;
     ///////////////////////////////////////////////////////////////////////////////////////////
+    private int t0, t1, t2, t3 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,139 +143,10 @@ public class MainActivity extends Activity {
                                 Date mDate = date.getDate();
                                 selectDate = currentDate.format(mDate);
 
-                                /////////////////////////////////////////////////////////////////////////////////////////////////
-                                //리스트 생성
-                                adapter = new AllDiaryAdapter();
-                                listview.setAdapter(adapter);
-
-                                //테마별 리스트
-                                switch (theme) {
-                                    case 0:
-                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
-                                            NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                            allDiaryVO.setTheme(normalVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(0);
-
-                                            adapter.addWrite(allDiaryVO);
-                                        }
-                                        break;
-                                    case 1:
-                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
-                                            DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                            allDiaryVO.setContent(drawingVO.getDrawContent());
-                                            allDiaryVO.setTheme(drawingVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(1);
-
-                                            adapter.addWrite(allDiaryVO);
-                                        }
-                                        break;
-                                    case 2:
-                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
-                                            NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                            allDiaryVO.setContent(noSmokingVO.getPromise());
-                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(2);
-
-                                            adapter.addWrite(allDiaryVO);
-                                        }
-                                        break;
-                                    case 3:
-                                        if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
-                                            DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                            allDiaryVO.setContent(dietVO.getMemo());
-                                            allDiaryVO.setTheme(dietVO.getTheme());
-
-                                            adapter.addRead(allDiaryVO);
-                                        } else {
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(selectDate);
-                                            allDiaryVO.setTheme(3);
-
-                                            adapter.addWrite(allDiaryVO);
-                                        }
-                                        break;
-                                    case 4:
-                                        //리스트
-                                        tmpAllList = new ArrayList<>();
-
-                                        for (int dayTheme = 0; dayTheme <= 3; dayTheme++) {
-                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                            allDiary.setWriteDate(selectDate);
-                                            allDiary.setTheme(dayTheme); // 일반일기 테마
-                                            tmpAllList.add(allDiary);
-                                        }
-
-                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
-                                            NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                            allDiaryVO.setTheme(normalVO.getTheme());
-                                            tmpAllList.set(0, allDiaryVO);
-                                        }
-
-                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
-                                            DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                            allDiaryVO.setContent(drawingVO.getDrawContent());
-                                            allDiaryVO.setTheme(drawingVO.getTheme());
-                                            tmpAllList.set(1, allDiaryVO);
-                                        }
-
-                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
-                                            NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                            allDiaryVO.setContent(noSmokingVO.getPromise());
-                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                            tmpAllList.set(2, allDiaryVO);
-                                        }
-
-                                        if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
-                                            DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
-                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                            allDiaryVO.setContent(dietVO.getMemo());
-                                            allDiaryVO.setTheme(dietVO.getTheme());
-                                            tmpAllList.set(3, allDiaryVO);
-                                        }
-
-                                        // 월 데이터 전체 어댑터에 전달하기.
-                                        adapter.dataClear();
-                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                            adapter.justAdd(allDiaryVO);
-                                        }
-                                        break;
-                                }
-                                /////////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////////
                                 viewDate.setText(selectDate);
 
+                                dayListCreate(); //테마별 일별 리스트
                                 dialogDay.cancel();
                             }
                         });
@@ -335,947 +207,7 @@ public class MainActivity extends Activity {
                                 selectDate = year + "-" + month;
                                 viewDate.setText(selectDate);
 
-                                /////////////////////////////////////////////////////////////////////////////////////////////
-                                //리스트 생성
-
-                                adapter = new AllDiaryAdapter();
-                                listview.setAdapter(adapter);
-
-                                //테마별 리스트 띄우기
-
-                                switch (theme) {
-                                    case 0:
-                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw", "실행");
-                                            normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
-
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(0); // 일반일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (NormalVO normalVO : normalVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                                allDiaryVO.setTheme(normalVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(0); // 일반일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (NormalVO normalVO : normalVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                                allDiaryVO.setTheme(normalVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(0); // 일반일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (NormalVO normalVO : normalVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                                    allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                                    allDiaryVO.setTheme(normalVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(0); // 일반일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (NormalVO normalVO : normalVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                                    allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                                    allDiaryVO.setTheme(normalVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                        break;
-                                                    }
-                                            }
-                                        } else {
-                                            Log.d("ggw", "안실행");
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(0); // 일반일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(0); // 일반일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(0); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(0); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                        break;
-                                    case 1:
-                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw", "실행");
-                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
-
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(1); // 그림일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (DrawingVO drawingVO : drawingVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                                allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                                allDiaryVO.setTheme(drawingVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(1); // 그림일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (DrawingVO drawingVO : drawingVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                                allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                                allDiaryVO.setTheme(drawingVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(1); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (DrawingVO drawingVO : drawingVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                                    allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                                    allDiaryVO.setTheme(drawingVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(1); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (DrawingVO drawingVO : drawingVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                                    allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                                    allDiaryVO.setTheme(drawingVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                        break;
-                                                    }
-                                            }
-                                        } else {
-                                            Log.d("ggw", "안실행");
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(1); // 그림일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(1); // 그림일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(1); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(1); // 그림일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                        break;
-                                    case 2:
-                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw", "실행");
-                                            noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
-
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(2); // 금연일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                                allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(2); // 금연일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                                allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(2); // 금연일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                                    allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                                    allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(2); // 금연일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                                    allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                                    allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                        break;
-                                                    }
-                                            }
-                                        } else {
-                                            Log.d("ggw", "안실행");
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(2); // 금연일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(2); // 금연일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(2); // 금연일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(2); // 금연일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                        break;
-                                    case 3:
-                                        if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
-                                            Log.d("ggw", "실행");
-                                            dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
-
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(3); // 다이어트일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (DietVO dietVO : dietVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                                allDiaryVO.setContent(dietVO.getMemo());
-                                                                allDiaryVO.setTheme(dietVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(3); // 다이어트일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-
-                                                    // 일기 있는거 대체하기
-                                                    for (DietVO dietVO : dietVOList) {
-                                                        for (int i = 0; i < tmpAllList.size(); i++) {
-                                                            if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                                allDiaryVO.setContent(dietVO.getMemo());
-                                                                allDiaryVO.setTheme(dietVO.getTheme());
-                                                                tmpAllList.set(i, allDiaryVO);
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(3); // 다이어트일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (DietVO dietVO : dietVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                                    allDiaryVO.setContent(dietVO.getMemo());
-                                                                    allDiaryVO.setTheme(dietVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(3); // 다이어트일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-
-                                                        // 일기 있는거 대체하기
-                                                        for (DietVO dietVO : dietVOList) {
-                                                            for (int i = 0; i < tmpAllList.size(); i++) {
-                                                                if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
-                                                                    AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                                    allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                                    allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                                    allDiaryVO.setContent(dietVO.getMemo());
-                                                                    allDiaryVO.setTheme(dietVO.getTheme());
-                                                                    tmpAllList.set(i, allDiaryVO);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                        break;
-                                                    }
-                                            }
-                                        } else {
-                                            Log.d("ggw", "안실행");
-                                            switch (month) {
-                                                case "01":
-                                                case "03":
-                                                case "05":
-                                                case "07":
-                                                case "08":
-                                                case "10":
-                                                case "12":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 31; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(3); // 다이어트일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "04":
-                                                case "06":
-                                                case "09":
-                                                case "11":
-                                                    tmpAllList = new ArrayList<>();
-                                                    // 빈 일기아이템 채우기
-                                                    for (int day = 1; day <= 30; day++) {
-                                                        AllDiaryVO allDiary = new AllDiaryVO();
-                                                        allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                        String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                        allDiary.setWriteDate(date);
-                                                        allDiary.setTheme(3); // 다이어트일기 테마
-                                                        tmpAllList.add(allDiary);
-                                                    }
-                                                    // 월 데이터 전체 어댑터에 전달하기.
-                                                    adapter.dataClear();
-                                                    for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                        adapter.justAdd(allDiaryVO);
-                                                    }
-                                                    break;
-                                                case "02":
-                                                    int iyear = Integer.parseInt(year);
-                                                    if (iyear % 4 == 0) {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 29; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(3); // 다이어트일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    } else {
-                                                        tmpAllList = new ArrayList<>();
-                                                        // 빈 일기아이템 채우기
-                                                        for (int day = 1; day <= 28; day++) {
-                                                            AllDiaryVO allDiary = new AllDiaryVO();
-                                                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
-                                                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
-                                                            allDiary.setWriteDate(date);
-                                                            allDiary.setTheme(3); // 다이어트일기 테마
-                                                            tmpAllList.add(allDiary);
-                                                        }
-                                                        // 월 데이터 전체 어댑터에 전달하기.
-                                                        adapter.dataClear();
-                                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                            adapter.justAdd(allDiaryVO);
-                                                        }
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                        break;
-                                    case 4:
-                                        normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
-                                        noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
-                                        drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
-                                        dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
-
-                                        break;
-                                }
+                                monthListCreate();
                                 /////////////////////////////////////////////////////////////////////////////////////
                                 dialogMonth.cancel();
                             }
@@ -1355,163 +287,7 @@ public class MainActivity extends Activity {
                                 selectDate = year;
                                 viewDate.setText(selectDate);
 
-                                adapter = new AllDiaryAdapter();
-                                listview.setAdapter(adapter);
-
-                                switch (theme) {
-                                    case 0:
-                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
-                                            normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
-
-                                            for (NormalVO normalVO : normalVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                allDiaryVO.setTheme(normalVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-
-                                            adapter.dataClear();
-                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                adapter.justAdd(allDiaryVO);
-                                            }
-                                        }
-                                        break;
-                                    case 1:
-                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
-                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
-
-                                            for (DrawingVO drawingVO : drawingVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                allDiaryVO.setTheme(drawingVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-
-                                            adapter.dataClear();
-                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                adapter.justAdd(allDiaryVO);
-                                            }
-                                        }
-                                        break;
-                                    case 2:
-                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
-                                            noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
-
-                                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-
-                                            adapter.dataClear();
-                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                adapter.justAdd(allDiaryVO);
-                                            }
-                                        }
-                                        break;
-                                    case 3:
-                                        if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
-                                            dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
-
-                                            tmpAllList = new ArrayList<>();
-
-                                            for (DietVO dietVO : dietVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                allDiaryVO.setContent(dietVO.getMemo());
-                                                allDiaryVO.setTheme(dietVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-
-                                            adapter.dataClear();
-                                            for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                                adapter.justAdd(allDiaryVO);
-                                            }
-                                        }
-                                        break;
-                                    case 4:
-                                        tmpAllList = new ArrayList<>();
-                                        if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
-                                            normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
-
-                                            for (NormalVO normalVO : normalVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
-                                                allDiaryVO.setContent(normalVO.getNormalWriteContent());
-                                                allDiaryVO.setTheme(normalVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-                                        }
-
-                                        if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
-                                            drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
-
-                                            for (DrawingVO drawingVO : drawingVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(drawingVO.getDrawDate());
-                                                allDiaryVO.setContent(drawingVO.getDrawContent());
-                                                allDiaryVO.setTheme(drawingVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-                                        }
-
-                                        if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
-                                            noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
-
-                                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
-                                                allDiaryVO.setContent(noSmokingVO.getPromise());
-                                                allDiaryVO.setTheme(noSmokingVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-                                        }
-
-                                        if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
-                                            dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
-
-                                            for (DietVO dietVO : dietVOList) {
-                                                AllDiaryVO allDiaryVO = new AllDiaryVO();
-                                                allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
-                                                allDiaryVO.setWriteDate(dietVO.getWriteDate());
-                                                allDiaryVO.setContent(dietVO.getMemo());
-                                                allDiaryVO.setTheme(dietVO.getTheme());
-
-                                                tmpAllList.add(allDiaryVO);
-                                            }
-                                        }
-
-                                        Collections.sort(tmpAllList, new NoAscCompare());
-                                        adapter.dataClear();
-                                        for (AllDiaryVO allDiaryVO : tmpAllList) {
-                                            adapter.justAdd(allDiaryVO);
-                                        }
-                                        break;
-                                }
+                                yearListCreate(); //테마별 년별 리스트
                                 dialogYear.cancel();
                             }
                         });
@@ -1585,6 +361,7 @@ public class MainActivity extends Activity {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, ShowNoSmokingActivity.class);
+                            intent.putExtra("selectedDate",todayDate);
                             startActivity(intent);
                         }
                         break;
@@ -1592,7 +369,8 @@ public class MainActivity extends Activity {
                         if (dietDBHelper.selectDietDiaryCount(todayDate) >= 1) {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(MainActivity.this, WriteDietActivity.class);
+                            Intent intent = new Intent(MainActivity.this, ShowDietActivity.class);
+                            intent.putExtra("selectedDate",todayDate);
                             startActivity(intent);
                         }
                         break;
@@ -1615,7 +393,1726 @@ public class MainActivity extends Activity {
         public int compare(AllDiaryVO a1, AllDiaryVO a2) {
             return a1.getWriteDate().compareTo(a2.getWriteDate());
         }
-
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //테마별 일별 리스트 생성
+    public void dayListCreate() {
+        //리스트 생성
+        adapter = new AllDiaryAdapter();
+        listview.setAdapter(adapter);
+
+        //테마별 리스트
+        switch (theme) {
+            case 0:
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
+                    NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                    allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                    allDiaryVO.setTheme(normalVO.getTheme());
+
+                    adapter.addRead(allDiaryVO);
+                } else {
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(selectDate);
+                    allDiaryVO.setTheme(0);
+
+                    adapter.addWrite(allDiaryVO);
+                }
+                break;
+            case 1:
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
+                    DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                    allDiaryVO.setContent(drawingVO.getDrawContent());
+                    allDiaryVO.setTheme(drawingVO.getTheme());
+
+                    adapter.addRead(allDiaryVO);
+                } else {
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(selectDate);
+                    allDiaryVO.setTheme(1);
+
+                    adapter.addWrite(allDiaryVO);
+                }
+                break;
+            case 2:
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
+                    NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                    allDiaryVO.setContent(noSmokingVO.getPromise());
+                    allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                    adapter.addRead(allDiaryVO);
+                } else {
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(selectDate);
+                    allDiaryVO.setTheme(2);
+
+                    adapter.addWrite(allDiaryVO);
+                }
+                break;
+            case 3:
+                if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
+                    DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                    allDiaryVO.setContent(dietVO.getMemo());
+                    allDiaryVO.setTheme(dietVO.getTheme());
+
+                    adapter.addRead(allDiaryVO);
+                } else {
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(selectDate);
+                    allDiaryVO.setTheme(3);
+
+                    adapter.addWrite(allDiaryVO);
+                }
+                break;
+            case 4:
+                //리스트
+                tmpAllList = new ArrayList<>();
+
+                for (int dayTheme = 0; dayTheme <= 3; dayTheme++) {
+                    AllDiaryVO allDiary = new AllDiaryVO();
+                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                    allDiary.setWriteDate(selectDate);
+                    allDiary.setTheme(dayTheme); // 일반일기 테마
+                    tmpAllList.add(allDiary);
+                }
+
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) == 1) {
+                    NormalVO normalVO = normalDBHelper.selectNormalDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                    allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                    allDiaryVO.setTheme(normalVO.getTheme());
+                    tmpAllList.set(0, allDiaryVO);
+                }
+
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) == 1) {
+                    DrawingVO drawingVO = drawDBHelper.selectDrawDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                    allDiaryVO.setContent(drawingVO.getDrawContent());
+                    allDiaryVO.setTheme(drawingVO.getTheme());
+                    tmpAllList.set(1, allDiaryVO);
+                }
+
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) == 1) {
+                    NoSmokingVO noSmokingVO = noSmokingDBHelper.selectNoSmokingDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                    allDiaryVO.setContent(noSmokingVO.getPromise());
+                    allDiaryVO.setTheme(noSmokingVO.getTheme());
+                    tmpAllList.set(2, allDiaryVO);
+                }
+
+                if (dietDBHelper.selectDietDiaryCount(selectDate) == 1) {
+                    DietVO dietVO = dietDBHelper.selectDietDiary(selectDate);
+                    AllDiaryVO allDiaryVO = new AllDiaryVO();
+                    allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                    allDiaryVO.setContent(dietVO.getMemo());
+                    allDiaryVO.setTheme(dietVO.getTheme());
+                    tmpAllList.set(3, allDiaryVO);
+                }
+
+                // 월 데이터 전체 어댑터에 전달하기.
+                adapter.dataClear();
+                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                    adapter.justAdd(allDiaryVO);
+                }
+                break;
+        }
+        /////////////////////////////////////////////////////////////////////////////////
+    }
+
+    //테마별 월별 리스트 생성
+    public void monthListCreate() {
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        //리스트 생성
+
+        adapter = new AllDiaryAdapter();
+        listview.setAdapter(adapter);
+
+        //테마별 리스트 띄우기
+
+        switch (theme) {
+            case 0:
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                    Log.d("ggw", "실행");
+                    normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (NormalVO normalVO : normalVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                        allDiaryVO.setTheme(normalVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (NormalVO normalVO : normalVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                        allDiaryVO.setTheme(normalVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(0); // 일반일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (NormalVO normalVO : normalVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                            allDiaryVO.setTheme(normalVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(0); // 일반일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (NormalVO normalVO : normalVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                            allDiaryVO.setTheme(normalVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                                break;
+                            }
+                    }
+                } else {
+                    Log.d("ggw", "안실행");
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(0); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(0); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 1:
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                    Log.d("ggw", "실행");
+                    drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (DrawingVO drawingVO : drawingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                                        allDiaryVO.setTheme(drawingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (DrawingVO drawingVO : drawingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                                        allDiaryVO.setTheme(drawingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(1); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (DrawingVO drawingVO : drawingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(1); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (DrawingVO drawingVO : drawingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                                break;
+                            }
+                    }
+                } else {
+                    Log.d("ggw", "안실행");
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(1); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(1); // 그림일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 2:
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                    Log.d("ggw", "실행");
+                    noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(2); // 금연일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                            allDiaryVO.setContent(noSmokingVO.getPromise());
+                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(2); // 금연일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                            allDiaryVO.setContent(noSmokingVO.getPromise());
+                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                                break;
+                            }
+                    }
+                } else {
+                    Log.d("ggw", "안실행");
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(2); // 금연일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(2); // 금연일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 3:
+                if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                    Log.d("ggw", "실행");
+                    dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (DietVO dietVO : dietVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                        allDiaryVO.setContent(dietVO.getMemo());
+                                        allDiaryVO.setTheme(dietVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            // 일기 있는거 대체하기
+                            for (DietVO dietVO : dietVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                        allDiaryVO.setContent(dietVO.getMemo());
+                                        allDiaryVO.setTheme(dietVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(3); // 다이어트일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (DietVO dietVO : dietVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                            allDiaryVO.setContent(dietVO.getMemo());
+                                            allDiaryVO.setTheme(dietVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(3); // 다이어트일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+
+                                // 일기 있는거 대체하기
+                                for (DietVO dietVO : dietVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                            allDiaryVO.setContent(dietVO.getMemo());
+                                            allDiaryVO.setTheme(dietVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                                break;
+                            }
+                    }
+                } else {
+                    Log.d("ggw", "안실행");
+                    switch (month) {
+                        case "01":
+                        case "03":
+                        case "05":
+                        case "07":
+                        case "08":
+                        case "10":
+                        case "12":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 31; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "04":
+                        case "06":
+                        case "09":
+                        case "11":
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 30; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+                            // 월 데이터 전체 어댑터에 전달하기.
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        case "02":
+                            int iyear = Integer.parseInt(year);
+                            if (iyear % 4 == 0) {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 29; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(3); // 다이어트일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            } else {
+                                tmpAllList = new ArrayList<>();
+                                // 빈 일기아이템 채우기
+                                for (int day = 1; day <= 28; day++) {
+                                    AllDiaryVO allDiary = new AllDiaryVO();
+                                    allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                    String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                    allDiary.setWriteDate(date);
+                                    allDiary.setTheme(3); // 다이어트일기 테마
+                                    tmpAllList.add(allDiary);
+                                }
+                                // 월 데이터 전체 어댑터에 전달하기.
+                                adapter.dataClear();
+                                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                    adapter.justAdd(allDiaryVO);
+                                }
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 4:
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                    t0 = 1;
+                    normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+                } else {
+                    t0 = 0;
+                }
+
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                    t1 = 1;
+                    drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+                } else {
+                    t1 = 0;
+                }
+
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                    t2 = 1;
+                    noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+                } else {
+                    t2 = 0;
+                }
+
+                if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                    t3 = 1;
+                    dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+                } else {
+                    t3 = 0;
+                }
+
+                switch (month) {
+                    case "01":
+                    case "03":
+                    case "05":
+                    case "07":
+                    case "08":
+                    case "10":
+                    case "12":
+                        tmpAllList = new ArrayList<>();
+
+                        ///////////////////////////////////////////////////
+                        for (int day = 1; day <= 31; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(0); // 일반일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+
+                        if (t0 == 1) {
+                            for (NormalVO normalVO : normalVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                        allDiaryVO.setTheme(normalVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int day = 1; day <= 31; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(1); // 그림일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t1 == 1) {
+                            for (DrawingVO drawingVO : drawingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                                        allDiaryVO.setTheme(drawingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        for (int day = 1; day <= 31; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(2); // 금연일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t2 == 1) {
+                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int day = 1; day <= 31; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(3); // 다이어트일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t3 == 1) {
+                            for (DietVO dietVO : dietVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                        allDiaryVO.setContent(dietVO.getMemo());
+                                        allDiaryVO.setTheme(dietVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        Collections.sort(tmpAllList, new NoAscCompare());
+
+                        // 월 데이터 전체 어댑터에 전달하기.
+                        adapter.dataClear();
+                        for (AllDiaryVO allDiaryVO : tmpAllList) {
+                            adapter.justAdd(allDiaryVO);
+                        }
+                        break;
+                    case "04":
+                    case "06":
+                    case "09":
+                    case "11":
+                        tmpAllList = new ArrayList<>();
+                        // 빈 일기아이템 채우기
+                        for (int day = 1; day <= 30; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(0); // 일반일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t0 == 1) {
+                            for (NormalVO normalVO : normalVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                        allDiaryVO.setTheme(normalVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int day = 1; day <= 30; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(1); // 그림일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t1 == 1) {
+                            for (DrawingVO drawingVO : drawingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                                        allDiaryVO.setTheme(drawingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        for (int day = 1; day <= 30; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(2); // 금연일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t2 == 1) {
+                            for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int day = 1; day <= 30; day++) {
+                            AllDiaryVO allDiary = new AllDiaryVO();
+                            allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                            String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                            allDiary.setWriteDate(date);
+                            allDiary.setTheme(3); // 다이어트일기 테마
+                            tmpAllList.add(allDiary);
+                        }
+
+                        if (t3 == 1) {
+                            for (DietVO dietVO : dietVOList) {
+                                for (int i = 0; i < tmpAllList.size(); i++) {
+                                    if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                        allDiaryVO.setContent(dietVO.getMemo());
+                                        allDiaryVO.setTheme(dietVO.getTheme());
+                                        tmpAllList.set(i, allDiaryVO);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        Collections.sort(tmpAllList, new NoAscCompare());
+                        adapter.dataClear();
+                        for (AllDiaryVO allDiaryVO : tmpAllList) {
+                            adapter.justAdd(allDiaryVO);
+                        }
+                        break;
+                    case "02":
+                        int iyear = Integer.parseInt(year);
+                        if (iyear % 4 == 0) {
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 29; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t0 == 1) {
+                                for (NormalVO normalVO : normalVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                            allDiaryVO.setTheme(normalVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 29; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t1 == 1) {
+                                for (DrawingVO drawingVO : drawingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 29; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t2 == 1) {
+                                for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                            allDiaryVO.setContent(noSmokingVO.getPromise());
+                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 29; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t3 == 1) {
+                                for (DietVO dietVO : dietVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                            allDiaryVO.setContent(dietVO.getMemo());
+                                            allDiaryVO.setTheme(dietVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            Collections.sort(tmpAllList, new NoAscCompare());
+
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                        } else {
+                            tmpAllList = new ArrayList<>();
+                            // 빈 일기아이템 채우기
+                            for (int day = 1; day <= 28; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(0); // 일반일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t0 == 1) {
+                                for (NormalVO normalVO : normalVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (normalVO.getNormalWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                                            allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                                            allDiaryVO.setTheme(normalVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 28; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(1); // 그림일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t1 == 1) {
+                                for (DrawingVO drawingVO : drawingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (drawingVO.getDrawDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                                            allDiaryVO.setContent(drawingVO.getDrawContent());
+                                            allDiaryVO.setTheme(drawingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 28; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(2); // 금연일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t2 == 1) {
+                                for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (noSmokingVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                                            allDiaryVO.setContent(noSmokingVO.getPromise());
+                                            allDiaryVO.setTheme(noSmokingVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (int day = 1; day <= 28; day++) {
+                                AllDiaryVO allDiary = new AllDiaryVO();
+                                allDiary.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_WRITE);
+                                String date = selectDate + "-" + (day / 10) + "" + (day % 10);
+                                allDiary.setWriteDate(date);
+                                allDiary.setTheme(3); // 다이어트일기 테마
+                                tmpAllList.add(allDiary);
+                            }
+
+                            if (t3 == 1) {
+                                for (DietVO dietVO : dietVOList) {
+                                    for (int i = 0; i < tmpAllList.size(); i++) {
+                                        if (dietVO.getWriteDate().equals(tmpAllList.get(i).getWriteDate())) {
+                                            AllDiaryVO allDiaryVO = new AllDiaryVO();
+                                            allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                                            allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                                            allDiaryVO.setContent(dietVO.getMemo());
+                                            allDiaryVO.setTheme(dietVO.getTheme());
+                                            tmpAllList.set(i, allDiaryVO);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            Collections.sort(tmpAllList, new NoAscCompare());
+
+                            adapter.dataClear();
+                            for (AllDiaryVO allDiaryVO : tmpAllList) {
+                                adapter.justAdd(allDiaryVO);
+                            }
+                            break;
+                        }
+                }
+        }
+    }
+
+
+    //테마별 년별 리스트 생성
+    public void yearListCreate() {
+        adapter = new AllDiaryAdapter();
+        listview.setAdapter(adapter);
+
+        switch (theme) {
+            case 0:
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                    normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+
+                    tmpAllList = new ArrayList<>();
+
+                    for (NormalVO normalVO : normalVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                        allDiaryVO.setTheme(normalVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+
+                    adapter.dataClear();
+                    for (AllDiaryVO allDiaryVO : tmpAllList) {
+                        adapter.justAdd(allDiaryVO);
+                    }
+                }
+                break;
+            case 1:
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                    drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                    tmpAllList = new ArrayList<>();
+
+                    for (DrawingVO drawingVO : drawingVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                        allDiaryVO.setTheme(drawingVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+
+                    adapter.dataClear();
+                    for (AllDiaryVO allDiaryVO : tmpAllList) {
+                        adapter.justAdd(allDiaryVO);
+                    }
+                }
+                break;
+            case 2:
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                    noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+
+                    tmpAllList = new ArrayList<>();
+
+                    for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+
+                    adapter.dataClear();
+                    for (AllDiaryVO allDiaryVO : tmpAllList) {
+                        adapter.justAdd(allDiaryVO);
+                    }
+                }
+                break;
+            case 3:
+                if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                    dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
+                    tmpAllList = new ArrayList<>();
+
+                    for (DietVO dietVO : dietVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                        allDiaryVO.setContent(dietVO.getMemo());
+                        allDiaryVO.setTheme(dietVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+
+                    adapter.dataClear();
+                    for (AllDiaryVO allDiaryVO : tmpAllList) {
+                        adapter.justAdd(allDiaryVO);
+                    }
+                }
+                break;
+            case 4:
+                tmpAllList = new ArrayList<>();
+                if (normalDBHelper.selectNormalDiaryCount(selectDate) > 0) {
+                    normalVOList = normalDBHelper.selectNormalDiaryList(selectDate);
+
+                    for (NormalVO normalVO : normalVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
+                        allDiaryVO.setContent(normalVO.getNormalWriteContent());
+                        allDiaryVO.setTheme(normalVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+                }
+
+                if (drawDBHelper.selectDrawDiaryCount(selectDate) > 0) {
+                    drawingVOList = drawDBHelper.selectDrawDiaryList(selectDate);
+
+                    for (DrawingVO drawingVO : drawingVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(drawingVO.getDrawDate());
+                        allDiaryVO.setContent(drawingVO.getDrawContent());
+                        allDiaryVO.setTheme(drawingVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+                }
+
+                if (noSmokingDBHelper.selectNoSmokingDiaryCount(selectDate) > 0) {
+                    noSmokingVOList = noSmokingDBHelper.selectNoSmokingDiaryList(selectDate);
+
+                    for (NoSmokingVO noSmokingVO : noSmokingVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
+                        allDiaryVO.setContent(noSmokingVO.getPromise());
+                        allDiaryVO.setTheme(noSmokingVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+                }
+
+                if (dietDBHelper.selectDietDiaryCount(selectDate) > 0) {
+                    dietVOList = dietDBHelper.selectDietDiaryList(selectDate);
+
+                    for (DietVO dietVO : dietVOList) {
+                        AllDiaryVO allDiaryVO = new AllDiaryVO();
+                        allDiaryVO.setType(AllDiaryAdapter.ITEM_VIEW_TYPE_READ);
+                        allDiaryVO.setWriteDate(dietVO.getWriteDate());
+                        allDiaryVO.setContent(dietVO.getMemo());
+                        allDiaryVO.setTheme(dietVO.getTheme());
+
+                        tmpAllList.add(allDiaryVO);
+                    }
+                }
+
+                Collections.sort(tmpAllList, new NoAscCompare());
+                adapter.dataClear();
+                for (AllDiaryVO allDiaryVO : tmpAllList) {
+                    adapter.justAdd(allDiaryVO);
+                }
+                break;
+        }
+    }
 }

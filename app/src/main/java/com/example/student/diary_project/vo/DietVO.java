@@ -114,6 +114,50 @@ public class DietVO {
     public void setTheme(int theme) {
         this.theme = theme;
     }
+
+    public String getMenu(int i) {
+        if(i == 0) {
+            return menu1;
+        } else if(i == 1) {
+            return menu2;
+        } else if(i == 2) {
+            return menu3;
+        } else {
+            return null;
+        }
+    }
+
+    public float getKcal(int i) {
+        if(i == 0) {
+            return kcal1;
+        } else if(i == 1) {
+            return kcal2;
+        } else if(i == 2) {
+            return kcal3;
+        } else {
+            return 0;
+        }
+    }
+
+    public void setMenu(int i, String menu) {
+        if(i == 0) {
+            this.menu1 = menu;
+        } else if(i == 1) {
+            this.menu2 = menu;
+        } else if(i == 2) {
+            this.menu3 = menu;
+        }
+    }
+
+    public void setKcal(int i, float kcal) {
+        if(i == 0) {
+            this.kcal1 = kcal;
+        } else if(i == 1) {
+            this.kcal2 = kcal;
+        } else if(i == 2) {
+            this.kcal3 = kcal;
+        }
+    }
     ///////////////////////////////////////////////
     @Override
     public String toString() {
