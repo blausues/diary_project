@@ -152,6 +152,11 @@ public class ShowNoSmokingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(ShowNoSmokingActivity.INPUT_METHOD_SERVICE);
+
+                noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
+
+                int result = 0;
+
                 if(mode == 0) {
                     // DB에 insert 작업
                     if(checkNoSmokingGiveup.isChecked() == false) {
@@ -161,26 +166,9 @@ public class ShowNoSmokingActivity extends Activity {
                         noSmokingVO.setGiveUp(1);
                         noSmokingHelper.updateNoSmokingStartDateNoGiveUp(noSmokingVO.getWriteDate(), noSmokingVO.getStartDate());
                     }
-                    noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
+                    result = noSmokingHelper.insertNoSmoking(noSmokingVO);
 
-                    int result = noSmokingHelper.insertNoSmoking(noSmokingVO);
-
-                    if(result > 0) {
-                        // insert 성공
-                        tvNoSmokingPromise.setText(editNoSmokingPromise.getText());
-
-                        tvNoSmokingPromise.setVisibility(View.VISIBLE);
-                        editNoSmokingPromise.setVisibility(View.GONE);
-                        btnNoSmokingSave.setVisibility(View.GONE);
-                        btnNoSmokingNow.setVisibility(View.GONE);
-
-                        imm.hideSoftInputFromWindow(editNoSmokingPromise.getWindowToken(), 0);
-
-                        mode = 1;
-                    } else {
-                        // insert 실패
-                        Toast.makeText(ShowNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    }
+                    mode = 1;
                 } else if(mode == 1) {
                     // DB에 update 작업
                     if(noSmokingVO.getGiveUp()==0 && checkNoSmokingGiveup.isChecked()==true) {
@@ -196,23 +184,22 @@ public class ShowNoSmokingActivity extends Activity {
                     } else {
                         noSmokingVO.setGiveUp(1);
                     }
-                    noSmokingVO.setPromise(editNoSmokingPromise.getText().toString());
 
-                    int result = noSmokingHelper.updateNoSmoking(noSmokingVO);
-                    if(result == 0) {
-                        // 수정 실패
-                        Toast.makeText(ShowNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // 수정 성공
-                        tvNoSmokingPromise.setText(editNoSmokingPromise.getText().toString());
+                    result = noSmokingHelper.updateNoSmoking(noSmokingVO);
+                }
+                if(result > 0) {
+                    // insert 성공
+                    tvNoSmokingPromise.setText(editNoSmokingPromise.getText());
 
-                        tvNoSmokingPromise.setVisibility(View.VISIBLE);
-                        editNoSmokingPromise.setVisibility(View.GONE);
-                        btnNoSmokingSave.setVisibility(View.GONE);
-                        btnNoSmokingNow.setVisibility(View.GONE);
+                    tvNoSmokingPromise.setVisibility(View.VISIBLE);
+                    editNoSmokingPromise.setVisibility(View.GONE);
+                    btnNoSmokingSave.setVisibility(View.GONE);
+                    btnNoSmokingNow.setVisibility(View.GONE);
 
-                        imm.hideSoftInputFromWindow(editNoSmokingPromise.getWindowToken(), 0);
-                    }
+                    imm.hideSoftInputFromWindow(editNoSmokingPromise.getWindowToken(), 0);
+                } else {
+                    // insert 실패
+                    Toast.makeText(ShowNoSmokingActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

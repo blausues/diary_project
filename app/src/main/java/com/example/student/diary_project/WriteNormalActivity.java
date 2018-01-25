@@ -92,6 +92,10 @@ public class WriteNormalActivity extends Activity {
         showHideLayout = findViewById(R.id.write_normal_bottom_panel);
 
         String pkg = getPackageName();
+
+        Intent intent = getIntent();
+        tv_date.setText(intent.getStringExtra("selectedDate"));
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
@@ -215,8 +219,8 @@ public class WriteNormalActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mode = normalWriteHelper.selectWriteDate(tv_date.getText().toString());
-                Log.d("asd", String.valueOf(mode));
-                if (mode != 0) {
+                Log.d("asd", String.valueOf(tv_date.getText().toString()+"//"+mode));
+                if (mode != 1) {
                     writeNormalVO = new NormalVO();
                     writeNormalVO.setNormalWriteDate(tv_date.getText().toString());
                     writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
