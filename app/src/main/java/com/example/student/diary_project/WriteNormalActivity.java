@@ -92,6 +92,10 @@ public class WriteNormalActivity extends Activity {
         showHideLayout = findViewById(R.id.write_normal_bottom_panel);
 
         String pkg = getPackageName();
+
+        Intent intent = getIntent();
+        tv_date.setText(intent.getStringExtra("selectedDate"));
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
@@ -215,31 +219,32 @@ public class WriteNormalActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mode = normalWriteHelper.selectWriteDate(tv_date.getText().toString());
-                if (mode != 0) {
+                Log.d("asd", String.valueOf(tv_date.getText().toString()+"//"+mode));
+                if (mode != 1) {
                     writeNormalVO = new NormalVO();
-                    writeNormalVO.setNormalWriteDate(getTime().toString());
+                    writeNormalVO.setNormalWriteDate(tv_date.getText().toString());
                     writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
                     writeNormalVO.setNormalWriteImagePath(selectedPhotos);
                     Log.d("asd", String.valueOf(selectedPhotos));
                     int result = normalWriteHelper.insertNormal(writeNormalVO);
                     if (result > 0) {
-                        Toast.makeText(WriteNormalActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteNormalActivity.this, "쓰기성공", Toast.LENGTH_SHORT).show();
                     } else {
                         // insert 실패
-                        Toast.makeText(WriteNormalActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteNormalActivity.this, "읽기에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     writeNormalVO = new NormalVO();
-                    writeNormalVO.setNormalWriteDate(getTime().toString());
+                    writeNormalVO.setNormalWriteDate(tv_date.getText().toString());
                     writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
                     writeNormalVO.setNormalWriteImagePath(selectedPhotos);
                     Log.d("asd", String.valueOf(selectedPhotos));
                     int result = normalWriteHelper.update(writeNormalVO);
                     if (result > 0) {
-                        Toast.makeText(WriteNormalActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteNormalActivity.this, "수정성공", Toast.LENGTH_SHORT).show();
                     } else {
                         // insert 실패
-                        Toast.makeText(WriteNormalActivity.this, "에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteNormalActivity.this, "수정에러가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

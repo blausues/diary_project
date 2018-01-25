@@ -81,13 +81,11 @@ public class MainMonthActivity extends Activity {
 
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
-            Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
-
-
-        } else if(theme == 1) {
             writeNormalDBHelper = new WriteNormalDBHelper(this);
-            Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
             tempDates = writeNormalDBHelper.selectNormalAllDate();
+            Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
+        } else if(theme == 1) {
+            Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
         } else if(theme == 2) {
             noSmokingDBHelper = new NoSmokingDBHelper(this);
 
@@ -222,6 +220,9 @@ public class MainMonthActivity extends Activity {
                 String selectedDate = sdf.format(date.getDate());
 
                 if (theme == 0) {
+                    Intent intent = new Intent(MainMonthActivity.this,WriteNormalActivity.class);
+                    intent.putExtra("selectedDate", selectedDate);
+                    startActivity(intent);
 
                 } else if (theme == 1) {
                     // 준완이는 show랑 write 나눈다고 해서 이렇게 해놓음
@@ -272,7 +273,7 @@ public class MainMonthActivity extends Activity {
                 } else if(theme == 2) {
                     intent.setClass(MainMonthActivity.this, ShowNoSmokingActivity.class);
                 } else if(theme == 3) {
-                    intent.setClass(MainMonthActivity.this, WriteDietActivity.class);
+                    intent.setClass(MainMonthActivity.this, ShowDietActivity.class);
                 }
                 startActivity(intent);
             }

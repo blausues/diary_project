@@ -124,7 +124,7 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
     public int selectWriteDate(String writeDate) {
-        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE WHERE " + writeDate + "";
+        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
         int mode = 0;
         String result = null;
         Cursor cursor = db.rawQuery(sql, null);
@@ -138,15 +138,6 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         }
         return mode;
     }
-    public int update(NormalVO normalVO){
-        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE='"+normalVO.getNormalWriteDate()+"'";
-        db.execSQL(sql);
-        db.close();
-
-        return 1;
-    }
-
-
     public int insertNormal(NormalVO normalVO) {
         ContentValues values = new ContentValues();
 
@@ -155,5 +146,15 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         values.put("IMAGE_PATH", String.valueOf(normalVO.getNormalWriteImagePath()));
 
         return (int) db.insert("NORMAL_TABLE", null, values);
+    }
+
+    public ArrayList<NormalVO> selectAll(String writeDate){
+        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
+    }
+
+    public int update(NormalVO normalVO){
+        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";
+        db.execSQL(sql);
+        return 1;
     }
 }
