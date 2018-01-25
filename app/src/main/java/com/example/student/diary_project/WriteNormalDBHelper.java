@@ -132,17 +132,15 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
             result = cursor.getString(0);
         }
         if (result != null) {
-            mode = 1;
-        } else {
             mode = 0;
+        } else {
+            mode = 1;
         }
         return mode;
     }
     public int update(NormalVO normalVO){
-        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE='"+normalVO.getNormalWriteDate()+"'";
+        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";
         db.execSQL(sql);
-        db.close();
-
         return 1;
     }
 
