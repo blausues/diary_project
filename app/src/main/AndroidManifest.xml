@@ -10,23 +10,21 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainMonthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-
-=======
->>>>>>> 95033f4510005dfe5ff995bc766b8c3b2fd46415
-        <activity android:name=".MainMonthActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
@@ -38,7 +36,8 @@
         <activity
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ShowDietActivity"/>
+        <activity android:name=".ShowDietActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DrawDiaryActivity" />
         <activity android:name=".WriteDrawDiaryActivity" />
     </application>

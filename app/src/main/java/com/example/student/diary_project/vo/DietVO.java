@@ -1,5 +1,7 @@
 package com.example.student.diary_project.vo;
 
+import java.util.ArrayList;
+
 /**
  * Created by student on 2018-01-23.
  */
@@ -7,7 +9,7 @@ package com.example.student.diary_project.vo;
 public class DietVO {
     private String writeDate;
     private float weight;
-    private String photo;
+    private ArrayList<String> photo;
     private String menu1;
     private float kcal1;
     private String menu2;
@@ -42,11 +44,11 @@ public class DietVO {
         this.weight = weight;
     }
 
-    public String getPhoto() {
+    public ArrayList<String> getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(ArrayList<String> photo) {
         this.photo = photo;
     }
 
