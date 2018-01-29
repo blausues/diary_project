@@ -149,10 +149,17 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //    public ArrayList<NormalVO> selectAll(String writeDate){
 //        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
 //    }
 =======
+=======
+    public NormalVO selectAll(String writeDate){
+        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
+
+    }
+>>>>>>> 95033f4510005dfe5ff995bc766b8c3b2fd46415
     public NormalVO selectAll(String writeDate){
         String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
         NormalVO normalVO = new NormalVO();
