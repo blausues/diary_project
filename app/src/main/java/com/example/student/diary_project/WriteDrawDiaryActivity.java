@@ -49,9 +49,10 @@ public class WriteDrawDiaryActivity extends Activity {
     private EditText drawEdit;
     private GridView drawGridView;
 
-    private String filename, writeDate;
+    private String filename, writeDate,viewDate;
     private SimpleDateFormat currentDate;
     private int checkColorMenu = 0;
+    private int dayMonthYearCheck,theme;
 
     private DrawView drawView;
 
@@ -87,6 +88,9 @@ public class WriteDrawDiaryActivity extends Activity {
         //인텐트 값 가져오기
         Intent intent = getIntent();
         writeDate = intent.getStringExtra("selectedDate");
+        viewDate = intent.getStringExtra("viewDate");
+        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
+        theme = intent.getIntExtra("theme",0);
 
         //작성할 일정 표시
         tvDate.setText(writeDate);
@@ -193,6 +197,9 @@ public class WriteDrawDiaryActivity extends Activity {
                 //저장뒤 바로 읽기화면
                 Intent intent = new Intent(WriteDrawDiaryActivity.this,DrawDiaryActivity.class);
                 intent.putExtra("selectedDate",writeDate);
+                intent.putExtra("viewDate",viewDate);
+                intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                intent.putExtra("theme",theme);
                 startActivity(intent);
                 finish();
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,5 +251,19 @@ public class WriteDrawDiaryActivity extends Activity {
     public void keyboardDown() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), 0);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //뒤로 가기
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(WriteDrawDiaryActivity.this,MainActivity.class);
+        intent.putExtra("selectedDate",writeDate);
+        intent.putExtra("viewDate",viewDate);
+        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+        intent.putExtra("theme",theme);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainMonthActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,8 +27,12 @@
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 >>>>>>> 5e59dcecbabaf1c4ada8ceec4561377f1bf63e96
         <activity android:name=".MainActivity" />
+=======
+        <activity android:name=".MainMonthActivity" />
+>>>>>>> b7904e558aab95393104525306e09f204ab4a4bc
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
