@@ -22,12 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-<<<<<<< HEAD
         <activity android:name=".MainMonthActivity" />
-=======
-        <activity android:name=".MainActivity" />
->>>>>>> 85179fc7c56819a76475530265aab23684ea437d
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
@@ -39,13 +34,8 @@
         <activity
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
-<<<<<<< HEAD
         <activity android:name=".ShowDietActivity"/>
-        <activity android:name=".WriteDietActivity" />
-=======
->>>>>>> 85179fc7c56819a76475530265aab23684ea437d
         <activity android:name=".DrawDiaryActivity" />
         <activity android:name=".WriteDrawDiaryActivity" />
-        <activity android:name=".ShowDietActivity"/>
     </application>
 </manifest>
