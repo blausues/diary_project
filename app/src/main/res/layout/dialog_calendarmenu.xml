@@ -31,7 +31,7 @@
         app:layout_constraintLeft_toRightOf="@+id/btn_calendar_month"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="3dp"
-        android:text="년 별"
+        android:text="년별(읽기)"
         android:background="@drawable/selector_mainbtn"/>
 
 

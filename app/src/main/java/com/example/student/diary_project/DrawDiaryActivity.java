@@ -2,6 +2,7 @@ package com.example.student.diary_project;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -87,18 +88,18 @@ public class DrawDiaryActivity extends Activity {
         drawDBHelper = new DrawDBHelper(this);
         drawingVO = new DrawingVO();
 
+        //인텐트 값 가져오기
+        Intent intent = getIntent();
+        selectDate = intent.getStringExtra("selectedDate");
+
         //db불러오기
-        drawingVO = drawDBHelper.selectDrawDiary("2018-01-24");
+        drawingVO = drawDBHelper.selectDrawDiary(selectDate);
         filename = drawingVO.getDrawFileName();
         tvDate.setText(drawingVO.getDrawDate());
         tvContent.setText(drawingVO.getDrawContent());
         drawEdit.setText(tvContent.getText());
 
         //////////////////////////////////////////////////////////////////////////////////
-
-        //선택한 일기 일정 표시
-
-        ///////////////////////////////////////////////////////////////////////////
 
         //저장한 그림 가져오기
         screenShotOutput(outputBitmap);
@@ -226,12 +227,19 @@ public class DrawDiaryActivity extends Activity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                keyboardDown();
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
-                drawingVO.setDrawDate("2018-01-24");
+                drawingVO.setDrawDate(selectDate);
                 drawingVO.setDrawContent(drawEdit.getText()+"");
                 drawDBHelper.updateDrawDiary(drawingVO);
-                keyboardDown();
+
+                //저장뒤 바로 읽기화면
+                Intent intent = new Intent(DrawDiaryActivity.this,DrawDiaryActivity.class);
+                intent.putExtra("selectedDate",selectDate);
+                startActivity(intent);
+                finish();
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         });
     }
@@ -263,7 +271,7 @@ public class DrawDiaryActivity extends Activity {
         //String filename = new Random().nextInt(1000) + "screenshot.jpg";
         File root = Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
-        Toast.makeText(DrawDiaryActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(DrawDiaryActivity.this, "수정되었습니다.", Toast.LENGTH_SHORT).show();
 
         FileOutputStream os = null;
         try {
@@ -299,8 +307,8 @@ public class DrawDiaryActivity extends Activity {
     }
 
     //키보드 내리기
-    public void keyboardDown(){
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    public void keyboardDown() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), 0);
     }
 }
