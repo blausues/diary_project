@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -63,6 +64,7 @@ public class MainActivity extends Activity {
     private AllDiaryAdapter adapter;
     private List<AllDiaryVO> tmpAllList;
     private int theme = 0;
+    private int dayMonthYearCheck = 1; // 0:day 1:month 2:year
     ///////////////////////////////////////////////////////////////////////////////////////////
     private int t0, t1, t2, t3 = 0;
 
@@ -253,7 +255,6 @@ public class MainActivity extends Activity {
                 /////////////////////////////////////////////////////////////////////
                 //년별
                 btnCalendarYear.setOnClickListener(new View.OnClickListener()
-
                 {
                     @Override
                     public void onClick(View v) {
@@ -324,6 +325,39 @@ public class MainActivity extends Activity {
             }
         });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (tmpAllList.get(position).getTheme()) {
+                    case 0:
+                        Intent normalIntent = new Intent(MainActivity.this,WriteNormalActivity.class);
+                        normalIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        startActivity(normalIntent);
+                        break;
+                    case 1:
+                        if(tmpAllList.get(position).getContent() == null){
+                            Intent intent = new Intent(MainActivity.this,WriteDrawDiaryActivity.class);
+                            intent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(MainActivity.this,DrawDiaryActivity.class);
+                            intent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                            startActivity(intent);
+                        }
+                        break;
+                    case 2:
+                        Intent noSmokingIntent = new Intent(MainActivity.this,ShowNoSmokingActivity.class);
+                        noSmokingIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        startActivity(noSmokingIntent);
+                        break;
+                    case 3:
+                        Intent dietIntent = new Intent(MainActivity.this,ShowDietActivity.class);
+                        dietIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        startActivity(dietIntent);
+                        break;
+                }
+            }
+        });
 
         btnThema.setOnClickListener(new View.OnClickListener()
         {
@@ -344,6 +378,7 @@ public class MainActivity extends Activity {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteNormalActivity.class);
+                            intent.putExtra("selectedDate", todayDate);
                             startActivity(intent);
                         }
                         break;
@@ -352,6 +387,7 @@ public class MainActivity extends Activity {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteDrawDiaryActivity.class);
+                            intent.putExtra("selectedDate", todayDate);
                             startActivity(intent);
                         }
                         break;
@@ -397,10 +433,13 @@ public class MainActivity extends Activity {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //테마별 일별 리스트 생성
     public void dayListCreate() {
+        dayMonthYearCheck = 0;
+
         //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
+        tmpAllList = new ArrayList<>();
         //테마별 리스트
         switch (theme) {
             case 0:
@@ -410,13 +449,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
                     allDiaryVO.setContent(normalVO.getNormalWriteContent());
                     allDiaryVO.setTheme(normalVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(0);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -427,13 +468,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                     allDiaryVO.setContent(drawingVO.getDrawContent());
                     allDiaryVO.setTheme(drawingVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(1);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -444,13 +487,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                     allDiaryVO.setContent(noSmokingVO.getPromise());
                     allDiaryVO.setTheme(noSmokingVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(2);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -461,13 +506,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(dietVO.getWriteDate());
                     allDiaryVO.setContent(dietVO.getMemo());
                     allDiaryVO.setTheme(dietVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(3);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -532,8 +579,9 @@ public class MainActivity extends Activity {
     //테마별 월별 리스트 생성
     public void monthListCreate() {
         /////////////////////////////////////////////////////////////////////////////////////////////
-        //리스트 생성
+        dayMonthYearCheck = 1;
 
+        //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
@@ -1653,6 +1701,9 @@ public class MainActivity extends Activity {
 
     //테마별 년별 리스트 생성
     public void yearListCreate() {
+        dayMonthYearCheck = 2;
+
+        //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
@@ -1825,12 +1876,20 @@ public class MainActivity extends Activity {
         Button btnThemeDiet = themeDialog.findViewById(R.id.btn_theme1_diet);
         Button btnThemeAll = themeDialog.findViewById(R.id.btn_theme1_all);
 
+
         btnThemeNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 theme = 0;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
+                btnWrite.setVisibility(View.VISIBLE);
             }
         });
 
@@ -1838,7 +1897,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 1;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1848,7 +1913,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 2;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1858,7 +1929,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 3;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1868,7 +1945,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 4;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.INVISIBLE);
             }

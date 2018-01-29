@@ -22,10 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
 
-=======
->>>>>>> 95033f4510005dfe5ff995bc766b8c3b2fd46415
         <activity android:name=".MainMonthActivity" />
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>

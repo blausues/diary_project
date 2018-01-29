@@ -3,6 +3,7 @@ package com.example.student.diary_project;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -83,16 +84,15 @@ public class WriteDrawDiaryActivity extends Activity {
         drawView = (DrawView) findViewById(R.id.draw_view);
 
         //////////////////////////////////////////////////////////////////////////////////
+        //인텐트 값 가져오기
+        Intent intent = getIntent();
+        writeDate = intent.getStringExtra("selectedDate");
+
         //작성할 일정 표시
-        currentDate = new SimpleDateFormat("yyyy-MM-dd");
-
-        writeDate = currentDate.format(new Date());
-
         tvDate.setText(writeDate);
         //////////////////////////////////////////////////////////////////////////////////////
 
         /////////////////////////////////////////////////////////////////////////////
-
         //그리기 색상 표시 디자인하기 위해 그리드 뷰로 구성
         List<Integer> colorList = new ArrayList<>();
         for (
@@ -182,13 +182,20 @@ public class WriteDrawDiaryActivity extends Activity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                keyboardDown();
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
-                drawingVO.setDrawDate("2018-01-25");
+                drawingVO.setDrawDate(writeDate);
                 drawingVO.setDrawContent(drawEdit.getText()+"");
                 drawingVO.setDrawFileName(filename);
                 drawDBHelper.insertDrawDiary(drawingVO);
-                keyboardDown();
+
+                //저장뒤 바로 읽기화면
+                Intent intent = new Intent(WriteDrawDiaryActivity.this,DrawDiaryActivity.class);
+                intent.putExtra("selectedDate",writeDate);
+                startActivity(intent);
+                finish();
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         });
     }
