@@ -63,17 +63,14 @@ public class ShowDietActivity extends Activity {
 
     private DietDBHelper dietDBHelper;
 
-<<<<<<< HEAD
     private String viewDate;
     private String writeDateStr;
     private int theme,dayMonthYearCheck;
 
     // 쓰기모드:0, 수정모드:1
-=======
     private final int REQUEST_CODE = 1;
 
     // 쓰기모드:0, 수정모드:1, 읽기모드:2
->>>>>>> 6818ee6615e77237aa1ec7b4bf34e2459a77dc8c
     private int mode = 0;
 
     @Override
