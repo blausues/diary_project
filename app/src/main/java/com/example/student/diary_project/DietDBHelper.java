@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.student.diary_project.vo.DietVO;
-import com.example.student.diary_project.vo.NoSmokingVO;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by student on 2018-01-23.
@@ -72,7 +72,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
         if(cursor.moveToNext()){
             dietVO.setWriteDate(cursor.getString(0));
             dietVO.setWeight(cursor.getFloat(1));
-            dietVO.setPhoto(cursor.getString(2));
+            dietVO.setPhoto(pathTokenizer(cursor.getString(2)));
             dietVO.setMenu1(cursor.getString(3));
             dietVO.setKcal1(cursor.getFloat(4));
             dietVO.setMenu2(cursor.getString(5));
@@ -170,7 +170,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
         if(cursor.moveToNext()) {
             dietVO.setWriteDate(cursor.getString(0));
             dietVO.setWeight(cursor.getFloat(1));
-            dietVO.setPhoto(cursor.getString(2));
+            dietVO.setPhoto(pathTokenizer(cursor.getString(2)));
             dietVO.setMenu1(cursor.getString(3));
             dietVO.setKcal1(cursor.getFloat(4));
             dietVO.setMenu2(cursor.getString(5));
@@ -187,7 +187,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
 
         values.put("WRITE_DATE", dietVO.getWriteDate());
         values.put("WEIGHT", dietVO.getWeight());
-        values.put("PHOTO", dietVO.getPhoto());
+        values.put("PHOTO", String.valueOf(dietVO.getPhoto()));
         values.put("MENU1", dietVO.getMenu1());
         values.put("KCAL1", dietVO.getKcal1());
         values.put("MENU2", dietVO.getMenu2());
@@ -203,7 +203,7 @@ public class DietDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put("WEIGHT", dietVO.getWeight());
-        values.put("PHOTO", dietVO.getPhoto());
+        values.put("PHOTO", String.valueOf(dietVO.getPhoto()));
         values.put("MENU1", dietVO.getMenu1());
         values.put("KCAL1", dietVO.getKcal1());
         values.put("MENU2", dietVO.getMenu2());
@@ -213,6 +213,15 @@ public class DietDBHelper extends SQLiteOpenHelper {
         values.put("MEMO", dietVO.getMemo());
 
         return db.update("DIET_TABLE", values, "WRITE_DATE = ?", new String[]{dietVO.getWriteDate()});
+    }
+
+    private ArrayList<String> pathTokenizer(String path) {
+        ArrayList<String> pathList = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(path.substring(1, path.length()-1), ", ");
+        while(st.hasMoreElements()) {
+            pathList.add(st.nextToken());
+        }
+        return pathList;
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

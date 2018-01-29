@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -63,6 +64,7 @@ public class MainActivity extends Activity {
     private AllDiaryAdapter adapter;
     private List<AllDiaryVO> tmpAllList;
     private int theme = 0;
+    private int dayMonthYearCheck = 1; // 0:day 1:month 2:year
     ///////////////////////////////////////////////////////////////////////////////////////////
     private int t0, t1, t2, t3 = 0;
 
@@ -87,18 +89,42 @@ public class MainActivity extends Activity {
         listview = findViewById(R.id.listview_diary);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
-        //시작시 현재 월
+        //백버튼시 기존 액티비티 화면 유지하며 새로고침 하기위하여
         currentDate = new SimpleDateFormat("yyyy-MM");
 
-        selectDate = currentDate.format(new Date());
+        Intent receiveIntent = getIntent();
 
+        dayMonthYearCheck = receiveIntent.getIntExtra("dayMonthYearCheck",1);
+        theme = receiveIntent.getIntExtra("theme",0);
+
+        if(theme == 4){
+            btnWrite.setVisibility(View.INVISIBLE);
+        }
+
+        if(receiveIntent.getStringExtra("selectedDate")==null){
+            selectDate = currentDate.format(new Date());
+
+            //처음 화면 리스트 생성
+            currentDate = new SimpleDateFormat("MM");
+            String currentMonthDate = currentDate.format(new Date());
+            month = currentMonthDate;
+            monthListCreate();
+        }else{
+            selectDate = receiveIntent.getStringExtra("viewDate");
+            if(dayMonthYearCheck == 0){
+                dayListCreate();
+            }else if(dayMonthYearCheck == 1){
+                month = selectDate.substring(5,7);
+                year = selectDate.substring(0,4);
+                monthListCreate();
+            }else{
+                yearListCreate();
+            }
+        }
         viewDate.setText(selectDate);
 
-        //처음 화면 리스트 생성
-        currentDate = new SimpleDateFormat("MM");
-        String currentMonthDate = currentDate.format(new Date());
-        month = currentMonthDate;
-        monthListCreate();
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //쓰기 눌렀을때 현재 날짜로 바로 가게
         currentDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -253,7 +279,6 @@ public class MainActivity extends Activity {
                 /////////////////////////////////////////////////////////////////////
                 //년별
                 btnCalendarYear.setOnClickListener(new View.OnClickListener()
-
                 {
                     @Override
                     public void onClick(View v) {
@@ -324,6 +349,59 @@ public class MainActivity extends Activity {
             }
         });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (tmpAllList.get(position).getTheme()) {
+                    case 0:
+                        Intent normalIntent = new Intent(MainActivity.this,WriteNormalActivity.class);
+                        normalIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        normalIntent.putExtra("viewDate",viewDate.getText());
+                        normalIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                        normalIntent.putExtra("theme",theme);
+                        startActivity(normalIntent);
+                        finish();
+                        break;
+                    case 1:
+                        if(tmpAllList.get(position).getContent() == null){
+                            Intent intent = new Intent(MainActivity.this,WriteDrawDiaryActivity.class);
+                            intent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(MainActivity.this,DrawDiaryActivity.class);
+                            intent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
+                            startActivity(intent);
+                            finish();
+                        }
+                        break;
+                    case 2:
+                        Intent noSmokingIntent = new Intent(MainActivity.this,ShowNoSmokingActivity.class);
+                        noSmokingIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        noSmokingIntent.putExtra("viewDate",viewDate.getText());
+                        noSmokingIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                        noSmokingIntent.putExtra("theme",theme);
+                        startActivity(noSmokingIntent);
+                        finish();
+                        break;
+                    case 3:
+                        Intent dietIntent = new Intent(MainActivity.this,ShowDietActivity.class);
+                        dietIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
+                        dietIntent.putExtra("viewDate",viewDate.getText());
+                        dietIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                        dietIntent.putExtra("theme",theme);
+                        startActivity(dietIntent);
+                        finish();
+                        break;
+                }
+            }
+        });
 
         btnThema.setOnClickListener(new View.OnClickListener()
         {
@@ -344,7 +422,12 @@ public class MainActivity extends Activity {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteNormalActivity.class);
+                            intent.putExtra("selectedDate", todayDate);
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
                             startActivity(intent);
+                            finish();
                         }
                         break;
                     case 1:
@@ -352,7 +435,12 @@ public class MainActivity extends Activity {
                             Toast.makeText(MainActivity.this, "오늘 작성 완료된 일기.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(MainActivity.this, WriteDrawDiaryActivity.class);
+                            intent.putExtra("selectedDate", todayDate);
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
                             startActivity(intent);
+                            finish();
                         }
                         break;
                     case 2:
@@ -361,7 +449,11 @@ public class MainActivity extends Activity {
                         } else {
                             Intent intent = new Intent(MainActivity.this, ShowNoSmokingActivity.class);
                             intent.putExtra("selectedDate", todayDate);
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
                             startActivity(intent);
+                            finish();
                         }
                         break;
                     case 3:
@@ -370,7 +462,11 @@ public class MainActivity extends Activity {
                         } else {
                             Intent intent = new Intent(MainActivity.this, ShowDietActivity.class);
                             intent.putExtra("selectedDate", todayDate);
+                            intent.putExtra("viewDate",viewDate.getText());
+                            intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+                            intent.putExtra("theme",theme);
                             startActivity(intent);
+                            finish();
                         }
                         break;
                 }
@@ -397,10 +493,13 @@ public class MainActivity extends Activity {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //테마별 일별 리스트 생성
     public void dayListCreate() {
+        dayMonthYearCheck = 0;
+
         //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
+        tmpAllList = new ArrayList<>();
         //테마별 리스트
         switch (theme) {
             case 0:
@@ -410,13 +509,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(normalVO.getNormalWriteDate());
                     allDiaryVO.setContent(normalVO.getNormalWriteContent());
                     allDiaryVO.setTheme(normalVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(0);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -427,13 +528,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                     allDiaryVO.setContent(drawingVO.getDrawContent());
                     allDiaryVO.setTheme(drawingVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(1);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -444,13 +547,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                     allDiaryVO.setContent(noSmokingVO.getPromise());
                     allDiaryVO.setTheme(noSmokingVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(2);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -461,13 +566,15 @@ public class MainActivity extends Activity {
                     allDiaryVO.setWriteDate(dietVO.getWriteDate());
                     allDiaryVO.setContent(dietVO.getMemo());
                     allDiaryVO.setTheme(dietVO.getTheme());
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addRead(allDiaryVO);
                 } else {
                     AllDiaryVO allDiaryVO = new AllDiaryVO();
                     allDiaryVO.setWriteDate(selectDate);
                     allDiaryVO.setTheme(3);
-
+                    tmpAllList.add(allDiaryVO);
+                    adapter.dataClear();
                     adapter.addWrite(allDiaryVO);
                 }
                 break;
@@ -532,8 +639,9 @@ public class MainActivity extends Activity {
     //테마별 월별 리스트 생성
     public void monthListCreate() {
         /////////////////////////////////////////////////////////////////////////////////////////////
-        //리스트 생성
+        dayMonthYearCheck = 1;
 
+        //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
@@ -1244,7 +1352,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                                         allDiaryVO.setContent(drawingVO.getDrawContent());
                                         allDiaryVO.setTheme(drawingVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+31, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1270,7 +1378,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                                         allDiaryVO.setContent(noSmokingVO.getPromise());
                                         allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+62, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1295,7 +1403,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(dietVO.getWriteDate());
                                         allDiaryVO.setContent(dietVO.getMemo());
                                         allDiaryVO.setTheme(dietVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+93, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1359,7 +1467,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                                         allDiaryVO.setContent(drawingVO.getDrawContent());
                                         allDiaryVO.setTheme(drawingVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+30, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1385,7 +1493,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                                         allDiaryVO.setContent(noSmokingVO.getPromise());
                                         allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+60, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1410,7 +1518,7 @@ public class MainActivity extends Activity {
                                         allDiaryVO.setWriteDate(dietVO.getWriteDate());
                                         allDiaryVO.setContent(dietVO.getMemo());
                                         allDiaryVO.setTheme(dietVO.getTheme());
-                                        tmpAllList.set(i, allDiaryVO);
+                                        tmpAllList.set(i+90, allDiaryVO);
                                         break;
                                     }
                                 }
@@ -1471,7 +1579,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                                             allDiaryVO.setContent(drawingVO.getDrawContent());
                                             allDiaryVO.setTheme(drawingVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+29, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1496,7 +1604,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                                             allDiaryVO.setContent(noSmokingVO.getPromise());
                                             allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+58, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1521,7 +1629,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(dietVO.getWriteDate());
                                             allDiaryVO.setContent(dietVO.getMemo());
                                             allDiaryVO.setTheme(dietVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+87, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1580,7 +1688,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(drawingVO.getDrawDate());
                                             allDiaryVO.setContent(drawingVO.getDrawContent());
                                             allDiaryVO.setTheme(drawingVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+28, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1605,7 +1713,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(noSmokingVO.getWriteDate());
                                             allDiaryVO.setContent(noSmokingVO.getPromise());
                                             allDiaryVO.setTheme(noSmokingVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+56, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1630,7 +1738,7 @@ public class MainActivity extends Activity {
                                             allDiaryVO.setWriteDate(dietVO.getWriteDate());
                                             allDiaryVO.setContent(dietVO.getMemo());
                                             allDiaryVO.setTheme(dietVO.getTheme());
-                                            tmpAllList.set(i, allDiaryVO);
+                                            tmpAllList.set(i+84, allDiaryVO);
                                             break;
                                         }
                                     }
@@ -1653,6 +1761,9 @@ public class MainActivity extends Activity {
 
     //테마별 년별 리스트 생성
     public void yearListCreate() {
+        dayMonthYearCheck = 2;
+
+        //리스트 생성
         adapter = new AllDiaryAdapter();
         listview.setAdapter(adapter);
 
@@ -1825,12 +1936,20 @@ public class MainActivity extends Activity {
         Button btnThemeDiet = themeDialog.findViewById(R.id.btn_theme1_diet);
         Button btnThemeAll = themeDialog.findViewById(R.id.btn_theme1_all);
 
+
         btnThemeNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 theme = 0;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
+                btnWrite.setVisibility(View.VISIBLE);
             }
         });
 
@@ -1838,7 +1957,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 1;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1848,7 +1973,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 2;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1858,7 +1989,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 3;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.VISIBLE);
             }
@@ -1868,7 +2005,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 theme = 4;
-                monthListCreate();
+                if(dayMonthYearCheck == 0){
+                    dayListCreate();
+                }else if(dayMonthYearCheck == 1){
+                    monthListCreate();
+                }else{
+                    yearListCreate();
+                }
                 themeDialog.cancel();
                 btnWrite.setVisibility(View.INVISIBLE);
             }

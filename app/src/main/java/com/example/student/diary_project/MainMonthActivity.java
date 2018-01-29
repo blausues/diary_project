@@ -115,31 +115,6 @@ public class MainMonthActivity extends Activity {
         } else if(theme == 3) {
             dietDBHelper = new DietDBHelper(this);
 
-            DietVO dietVO = new DietVO("2018-01-23", 40);
-            DietVO dietVO1 = new DietVO("2018-01-22", 43);
-            DietVO dietVO2 = new DietVO("2018-01-20", 42);
-            DietVO dietVO3 = new DietVO("2018-01-19", 70);
-            DietVO dietVO4 = new DietVO("2018-01-18", 70);
-            DietVO dietVO5 = new DietVO("2018-01-16", 70);
-            DietVO dietVO6 = new DietVO("2018-01-14", 70);
-            DietVO dietVO7 = new DietVO("2018-01-13", 40);
-            DietVO dietVO8 = new DietVO("2018-01-12", 43);
-            DietVO dietVO9 = new DietVO("2018-01-11", 42);
-            DietVO dietVO10 = new DietVO("2018-01-10", 70);
-            DietVO dietVO11= new DietVO("2018-01-09", 70);
-            DietVO dietVO12= new DietVO("2018-01-03", 70);
-            DietVO dietVO13= new DietVO("2017-12-01", 70);
-            dietDBHelper.insertDiet(dietVO);
-            dietDBHelper.insertDiet(dietVO1);
-            dietDBHelper.insertDiet(dietVO2);dietDBHelper.insertDiet(dietVO3);
-            dietDBHelper.insertDiet(dietVO4);
-            dietDBHelper.insertDiet(dietVO5);dietDBHelper.insertDiet(dietVO6);
-            dietDBHelper.insertDiet(dietVO7);
-            dietDBHelper.insertDiet(dietVO8);
-            dietDBHelper.insertDiet(dietVO9);dietDBHelper.insertDiet(dietVO10);
-            dietDBHelper.insertDiet(dietVO11);
-            dietDBHelper.insertDiet(dietVO12);dietDBHelper.insertDiet(dietVO13);
-
             tempDates = dietDBHelper.selectDietAllDate();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
