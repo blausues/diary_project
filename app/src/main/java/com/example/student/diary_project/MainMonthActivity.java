@@ -269,11 +269,16 @@ public class MainMonthActivity extends Activity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String selectedDate = sdf.format(new Date());
-
                 intent.putExtra("selectedDate", selectedDate);
 
                 if(theme == 0) {
-                    intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
+                    NormalVO normalVO = new NormalVO();
+                    normalVO.setNormalWriteContent(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteContent());
+                    normalVO.setNormalWriteImagePath(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteImagePath());
+                    intent.putExtra("selectedDate", selectedDate);
+                    intent.putExtra("content", normalVO.getNormalWriteContent());
+                    intent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
+                    intent.setClass(MainMonthActivity.this, WriteNormalActivity.class);
                 } else if(theme == 1) {
 
                 } else if(theme == 2) {

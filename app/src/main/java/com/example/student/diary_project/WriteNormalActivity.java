@@ -25,6 +25,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +65,7 @@ public class WriteNormalActivity extends Activity {
     private ArrayList<ImageView> plusImage = new ArrayList<>();
     private int REQUEST_CODE = 1;
     private int tmpID;
-    private ArrayList<String> selectedPhotos = new ArrayList<>();
+    private ArrayList<String> selectedPhotos;
     private WriteNormalDBHelper normalWriteHelper;
     private NormalVO writeNormalVO;
     private ConstraintLayout writeNormalLayout;
@@ -90,6 +91,8 @@ public class WriteNormalActivity extends Activity {
         btnNormalWriteSave = findViewById(R.id.btn_normal_write_save);
         writeNormalLayout = findViewById(R.id.write_normal);
         showHideLayout = findViewById(R.id.write_normal_bottom_panel);
+
+        Log.d("asd", String.valueOf(selectedPhotos));
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         String pkg = getPackageName();
         for (int i = 0; i < 6; i++) {    // 이미지뷰 finViewById 반복문
@@ -101,37 +104,33 @@ public class WriteNormalActivity extends Activity {
         tv_date.setText(intent.getStringExtra("selectedDate"));
         etWriteNormal.setText(intent.getStringExtra("content"));
         selectedPhotos = intent.getStringArrayListExtra("imagePath");
-        for (int i = getIndex(); i < selectedPhotos.size(); i++) {
-            if (plusImage.get(i).getDrawable() == null) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
-                    plusImage.get(i).setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        Log.d("asd", String.valueOf(selectedPhotos));
+        if (selectedPhotos != null) {
+            for (int i = getIndex(); i < selectedPhotos.size(); i++) {
+                if (plusImage.get(i).getDrawable() == null) {
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                        plusImage.get(i).setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+        } else {
+            selectedPhotos = new ArrayList<>();
+            Log.d("asd3", String.valueOf(selectedPhotos));
         }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
-        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, dm);
-        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, dm);
+        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
+        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
         pop_View = View.inflate(this, R.layout.popup_write_normal_show_image, null);
         popupWindow = new PopupWindow(pop_View, lang_width, lang_height, true);
 
         ivNormalWritePopup = pop_View.findViewById(R.id.iv_popup_write_normal);
-        btnNormalWritePopupCancel = pop_View.findViewById(R.id.bt_popup_write_normal);
-
-        btnNormalWritePopupCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //        키보드 show,hide 이벤트
         InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
@@ -192,7 +191,6 @@ public class WriteNormalActivity extends Activity {
                         }
                     } else {
                         if (null == ivNormalWritePopup) {
-                            Log.e("asd", "qweqwe");
                         }
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(finalI)));
@@ -230,13 +228,11 @@ public class WriteNormalActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mode = normalWriteHelper.selectWriteDate(tv_date.getText().toString());
-                Log.d("asd", String.valueOf(tv_date.getText().toString()+"//"+mode));
                 if (mode != 1) {
                     writeNormalVO = new NormalVO();
                     writeNormalVO.setNormalWriteDate(tv_date.getText().toString());
                     writeNormalVO.setNormalWriteContent(etWriteNormal.getText().toString());
                     writeNormalVO.setNormalWriteImagePath(selectedPhotos);
-                    Log.d("asd", String.valueOf(selectedPhotos));
                     int result = normalWriteHelper.insertNormal(writeNormalVO);
                     if (result > 0) {
                         Toast.makeText(WriteNormalActivity.this, "쓰기성공", Toast.LENGTH_SHORT).show();
@@ -268,18 +264,22 @@ public class WriteNormalActivity extends Activity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             if (data != null) {
                 ArrayList<String> addPhotos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                for (int a = 0; a < addPhotos.size(); a++) {
-                    selectedPhotos.add(getIndex(), addPhotos.get(a));
-                }
-                for (int i = getIndex(); i < selectedPhotos.size(); i++) {
-                    if (plusImage.get(i).getDrawable() == null) {
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
-                            plusImage.get(i).setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                if (selectedPhotos.size() + addPhotos.size() < 6) {
+                    for (int a = 0; a < addPhotos.size(); a++) {
+                        selectedPhotos.add(getIndex(), addPhotos.get(a));
+                    }
+                    for (int i = getIndex(); i < selectedPhotos.size(); i++) {
+                        if (plusImage.get(i).getDrawable() == null) {
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                                plusImage.get(i).setImageBitmap(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
+                }else{
+                    Toast.makeText(this, "사진은 다섯개만넣으시라구요.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
