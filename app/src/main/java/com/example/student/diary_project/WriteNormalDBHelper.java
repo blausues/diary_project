@@ -148,18 +148,9 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         return (int) db.insert("NORMAL_TABLE", null, values);
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 //    public ArrayList<NormalVO> selectAll(String writeDate){
 //        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
 //    }
-=======
-=======
-    public NormalVO selectAll(String writeDate){
-        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
-
-    }
->>>>>>> 95033f4510005dfe5ff995bc766b8c3b2fd46415
     public NormalVO selectAll(String writeDate){
         String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
         NormalVO normalVO = new NormalVO();
@@ -169,7 +160,6 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         }
         return  normalVO;
     }
->>>>>>> c23f5307b375398f105a8ae6f6112831176abbbb
 
     public int update(NormalVO normalVO){
         String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";
