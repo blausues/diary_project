@@ -18,16 +18,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
+=======
+        <activity android:name=".MainActivity">
+>>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
         <activity android:name=".MainMonthActivity"/>
         <activity android:name=".MainActivity" />
+=======
+        <activity android:name=".MainMonthActivity" />
+>>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
