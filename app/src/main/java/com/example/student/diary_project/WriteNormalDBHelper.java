@@ -127,7 +127,7 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
     public int selectWriteDate(String writeDate) {
-        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
+        String sql = "SELECT WRITE_DATE FROM NORMAL_TABLE WHERE WRITE_DATE='" + writeDate + "'";
         int mode = 0;
         String result = null;
         Cursor cursor = db.rawQuery(sql, null);
@@ -141,6 +141,7 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         }
         return mode;
     }
+
     public int insertNormal(NormalVO normalVO) {
         ContentValues values = new ContentValues();
 
@@ -150,28 +151,33 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         return (int) db.insert("NORMAL_TABLE", null, values);
     }
 
-    public NormalVO selectAll(String writeDate){
-        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
+    public NormalVO selectAll(String writeDate) {
+        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='" + writeDate + "'";
         NormalVO normalVO = new NormalVO();
-        Cursor cursor = db.rawQuery(sql,null);
-        while(cursor.moveToNext()){
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
             normalVO.setNormalWriteContent(cursor.getString(0));
             normalVO.setNormalWriteImagePath(tokenizer(cursor.getString(1)));
         }
-        return  normalVO;
+        return normalVO;
     }
 
-    public int update(NormalVO normalVO){
-        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";
+    public int update(NormalVO normalVO) {
+        String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='" + normalVO.getNormalWriteContent() + "', IMAGE_PATH='" + normalVO.getNormalWriteImagePath() + "' WHERE WRITE_DATE='" + normalVO.getNormalWriteDate() + "'";
         db.execSQL(sql);
         return 1;
     }
-    public ArrayList<String> tokenizer(String ImagePath){
-        String img = ImagePath.substring(1,ImagePath.length()-1);
+
+    public ArrayList<String> tokenizer(String ImagePath) {
         ArrayList<String> imagePathList = new ArrayList<>();
-        StringTokenizer tokens = new StringTokenizer(img,", ");
-        for(int i = 1; tokens.hasMoreElements(); i++){
-            imagePathList.add(i-1,tokens.nextToken());
+        if (ImagePath.equals("null")) {
+            imagePathList.clear();
+        } else {
+            String img = ImagePath.substring(1, ImagePath.length() - 1);
+            StringTokenizer tokens = new StringTokenizer(img, ", ");
+            for (int i = 1; tokens.hasMoreElements(); i++) {
+                imagePathList.add(i - 1, tokens.nextToken());
+            }
         }
         return imagePathList;
     }
