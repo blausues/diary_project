@@ -76,6 +76,10 @@ public class WriteNormalActivity extends Activity {
     private PopupWindow popupWindow;
     private int mode = 0;
 
+    private String viewDate;
+    private String writeDateStr;
+    private int theme,dayMonthYearCheck;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,8 +104,15 @@ public class WriteNormalActivity extends Activity {
             plusImage.add(i, (ImageView) findViewById(tmpID));
         }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Intent intent = getIntent();                                                         // DB정보 불러오는부분
-        tv_date.setText(intent.getStringExtra("selectedDate"));
+        Intent intent = getIntent();// DB정보 불러오는부분
+        ///////////////////////////////////////////////////////////////////////////////
+        //테마1 인텐트값 작성
+        writeDateStr = intent.getStringExtra("selectedDate");
+        viewDate = intent.getStringExtra("viewDate");
+        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
+        theme = intent.getIntExtra("theme",0);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        tv_date.setText(writeDateStr);
         etWriteNormal.setText(intent.getStringExtra("content"));
         selectedPhotos = intent.getStringArrayListExtra("imagePath");
         Log.d("asd", String.valueOf(selectedPhotos));
@@ -312,4 +323,18 @@ public class WriteNormalActivity extends Activity {
         date = new Date(now);
         return formate.format(date);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //테마1 뒤로 가기
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(WriteNormalActivity.this,MainActivity.class);
+//        intent.putExtra("selectedDate",writeDateStr);
+//        intent.putExtra("viewDate",viewDate);
+//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+//        intent.putExtra("theme",theme);
+//        startActivity(intent);
+//        finish();
+//        super.onBackPressed();
+//    }
 }

@@ -63,6 +63,11 @@ public class ShowDietActivity extends Activity {
 
     private DietDBHelper dietDBHelper;
 
+    private String viewDate;
+    private String writeDateStr;
+    private int theme,dayMonthYearCheck;
+
+    // 쓰기모드:0, 수정모드:1
     private final int REQUEST_CODE = 1;
 
     // 쓰기모드:0, 수정모드:1, 읽기모드:2
@@ -107,8 +112,8 @@ public class ShowDietActivity extends Activity {
         // 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
-        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
-        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
+        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, dm);
+        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, dm);
         popupView = View.inflate(this, R.layout.popup_window1, null);
         popupWindow = new PopupWindow(popupView, lang_width, lang_height, true);
 
@@ -185,7 +190,13 @@ public class ShowDietActivity extends Activity {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 
         Intent intent = getIntent();
-        String writeDateStr = intent.getStringExtra("selectedDate");
+        ///////////////////////////////////////////////////////////////////////////////
+        //테마1 인텐트값 작성
+        writeDateStr = intent.getStringExtra("selectedDate");
+        viewDate = intent.getStringExtra("viewDate");
+        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
+        theme = intent.getIntExtra("theme",0);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
 
@@ -306,7 +317,7 @@ public class ShowDietActivity extends Activity {
                     btnDietKcalTable.setVisibility(View.GONE);
                     btnDietPicture.setVisibility(View.GONE);
 
-                    imm.hideSoftInputFromWindow(editDietMemo.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(LayoutDietWhole.getWindowToken(), 0);
 
                     // 읽기 모드로 전환
                     mode = 2;
@@ -403,4 +414,17 @@ public class ShowDietActivity extends Activity {
         }
         return result;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //테마1 뒤로 가기
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(ShowDietActivity.this,MainActivity.class);
+//        intent.putExtra("selectedDate",writeDateStr);
+//        intent.putExtra("viewDate",viewDate);
+//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+//        intent.putExtra("theme",theme);
+//        startActivity(intent);
+//        finish();
+//        super.onBackPressed();
+//    }
 }

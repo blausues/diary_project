@@ -36,6 +36,10 @@ public class ShowNoSmokingActivity extends Activity {
 
     private NoSmokingVO noSmokingVO;
 
+    private String viewDate;
+    private String writeDateStr;
+    private int theme,dayMonthYearCheck;
+
     // 쓰기모드:0, 수정모드:1
     private int mode = 0;
 
@@ -58,7 +62,13 @@ public class ShowNoSmokingActivity extends Activity {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 
         Intent intent = getIntent();
-        final String writeDateStr = intent.getStringExtra("selectedDate");
+        ///////////////////////////////////////////////////////////////////////////////
+        //테마1 인텐트값 작성
+        writeDateStr = intent.getStringExtra("selectedDate");
+        viewDate = intent.getStringExtra("viewDate");
+        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
+        theme = intent.getIntExtra("theme",0);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
 
@@ -213,5 +223,18 @@ public class ShowNoSmokingActivity extends Activity {
 //            btnNoSmokingSave.setVisibility(View.GONE);
 //        }
 //        return false;
+//    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //테마1 뒤로 가기
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(ShowNoSmokingActivity.this,MainActivity.class);
+//        intent.putExtra("selectedDate",writeDateStr);
+//        intent.putExtra("viewDate",viewDate);
+//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+//        intent.putExtra("theme",theme);
+//        startActivity(intent);
+//        finish();
+//        super.onBackPressed();
 //    }
 }
