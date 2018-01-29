@@ -24,11 +24,10 @@
             android:textStyle="bold" />
 
         <View
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="5px"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="#FF778899" />
+            android:layout_margin="10dp"
+            android:background="#D8D8D8" />
     </LinearLayout>
 
     <ScrollView

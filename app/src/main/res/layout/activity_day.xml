@@ -89,6 +89,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00ff0000"
+            android:visibility="visible"
             android:src="@drawable/selector_create" />
 
         <ImageButton
