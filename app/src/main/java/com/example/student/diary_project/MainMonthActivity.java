@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.student.diary_project.vo.DietVO;
 import com.example.student.diary_project.vo.NoSmokingVO;
+import com.example.student.diary_project.vo.NormalVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -220,8 +221,13 @@ public class MainMonthActivity extends Activity {
                 String selectedDate = sdf.format(date.getDate());
 
                 if (theme == 0) {
+                    NormalVO normalVO = new NormalVO();
+                    normalVO.setNormalWriteContent(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteContent());
+                    normalVO.setNormalWriteImagePath(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteImagePath());
                     Intent intent = new Intent(MainMonthActivity.this,WriteNormalActivity.class);
                     intent.putExtra("selectedDate", selectedDate);
+                    intent.putExtra("content", normalVO.getNormalWriteContent());
+                    intent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
                     startActivity(intent);
 
                 } else if (theme == 1) {

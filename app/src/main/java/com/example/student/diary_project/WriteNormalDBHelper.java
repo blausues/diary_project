@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.Image;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.student.diary_project.vo.NormalVO;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by student on 2018-01-23.
@@ -144,19 +147,16 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         values.put("WRITE_DATE", normalVO.getNormalWriteDate());
         values.put("NORMAL_CONTENT", normalVO.getNormalWriteContent());
         values.put("IMAGE_PATH", String.valueOf(normalVO.getNormalWriteImagePath()));
-
         return (int) db.insert("NORMAL_TABLE", null, values);
     }
 
-//    public ArrayList<NormalVO> selectAll(String writeDate){
-//        String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"";
-//    }
     public NormalVO selectAll(String writeDate){
         String sql = "SELECT NORMAL_CONTENT,IMAGE_PATH FROM NORMAL_TABLE WHERE WRITE_DATE='"+writeDate+"'";
         NormalVO normalVO = new NormalVO();
         Cursor cursor = db.rawQuery(sql,null);
         while(cursor.moveToNext()){
             normalVO.setNormalWriteContent(cursor.getString(0));
+            normalVO.setNormalWriteImagePath(tokenizer(cursor.getString(1)));
         }
         return  normalVO;
     }
@@ -165,5 +165,14 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         String sql = "UPDATE NORMAL_TABLE SET NORMAL_CONTENT='"+normalVO.getNormalWriteContent()+"', IMAGE_PATH='"+normalVO.getNormalWriteImagePath()+"' WHERE WRITE_DATE='"+normalVO.getNormalWriteDate()+"'";
         db.execSQL(sql);
         return 1;
+    }
+    public ArrayList<String> tokenizer(String ImagePath){
+        String img = ImagePath.substring(1,ImagePath.length()-1);
+        ArrayList<String> imagePathList = new ArrayList<>();
+        StringTokenizer tokens = new StringTokenizer(img,", ");
+        for(int i = 1; tokens.hasMoreElements(); i++){
+            imagePathList.add(i-1,tokens.nextToken());
+        }
+        return imagePathList;
     }
 }
