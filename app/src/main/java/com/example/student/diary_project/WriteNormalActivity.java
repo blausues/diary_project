@@ -90,11 +90,27 @@ public class WriteNormalActivity extends Activity {
         btnNormalWriteSave = findViewById(R.id.btn_normal_write_save);
         writeNormalLayout = findViewById(R.id.write_normal);
         showHideLayout = findViewById(R.id.write_normal_bottom_panel);
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         String pkg = getPackageName();
-
-        Intent intent = getIntent();
+        for (int i = 0; i < 6; i++) {    // 이미지뷰 finViewById 반복문
+            tmpID = getResources().getIdentifier("iv_write_normal_plusImage" + i, "id", pkg);
+            plusImage.add(i, (ImageView) findViewById(tmpID));
+        }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Intent intent = getIntent();                                                         // DB정보 불러오는부분
         tv_date.setText(intent.getStringExtra("selectedDate"));
+        etWriteNormal.setText(intent.getStringExtra("content"));
+        selectedPhotos = intent.getStringArrayListExtra("imagePath");
+        for (int i = getIndex(); i < selectedPhotos.size(); i++) {
+            if (plusImage.get(i).getDrawable() == null) {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(selectedPhotos.get(i)));
+                    plusImage.get(i).setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 이미지뷰 띄워주는 팝업 inflate
@@ -145,11 +161,6 @@ public class WriteNormalActivity extends Activity {
             }
         });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        for (int i = 0; i < 6; i++) {    // 이미지뷰 finViewById 반복문
-            tmpID = getResources().getIdentifier("iv_write_normal_plusImage" + i, "id", pkg);
-            plusImage.add(i, (ImageView) findViewById(tmpID));
-        }
 
         for (int i = 0; i < plusImage.size(); i++) { // 이미지뷰 터치시 삭제 or 확대
             final int finalI = i;
