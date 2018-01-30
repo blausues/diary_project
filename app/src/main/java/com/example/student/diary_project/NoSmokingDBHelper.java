@@ -94,6 +94,12 @@ public class NoSmokingDBHelper extends SQLiteOpenHelper {
         }
         return noSmokingVOArrayList;
     }
+
+    //일기 삭제
+    public void deleteNoSmokingDiary(String write_date){
+        String sql = "DELETE FROM NOSMOKING_TABLE WHERE WRITE_DATE='" + write_date +"';";
+        db.execSQL(sql);
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 금연 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectNoSmokingAllDate() {

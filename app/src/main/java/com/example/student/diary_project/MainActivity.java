@@ -7,7 +7,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 // theme 0:일반, 1:그림, 2:금연, 3:다이어트 4:전체
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView viewDate;
     private ImageButton btnCalendar, btnThema, btnWrite, btnSetting;
     private Button btnCalendarDay, btnCalendarMonth, btnCalendarYear;
@@ -47,6 +54,9 @@ public class MainActivity extends Activity {
     private String year, month;
     private String todayDate;
     private SimpleDateFormat currentDate;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private SwitchCompat switcher;
 
     //db액티비티
     private DrawDBHelper drawDBHelper;
@@ -71,7 +81,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_day);
+        setContentView(R.layout.activity_drawer_day);
 
         //db액티비티 생성
         drawDBHelper = new DrawDBHelper(this);
@@ -87,6 +97,22 @@ public class MainActivity extends Activity {
         btnWrite = findViewById(R.id.btn_write);
         btnSetting = findViewById(R.id.btn_setting);
         listview = findViewById(R.id.listview_diary);
+        drawerLayout = findViewById(R.id.day_drawer_layout);
+        navigationView = findViewById(R.id.day_nav_view);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_password);
+        View actionView = menuItem.getActionView();
+        switcher = actionView.findViewById(R.id.switcher);
+        switcher.setChecked(true);
+        switcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, (switcher.isChecked()) ? "is checked!!!" : "not checked!!!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+        });
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
         //백버튼시 기존 액티비티 화면 유지하며 새로고침 하기위하여
@@ -349,6 +375,18 @@ public class MainActivity extends Activity {
             }
         });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(tmpAllList.get(position).getContent() != null){
+                    deleteDialog(tmpAllList.get(position).getWriteDate(),tmpAllList.get(position).getTheme()).show();
+                }
+                return true;
+            }
+        });
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -474,10 +512,10 @@ public class MainActivity extends Activity {
         });
 
         btnSetting.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
             }
         });
     }
@@ -2017,5 +2055,87 @@ public class MainActivity extends Activity {
             }
         });
         return  themeDialog;
+    }
+
+    public Dialog deleteDialog(final String dialogWriteDate, final int dialogTheme){
+        final Dialog deleteDialog = new Dialog(this);
+        deleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        deleteDialog.getWindow().setGravity(Gravity.TOP);
+        deleteDialog.setContentView(R.layout.dialog_delete);
+
+        Button btnDel = deleteDialog.findViewById(R.id.btn_dletedialog_delete);
+
+        btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(dialogTheme){
+                    case 0:
+                        normalDBHelper.deleteNormalDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 1:
+                        drawDBHelper.deleteDrawDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 2:
+                        noSmokingDBHelper.deleteNoSmokingDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 3:
+                        dietDBHelper.deleteDietDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                }
+                deleteDialog.cancel();
+            }
+        });
+
+        return deleteDialog;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_month) {
+            Intent intent = new Intent(MainActivity.this, MainMonthActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_day) {
+        } else if (id == R.id.nav_help) {
+
+        } else if (id == R.id.nav_password) {
+            switcher.setChecked(!switcher.isChecked());
+            Snackbar.make(item.getActionView(), (switcher.isChecked()) ? "is checked" : "not checked", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+
+        } else if (id == R.id.nav_send) {
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
