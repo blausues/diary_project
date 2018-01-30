@@ -397,6 +397,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                         normalIntent.putExtra("viewDate",viewDate.getText());
                         normalIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                         normalIntent.putExtra("theme",theme);
+                        normalIntent.putExtra("activityCheck",0);
                         startActivity(normalIntent);
                         finish();
                         break;
@@ -407,6 +408,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }else{
@@ -415,6 +417,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }
@@ -425,6 +428,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                         noSmokingIntent.putExtra("viewDate",viewDate.getText());
                         noSmokingIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                         noSmokingIntent.putExtra("theme",theme);
+                        noSmokingIntent.putExtra("activityCheck",0);
                         startActivity(noSmokingIntent);
                         finish();
                         break;
@@ -434,6 +438,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                         dietIntent.putExtra("viewDate",viewDate.getText());
                         dietIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                         dietIntent.putExtra("theme",theme);
+                        dietIntent.putExtra("activityCheck",0);
                         startActivity(dietIntent);
                         finish();
                         break;
@@ -464,6 +469,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }
@@ -477,6 +483,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }
@@ -490,6 +497,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }
@@ -503,6 +511,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                             intent.putExtra("viewDate",viewDate.getText());
                             intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                             intent.putExtra("theme",theme);
+                            intent.putExtra("activityCheck",0);
                             startActivity(intent);
                             finish();
                         }
@@ -2136,6 +2145,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
+        finish();
         return true;
     }
 }

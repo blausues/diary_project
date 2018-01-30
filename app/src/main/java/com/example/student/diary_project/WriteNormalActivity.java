@@ -79,6 +79,7 @@ public class WriteNormalActivity extends Activity {
     private String viewDate;
     private String writeDateStr;
     private int theme,dayMonthYearCheck;
+    private int activityCheck;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class WriteNormalActivity extends Activity {
         viewDate = intent.getStringExtra("viewDate");
         dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
         theme = intent.getIntExtra("theme",0);
+        activityCheck = intent.getIntExtra("activityCheck",0);
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         tv_date.setText(writeDateStr);
         etWriteNormal.setText(intent.getStringExtra("content"));
@@ -331,15 +333,22 @@ public class WriteNormalActivity extends Activity {
         return formate.format(date);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(WriteNormalActivity.this,MainActivity.class);
-        intent.putExtra("selectedDate",writeDateStr);
-        intent.putExtra("viewDate",viewDate);
-        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-        intent.putExtra("theme",theme);
-        startActivity(intent);
-        finish();
-        super.onBackPressed();
-    }
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //뒤로 가기
+        @Override
+        public void onBackPressed() {
+            Intent intent;
+            if (activityCheck == 0) {
+                intent = new Intent(WriteNormalActivity.this, MainActivity.class);
+            } else {
+                intent = new Intent(WriteNormalActivity.this, MainMonthActivity.class);
+            }
+            intent.putExtra("selectedDate", writeDateStr);
+            intent.putExtra("viewDate", viewDate);
+            intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+            intent.putExtra("theme", theme);
+            startActivity(intent);
+            finish();
+            super.onBackPressed();
+        }
 }

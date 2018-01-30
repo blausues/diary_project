@@ -53,6 +53,7 @@ public class DrawDiaryActivity extends Activity {
     private TextView tvDate,tvContent;
     private String selectDate,viewDate;
     private int dayMonthYearCheck,theme;
+    private int activityCheck;
 
     private int checkColorMenu = 0;
 
@@ -95,6 +96,7 @@ public class DrawDiaryActivity extends Activity {
         viewDate = intent.getStringExtra("viewDate");
         dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
         theme = intent.getIntExtra("theme",0);
+        activityCheck = intent.getIntExtra("activityCheck",0);
 
         //db불러오기
         drawingVO = drawDBHelper.selectDrawDiary(selectDate);
@@ -244,6 +246,7 @@ public class DrawDiaryActivity extends Activity {
                 intent.putExtra("viewDate",viewDate);
                 intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
                 intent.putExtra("theme",theme);
+                intent.putExtra("activityCheck",activityCheck);
                 startActivity(intent);
                 finish();
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,15 +320,20 @@ public class DrawDiaryActivity extends Activity {
         imm.hideSoftInputFromWindow(drawEdit.getWindowToken(), 0);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //뒤로가기
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //뒤로 가기
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(DrawDiaryActivity.this,MainActivity.class);
-        intent.putExtra("selectedDate",selectDate);
-        intent.putExtra("viewDate",viewDate);
-        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-        intent.putExtra("theme",theme);
+        Intent intent;
+        if (activityCheck == 0) {
+            intent = new Intent(DrawDiaryActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(DrawDiaryActivity.this, MainMonthActivity.class);
+        }
+        intent.putExtra("selectedDate", selectDate);
+        intent.putExtra("viewDate", viewDate);
+        intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+        intent.putExtra("theme", theme);
         startActivity(intent);
         finish();
         super.onBackPressed();

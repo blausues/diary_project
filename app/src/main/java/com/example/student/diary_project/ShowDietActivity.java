@@ -66,6 +66,7 @@ public class ShowDietActivity extends Activity {
     private String viewDate;
     private String writeDateStr;
     private int theme,dayMonthYearCheck;
+    private int activityCheck;
 
     // 쓰기모드:0, 수정모드:1
     private final int REQUEST_CODE = 1;
@@ -196,6 +197,7 @@ public class ShowDietActivity extends Activity {
         viewDate = intent.getStringExtra("viewDate");
         dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
         theme = intent.getIntExtra("theme",0);
+        activityCheck = intent.getIntExtra("activityCheck",0);
         ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
@@ -415,16 +417,21 @@ public class ShowDietActivity extends Activity {
         return result;
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //테마1 뒤로 가기
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(ShowDietActivity.this,MainActivity.class);
-//        intent.putExtra("selectedDate",writeDateStr);
-//        intent.putExtra("viewDate",viewDate);
-//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-//        intent.putExtra("theme",theme);
-//        startActivity(intent);
-//        finish();
-//        super.onBackPressed();
-//    }
+    //뒤로 가기
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        if (activityCheck == 0) {
+            intent = new Intent(ShowDietActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(ShowDietActivity.this, MainMonthActivity.class);
+        }
+        intent.putExtra("selectedDate", writeDateStr);
+        intent.putExtra("viewDate", viewDate);
+        intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+        intent.putExtra("theme", theme);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }

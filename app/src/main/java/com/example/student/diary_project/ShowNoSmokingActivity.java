@@ -39,6 +39,7 @@ public class ShowNoSmokingActivity extends Activity {
     private String viewDate;
     private String writeDateStr;
     private int theme,dayMonthYearCheck;
+    private int activityCheck;
 
     // 쓰기모드:0, 수정모드:1
     private int mode = 0;
@@ -68,6 +69,7 @@ public class ShowNoSmokingActivity extends Activity {
         viewDate = intent.getStringExtra("viewDate");
         dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
         theme = intent.getIntExtra("theme",0);
+        activityCheck = intent.getIntExtra("activityCheck",0);
         ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Date writeDate = sdf.parse(writeDateStr, new ParsePosition(0));
@@ -224,17 +226,24 @@ public class ShowNoSmokingActivity extends Activity {
 //        }
 //        return false;
 //    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    테마1 뒤로 가기
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //테마1 뒤로 가기
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(ShowNoSmokingActivity.this,MainActivity.class);
-//        intent.putExtra("selectedDate",writeDateStr);
-//        intent.putExtra("viewDate",viewDate);
-//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-//        intent.putExtra("theme",theme);
-//        startActivity(intent);
-//        finish();
-//        super.onBackPressed();
-//    }
+    //뒤로 가기
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        if (activityCheck == 0) {
+            intent = new Intent(ShowNoSmokingActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(ShowNoSmokingActivity.this, MainMonthActivity.class);
+        }
+        intent.putExtra("selectedDate", writeDateStr);
+        intent.putExtra("viewDate", viewDate);
+        intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+        intent.putExtra("theme", theme);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }

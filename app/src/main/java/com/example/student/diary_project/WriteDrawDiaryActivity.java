@@ -49,10 +49,11 @@ public class WriteDrawDiaryActivity extends Activity {
     private EditText drawEdit;
     private GridView drawGridView;
 
-    private String filename, writeDate,viewDate;
+    private String filename, writeDate, viewDate;
     private SimpleDateFormat currentDate;
     private int checkColorMenu = 0;
-    private int dayMonthYearCheck,theme;
+    private int dayMonthYearCheck, theme;
+    private int activityCheck;
 
     private DrawView drawView;
 
@@ -89,8 +90,9 @@ public class WriteDrawDiaryActivity extends Activity {
         Intent intent = getIntent();
         writeDate = intent.getStringExtra("selectedDate");
         viewDate = intent.getStringExtra("viewDate");
-        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck",0);
-        theme = intent.getIntExtra("theme",0);
+        dayMonthYearCheck = intent.getIntExtra("dayMonthYearCheck", 0);
+        theme = intent.getIntExtra("theme", 0);
+        activityCheck = intent.getIntExtra("activityCheck", 0);
 
         //작성할 일정 표시
         tvDate.setText(writeDate);
@@ -101,8 +103,7 @@ public class WriteDrawDiaryActivity extends Activity {
         List<Integer> colorList = new ArrayList<>();
         for (
                 int x = 0;
-                x < 5; x++)
-        {
+                x < 5; x++) {
             colorList.add(x);
         }
 
@@ -190,16 +191,17 @@ public class WriteDrawDiaryActivity extends Activity {
                 Bitmap myViewBitmap = getBitmapFromView(drawView);
                 File result = screenShotSave(myViewBitmap);
                 drawingVO.setDrawDate(writeDate);
-                drawingVO.setDrawContent(drawEdit.getText()+"");
+                drawingVO.setDrawContent(drawEdit.getText() + "");
                 drawingVO.setDrawFileName(filename);
                 drawDBHelper.insertDrawDiary(drawingVO);
 
                 //저장뒤 바로 읽기화면
-                Intent intent = new Intent(WriteDrawDiaryActivity.this,DrawDiaryActivity.class);
-                intent.putExtra("selectedDate",writeDate);
-                intent.putExtra("viewDate",viewDate);
-                intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-                intent.putExtra("theme",theme);
+                Intent intent = new Intent(WriteDrawDiaryActivity.this, DrawDiaryActivity.class);
+                intent.putExtra("selectedDate", writeDate);
+                intent.putExtra("viewDate", viewDate);
+                intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+                intent.putExtra("theme", theme);
+                intent.putExtra("activityCheck",activityCheck);
                 startActivity(intent);
                 finish();
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,11 +259,16 @@ public class WriteDrawDiaryActivity extends Activity {
     //뒤로 가기
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(WriteDrawDiaryActivity.this,MainActivity.class);
-        intent.putExtra("selectedDate",writeDate);
-        intent.putExtra("viewDate",viewDate);
-        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-        intent.putExtra("theme",theme);
+        Intent intent;
+        if (activityCheck == 0) {
+            intent = new Intent(WriteDrawDiaryActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(WriteDrawDiaryActivity.this, MainMonthActivity.class);
+        }
+        intent.putExtra("selectedDate", writeDate);
+        intent.putExtra("viewDate", viewDate);
+        intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+        intent.putExtra("theme", theme);
         startActivity(intent);
         finish();
         super.onBackPressed();
