@@ -25,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainMonthActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".PasswordSettingActivity"/>
@@ -35,6 +34,7 @@
         <activity
             android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
