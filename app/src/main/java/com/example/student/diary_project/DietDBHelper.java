@@ -101,6 +101,12 @@ public class DietDBHelper extends SQLiteOpenHelper {
         }
         return dietVOArrayList;
     }
+
+    //일기 삭제
+    public void deleteDietDiary(String write_date){
+        String sql = "DELETE FROM DIET_TABLE WHERE WRITE_DATE='" + write_date +"';";
+        db.execSQL(sql);
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 일기 쓴 날짜 다 불러오기
     public List<Calendar> selectDietAllDate() {

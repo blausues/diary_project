@@ -349,6 +349,18 @@ public class MainActivity extends Activity {
             }
         });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(tmpAllList.get(position).getContent() != null){
+                    deleteDialog(tmpAllList.get(position).getWriteDate(),tmpAllList.get(position).getTheme()).show();
+                }
+                return true;
+            }
+        });
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -2017,5 +2029,66 @@ public class MainActivity extends Activity {
             }
         });
         return  themeDialog;
+    }
+
+    public Dialog deleteDialog(final String dialogWriteDate, final int dialogTheme){
+        final Dialog deleteDialog = new Dialog(this);
+        deleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        deleteDialog.getWindow().setGravity(Gravity.TOP);
+        deleteDialog.setContentView(R.layout.dialog_delete);
+
+        Button btnDel = deleteDialog.findViewById(R.id.btn_dletedialog_delete);
+
+        btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(dialogTheme){
+                    case 0:
+                        normalDBHelper.deleteNormalDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 1:
+                        drawDBHelper.deleteDrawDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 2:
+                        noSmokingDBHelper.deleteNoSmokingDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                    case 3:
+                        dietDBHelper.deleteDietDiary(dialogWriteDate);
+                        if(dayMonthYearCheck == 0){
+                            dayListCreate();
+                        }else if(dayMonthYearCheck == 1){
+                            monthListCreate();
+                        }else{
+                            yearListCreate();
+                        }
+                        break;
+                }
+                deleteDialog.cancel();
+            }
+        });
+
+        return deleteDialog;
     }
 }

@@ -18,17 +18,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
 
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
+=======
+        <activity android:name=".PasswordSettingActivity"/>
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"/>
+        <activity android:name=".MainActivity">
+>>>>>>> 5e1f3f6e71a73172b53c6a2ad8fb10f51271f8cf
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".MainMonthActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".PasswordSettingActivity"/>
+=======
+
+        <activity android:name=".MainMonthActivity"/>
+>>>>>>> 5e1f3f6e71a73172b53c6a2ad8fb10f51271f8cf
         <activity android:name=".PasswordCheckActivity"/>
         <activity android:name=".PasswordActivity"/>
         <activity android:name=".WriteNormalActivity"

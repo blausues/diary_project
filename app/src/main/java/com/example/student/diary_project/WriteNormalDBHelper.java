@@ -102,6 +102,12 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         return normalVOArrayList;
     }
 
+    //일기 삭제
+    public void deleteNormalDiary(String write_date){
+        String sql = "DELETE FROM NORMAL_TABLE WHERE WRITE_DATE='" + write_date +"';";
+        db.execSQL(sql);
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
