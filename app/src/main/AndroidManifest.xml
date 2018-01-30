@@ -18,21 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<<<<<<< HEAD
-        <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashTheme" />
-        <activity android:name=".ExplainActivity">
-=======
+        <activity android:name=".ExplainActivity"/>
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
->>>>>>> 5d1a8450bda1cfc5fc2bbd0126faf9e9f4cd741f
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name=".MainMonthActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".PasswordCheckActivity" />
@@ -40,16 +33,8 @@
         <activity
             android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize" />
-=======
 
-        <activity android:name=".MainMonthActivity"/>
-        <activity android:name=".MainActivity" />
         <activity android:name=".PasswordSettingActivity"/>
-        <activity android:name=".PasswordCheckActivity"/>
-        <activity android:name=".PasswordActivity"/>
-        <activity android:name=".WriteNormalActivity"
-            android:windowSoftInputMode="adjustResize"/>
->>>>>>> 5d1a8450bda1cfc5fc2bbd0126faf9e9f4cd741f
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
