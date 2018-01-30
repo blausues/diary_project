@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#a9a9a9</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Splash theme. -->

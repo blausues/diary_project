@@ -11,44 +11,29 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<<<<<<< HEAD
-        <activity android:name=".PasswordSettingActivity">
-=======
-<<<<<<< HEAD
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
-=======
-        <activity android:name=".MainActivity">
->>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme" />
+        <activity android:name=".ExplainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
-        <activity android:name=".MainMonthActivity"/>
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
-        <activity android:name=".MainActivity" />
-        <activity android:name=".PasswordCheckActivity"/>
-        <activity android:name=".PasswordActivity"/>
         <activity android:name=".MainMonthActivity" />
-<<<<<<< HEAD
-=======
->>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
-        <activity android:name=".WriteNormalActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PasswordCheckActivity" />
+        <activity android:name=".PasswordActivity" />
+        <activity
+            android:name=".WriteNormalActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -58,7 +43,8 @@
         <activity
             android:name=".ShowNoSmokingActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ShowDietActivity"
+        <activity
+            android:name=".ShowDietActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DrawDiaryActivity" />
         <activity android:name=".WriteDrawDiaryActivity" />

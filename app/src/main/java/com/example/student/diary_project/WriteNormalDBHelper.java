@@ -50,8 +50,8 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //메인화면 리스트 불러오기 위한 db 내가 따로 작성 했어요
     //일기 판별용 카운터
-    public int selectNormalDiaryCount(String drawdate) {
-        String sql = "SELECT COUNT(*) FROM NORMAL_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%';";
+    public int selectNormalDiaryCount(String writeDate) {
+        String sql = "SELECT COUNT(*) FROM NORMAL_TABLE WHERE WRITE_DATE LIKE '%" + writeDate + "%';";
         Cursor cursor = db.rawQuery(sql, null);
 
         int normalDiaryCount = 0;
@@ -64,8 +64,8 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
     }
 
     //일별 선택 및 읽을 일기 불러오기
-    public NormalVO selectNormalDiary(String drawdate) {
-        String sql = "SELECT * FROM NORMAL_TABLE WHERE WRITE_DATE='" + drawdate + "';";
+    public NormalVO selectNormalDiary(String writeDate) {
+        String sql = "SELECT * FROM NORMAL_TABLE WHERE WRITE_DATE='" + writeDate + "';";
         Cursor cursor = db.rawQuery(sql, null);
 
         NormalVO normalVO = new NormalVO();
@@ -74,20 +74,15 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             normalVO.setNormalWriteDate(cursor.getString(0));
             normalVO.setNormalWriteContent(cursor.getString(1));
-            imagePathList.add(cursor.getString(2));
-            imagePathList.add(cursor.getString(3));
-            imagePathList.add(cursor.getString(4));
-            imagePathList.add(cursor.getString(5));
-            imagePathList.add(cursor.getString(6));
-            normalVO.setNormalWriteImagePath(imagePathList);
-            normalVO.setTheme(cursor.getInt(7));
+            normalVO.setNormalWriteImagePath(tokenizer(cursor.getString(2)));
+            normalVO.setTheme(cursor.getInt(3));
         }
         return normalVO;
     }
 
     //날짜별로 불러오기 drawdate는 불러올 날짜
-    public List<NormalVO> selectNormalDiaryList(String drawdate) {
-        String sql = "SELECT WRITE_DATE,NORMAL_CONTENT,THEME FROM NORMAL_TABLE WHERE WRITE_DATE LIKE '%" + drawdate + "%' ORDER BY WRITE_DATE ASC;";
+    public List<NormalVO> selectNormalDiaryList(String writeDate) {
+        String sql = "SELECT WRITE_DATE,NORMAL_CONTENT,THEME FROM NORMAL_TABLE WHERE WRITE_DATE LIKE '%" + writeDate + "%' ORDER BY WRITE_DATE ASC;";
         Cursor cursor = db.rawQuery(sql, null);
 
         List<NormalVO> normalVOArrayList = new ArrayList<>();
