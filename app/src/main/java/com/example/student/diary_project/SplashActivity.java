@@ -14,9 +14,9 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         Intent intent = new Intent(this, MainMonthActivity.class);
         startActivity(intent);
-
         finish();
     }
 }
