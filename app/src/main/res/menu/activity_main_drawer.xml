@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_month"
-            android:title="month"/>
+            android:icon="@drawable/ic_insert_invitation_black_21dp"
+            android:title="달력 화면"/>
         <item
-            android:id="@+id/nav_list"
-            android:title="list"/>
+            android:id="@+id/nav_day"
+            android:icon="@drawable/ic_list_black_21dp"
+            android:title="리스트 화면"/>
     </group>
-    <item android:title="DIVIDER">
+
+    <item android:title="Setting">
         <menu>
             <item
                 android:id="@+id/nav_help"
-                android:title="help"/>
+                android:icon="@drawable/ic_help_outline_black_21dp"
+                android:title="도움말"/>
             <item
-                android:id="@+id/nav_setting"
-                android:title="setting"/>
+                android:id="@+id/nav_password"
+                android:icon="@drawable/ic_menu_manage"
+                app:actionLayout="@layout/action_view_switch"
+                android:title="비밀번호 설정" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="내보내기"/>
         </menu>
     </item>
 </menu>

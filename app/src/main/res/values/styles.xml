@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#a9a9a9</item>
+        <item name="colorAccent">#2FED28</item>
     </style>
 
     <!-- Splash theme. -->

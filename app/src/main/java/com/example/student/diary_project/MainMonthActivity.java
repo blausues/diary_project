@@ -8,15 +8,28 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.student.diary_project.vo.DietVO;
 import com.example.student.diary_project.vo.NoSmokingVO;
@@ -45,12 +58,15 @@ import im.dacer.androidcharts.LineView;
  */
 
 // theme 0:일반, 1:그림, 2:금연, 3:다이어트 4:전체
-public class MainMonthActivity extends Activity {
+public class MainMonthActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
     private TextView tvProgress, tvMaxProgress;
     private ProgressBar pbDiary;
     private LineView lineView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private SwitchCompat switcher;
 
     private int theme = 0;
 
@@ -63,7 +79,7 @@ public class MainMonthActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_month);
+        setContentView(R.layout.activity_drawer_month);
 
         calendarView = findViewById(R.id.calendarView);
         btnMonthTheme = findViewById(R.id.btn_month_theme);
@@ -73,6 +89,22 @@ public class MainMonthActivity extends Activity {
         tvMaxProgress = findViewById(R.id.tv_max_progress);
         pbDiary = findViewById(R.id.pb_diary);
         lineView = findViewById(R.id.line_view);
+        drawerLayout = findViewById(R.id.month_drawer_layout);
+        navigationView = findViewById(R.id.month_nav_view);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_password);
+        View actionView = menuItem.getActionView();
+        switcher = actionView.findViewById(R.id.switcher);
+        switcher.setChecked(true);
+        switcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, (switcher.isChecked()) ? "is checked!!!" : "not checked!!!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+        });
 
         List<Calendar> tempDates = new ArrayList<>();
         dates = new ArrayList<>();
@@ -269,11 +301,10 @@ public class MainMonthActivity extends Activity {
         btnMonthSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                drawerLayout.openDrawer(Gravity.LEFT);
             }
         });
     }
-
     // 날짜 밑에 원 그리는 decorator
     public class EventDecorator implements DayViewDecorator {
         private final int color;
@@ -347,6 +378,25 @@ public class MainMonthActivity extends Activity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
+        if (id == R.id.nav_month) {
 
+        } else if (id == R.id.nav_day) {
+            Intent intent = new Intent(MainMonthActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_help) {
+
+        } else if (id == R.id.nav_password) {
+            switcher.setChecked(!switcher.isChecked());
+            Snackbar.make(item.getActionView(), (switcher.isChecked()) ? "is checked" : "not checked", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+
+        } else if (id == R.id.nav_send) {
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
