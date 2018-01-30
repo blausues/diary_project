@@ -69,7 +69,6 @@ public class WriteNormalDBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(sql, null);
 
         NormalVO normalVO = new NormalVO();
-        ArrayList<String> imagePathList = new ArrayList<>();
 
         if (cursor.moveToNext()) {
             normalVO.setNormalWriteDate(cursor.getString(0));
