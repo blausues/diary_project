@@ -324,17 +324,15 @@ public class WriteNormalActivity extends Activity {
         return formate.format(date);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //테마1 뒤로 가기
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(WriteNormalActivity.this,MainActivity.class);
-//        intent.putExtra("selectedDate",writeDateStr);
-//        intent.putExtra("viewDate",viewDate);
-//        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
-//        intent.putExtra("theme",theme);
-//        startActivity(intent);
-//        finish();
-//        super.onBackPressed();
-//    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(WriteNormalActivity.this,MainActivity.class);
+        intent.putExtra("selectedDate",writeDateStr);
+        intent.putExtra("viewDate",viewDate);
+        intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
+        intent.putExtra("theme",theme);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }
