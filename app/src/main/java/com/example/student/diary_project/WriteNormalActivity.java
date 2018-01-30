@@ -267,6 +267,13 @@ public class WriteNormalActivity extends Activity {
                 }
             }
         });
+        btnNormalWriteSave.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager manager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(etWriteNormal.getWindowToken(),0);
+            }
+        }, 100);
     }
 
     @Override
