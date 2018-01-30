@@ -18,35 +18,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<<<<<<< HEAD
-        <activity android:name=".PasswordSettingActivity">
-=======
-<<<<<<< HEAD
+        <activity android:name=".PasswordSettingActivity"/>
         <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
-=======
+            android:theme="@style/SplashTheme"/>
         <activity android:name=".MainActivity">
->>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
         <activity android:name=".MainMonthActivity"/>
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
-        <activity android:name=".MainActivity" />
         <activity android:name=".PasswordCheckActivity"/>
         <activity android:name=".PasswordActivity"/>
-        <activity android:name=".MainMonthActivity" />
-<<<<<<< HEAD
-=======
->>>>>>> 0065f307a5fadbcd155c6794881a0c5eb98ce2de
->>>>>>> 880541cb94f10938d794d2479ad2b55cac08e51b
         <activity android:name=".WriteNormalActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
