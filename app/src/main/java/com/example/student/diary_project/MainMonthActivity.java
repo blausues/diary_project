@@ -57,7 +57,7 @@ import im.dacer.androidcharts.LineView;
  * Created by student on 2018-01-10.
  */
 
-// theme 0:일반, 1:그림, 2:금연, 3:다이어트 4:전체
+// theme 0:일반, 1:그림, 2:금연, 3:다이어트
 public class MainMonthActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
     private MaterialCalendarView calendarView;
     private ImageButton btnMonthTheme, btnMonthWrite, btnMonthSetting;
@@ -73,6 +73,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
     private List<CalendarDay> dates;
 
     private WriteNormalDBHelper writeNormalDBHelper;
+    private DrawDBHelper drawDBHelper;
     private NoSmokingDBHelper noSmokingDBHelper;
     private DietDBHelper dietDBHelper;
 
@@ -116,9 +117,15 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         if(theme == 0) {
             writeNormalDBHelper = new WriteNormalDBHelper(this);
             tempDates = writeNormalDBHelper.selectNormalAllDate();
-            Toast.makeText(this, "일반이당", Toast.LENGTH_SHORT).show();
         } else if(theme == 1) {
-            Toast.makeText(this, "그림이당", Toast.LENGTH_SHORT).show();
+            drawDBHelper = new DrawDBHelper(this);
+//            tempDates =
+            /////////////////////////////////////////////////////////////////////
+
+
+
+
+
         } else if(theme == 2) {
             noSmokingDBHelper = new NoSmokingDBHelper(this);
 
@@ -173,8 +180,6 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
             } else {
                 lineView.setVisibility(View.GONE);
             }
-        } else if(theme == 4) {
-            // 전체 리스트 화면으로 넘어가기
         }
 
         // Calendar 에서 CalderdarDay 로 변환
@@ -238,6 +243,11 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                     startActivity(intent);
 
                 } else if (theme == 1) {
+
+
+
+                    /////////////////////////////////////////////////////////////////////
+
                     // 준완이는 show랑 write 나눈다고 해서 이렇게 해놓음
                     for (int i = 0; i < dates.size(); i++) {
                         if (dates.get(i).equals(date)) {
@@ -287,6 +297,9 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                     intent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
                     intent.setClass(MainMonthActivity.this, WriteNormalActivity.class);
                 } else if(theme == 1) {
+
+                    ///////////////////////////////////////////////////////
+
 
                 } else if(theme == 2) {
                     intent.setClass(MainMonthActivity.this, ShowNoSmokingActivity.class);
@@ -383,7 +396,6 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         int id = item.getItemId();
 
         if (id == R.id.nav_month) {
-
         } else if (id == R.id.nav_day) {
             Intent intent = new Intent(MainMonthActivity.this, MainActivity.class);
             startActivity(intent);
@@ -392,7 +404,6 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         } else if (id == R.id.nav_password) {
             switcher.setChecked(!switcher.isChecked());
             Snackbar.make(item.getActionView(), (switcher.isChecked()) ? "is checked" : "not checked", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-
         } else if (id == R.id.nav_send) {
 
         }
