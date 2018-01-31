@@ -127,45 +127,47 @@ public class ShowDietActivity extends Activity {
             }
         });
 
-        for (int i = 0; i < ivDietPlusImages.length; i++) {
-            final int currentIdx = i;
-            ivDietPlusImages[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mode == 2) {
-                        // 클릭 시, 확대
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(imagePath.get(currentIdx)));
-                            ivPopup.setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (ivDietPlusImages[currentIdx] != null) {
-                            popupWindow.showAtLocation(LayoutDietWhole, Gravity.CENTER, 0, 0);
-                        }
-                    } else {
-                        // 클릭 시, 삭제
-                        imagePath.remove(currentIdx);
-                        for (int j = 0; j < ivDietPlusImages.length; j++) {
-                            // imageView를 null로
-                            ivDietPlusImages[j].setImageResource(0);
-
-                        }
-                        // 저장해둔 path로 imageView 새로 그려주기
-                        for (int k = 0; k < imagePath.size(); k++) {
-                            if (ivDietPlusImages[k].getDrawable() == null) {
+            for (int i = 0; i < ivDietPlusImages.length; i++) {
+                final int currentIdx = i;
+                ivDietPlusImages[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (imagePath.size() != 0) {
+                            if (mode == 2) {
+                                // 클릭 시, 확대
                                 try {
-                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(imagePath.get(k)));
-                                    ivDietPlusImages[k].setImageBitmap(bitmap);
+                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(imagePath.get(currentIdx)));
+                                    ivPopup.setImageBitmap(bitmap);
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                }
+                                if (ivDietPlusImages[currentIdx] != null) {
+                                    popupWindow.showAtLocation(LayoutDietWhole, Gravity.CENTER, 0, 0);
+                                }
+                            } else {
+                                // 클릭 시, 삭제
+                                imagePath.remove(currentIdx);
+                                for (int j = 0; j < ivDietPlusImages.length; j++) {
+                                    // imageView를 null로
+                                    ivDietPlusImages[j].setImageResource(0);
+
+                                }
+                                // 저장해둔 path로 imageView 새로 그려주기
+                                for (int k = 0; k < imagePath.size(); k++) {
+                                    if (ivDietPlusImages[k].getDrawable() == null) {
+                                        try {
+                                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getUriFromPath(imagePath.get(k)));
+                                            ivDietPlusImages[k].setImageBitmap(bitmap);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
-        }
+                });
+            }
 
         btnDietPicture.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
@@ -426,7 +428,6 @@ public class ShowDietActivity extends Activity {
         } else {
             intent = new Intent(ShowDietActivity.this, MainMonthActivity.class);
         }
-        Log.i("lyh", "show" + writeDateStr);
         intent.putExtra("selectedDate", writeDateStr);
         intent.putExtra("viewDate", viewDate);
         intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
