@@ -64,11 +64,8 @@
                     android:layout_alignBaseline="@id/tv_kg"
                     android:layout_toLeftOf="@id/tv_kg"
                     android:visibility="gone"
-<<<<<<< HEAD
                     android:inputType="numberDecimal"
-=======
                     android:textCursorDrawable="@drawable/cursor_color"
->>>>>>> 207c3178a8825e734ae84d51ee85bad7eac5d96d
                     android:id="@+id/edit_diet_weight"/>
 
                 <TextView
@@ -109,11 +106,8 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal1"
                     android:visibility="gone"
-<<<<<<< HEAD
                     android:inputType="numberDecimal"
-=======
                     android:textCursorDrawable="@drawable/cursor_color"
->>>>>>> 207c3178a8825e734ae84d51ee85bad7eac5d96d
                     android:id="@+id/edit_diet_kcal1"/>
 
                 <TextView
@@ -176,11 +170,8 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal2"
                     android:visibility="gone"
-<<<<<<< HEAD
                     android:inputType="numberDecimal"
-=======
                     android:textCursorDrawable="@drawable/cursor_color"
->>>>>>> 207c3178a8825e734ae84d51ee85bad7eac5d96d
                     android:id="@+id/edit_diet_kcal2"/>
 
                 <TextView
@@ -242,11 +233,8 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal3"
                     android:visibility="gone"
-<<<<<<< HEAD
                     android:inputType="numberDecimal"
-=======
                     android:textCursorDrawable="@drawable/cursor_color"
->>>>>>> 207c3178a8825e734ae84d51ee85bad7eac5d96d
                     android:id="@+id/edit_diet_kcal3"/>
 
                 <TextView
