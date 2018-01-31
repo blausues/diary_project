@@ -110,8 +110,17 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         List<Calendar> tempDates = new ArrayList<>();
         dates = new ArrayList<>();
 
-        Intent intent = getIntent();
-        theme = intent.getIntExtra("theme", 2);
+        Intent receiveIntent = getIntent();
+        theme = receiveIntent.getIntExtra("theme", 0);
+        String viewDate = receiveIntent.getStringExtra("selectedDate");
+
+        Log.i("lyh", theme+"/"+viewDate);
+
+        if(viewDate != null) {
+            int year = Integer.parseInt(viewDate.substring(0,4));
+            int month = Integer.parseInt(viewDate.substring(5,7));
+            calendarView.setCurrentDate(CalendarDay.from(year, month-1, 1));
+        }
 
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
         if(theme == 0) {
@@ -232,15 +241,20 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String selectedDate = sdf.format(date.getDate());
 
+                Intent intent = new Intent();
+                intent.putExtra("selectedDate", selectedDate);
+                intent.putExtra("activityCheck", 1);
+
                 if (theme == 0) {
                     NormalVO normalVO = new NormalVO();
                     normalVO.setNormalWriteContent(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteContent());
                     normalVO.setNormalWriteImagePath(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteImagePath());
-                    Intent intent = new Intent(MainMonthActivity.this,WriteNormalActivity.class);
-                    intent.putExtra("selectedDate", selectedDate);
+
+                    intent.setClass(MainMonthActivity.this,WriteNormalActivity.class);
+
                     intent.putExtra("content", normalVO.getNormalWriteContent());
                     intent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
-                    startActivity(intent);
+                    intent.putExtra("theme", 0);
 
                 } else if (theme == 1) {
 
@@ -257,16 +271,14 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                         }
                     }
                 } else if (theme == 2) {
-                    Intent intent = new Intent(MainMonthActivity.this, ShowNoSmokingActivity.class);
-
-                    intent.putExtra("selectedDate", selectedDate);
-                    startActivity(intent);
+                    intent.setClass(MainMonthActivity.this,ShowNoSmokingActivity.class);
+                    intent.putExtra("theme", 2);
                 } else if (theme == 3) {
-                    Intent intent = new Intent(MainMonthActivity.this, ShowDietActivity.class);
-
-                    intent.putExtra("selectedDate", selectedDate);
-                    startActivity(intent);
+                    intent.setClass(MainMonthActivity.this,ShowDietActivity.class);
+                    intent.putExtra("theme", 3);
                 }
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -295,6 +307,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                     intent.putExtra("selectedDate", selectedDate);
                     intent.putExtra("content", normalVO.getNormalWriteContent());
                     intent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
+                    intent.putExtra("theme", 0);
                     intent.setClass(MainMonthActivity.this, WriteNormalActivity.class);
                 } else if(theme == 1) {
 
@@ -303,10 +316,13 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
                 } else if(theme == 2) {
                     intent.setClass(MainMonthActivity.this, ShowNoSmokingActivity.class);
+                    intent.putExtra("theme", 2);
                 } else if(theme == 3) {
                     intent.setClass(MainMonthActivity.this, ShowDietActivity.class);
+                    intent.putExtra("theme", 3);
                 }
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -337,14 +353,6 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         public void decorate(DayViewFacade view) {
             view.addSpan(new DotSpan(10, color));
         }
-    }
-
-    // 뒤로가기 버튼을 통해서 왔을 때, 새로고침
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
     }
 
     private Dialog makeThemeDialog() {
@@ -386,8 +394,10 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
             }
             Intent intent = new Intent(MainMonthActivity.this, MainMonthActivity.class);
             intent.putExtra("theme", theme);
+            intent.putExtra("activityCheck", 1);
 
             startActivity(intent);
+            finish();
         }
     }
 
@@ -398,7 +408,11 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         if (id == R.id.nav_month) {
         } else if (id == R.id.nav_day) {
             Intent intent = new Intent(MainMonthActivity.this, MainActivity.class);
+            intent.putExtra("activityCheck", 1);
+            intent.putExtra("theme", theme);
+
             startActivity(intent);
+            finish();
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_password) {
@@ -408,6 +422,15 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
+
+    // 뒤로가기 버튼을 통해서 왔을 때, 새로고침
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        finish();
+//        startActivity(getIntent());
+//    }
 }

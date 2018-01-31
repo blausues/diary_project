@@ -5,7 +5,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/kacl_table1"
+        android:src="@drawable/kcal_table3"
         android:scaleType="fitXY"
         android:id="@+id/img_kcal_table"/>
 </android.support.constraint.ConstraintLayout>
