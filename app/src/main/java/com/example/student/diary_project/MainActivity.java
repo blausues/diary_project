@@ -2162,7 +2162,14 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             startActivity(intent);
         } else if (id == R.id.nav_day) {
         } else if (id == R.id.nav_help) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+            Intent intent = new Intent(MainActivity.this, ExplainActivity.class);
+            intent.putExtra("activityCheck", 1);
+            intent.putExtra("theme", theme);
+
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_password) {
             switcher.setChecked(!switcher.isChecked());
         } else if (id == R.id.nav_send) {
