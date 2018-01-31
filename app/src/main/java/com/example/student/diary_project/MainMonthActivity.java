@@ -114,8 +114,6 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         theme = receiveIntent.getIntExtra("theme", 0);
         String viewDate = receiveIntent.getStringExtra("selectedDate");
 
-        Log.i("lyh", theme+"/"+viewDate);
-
         if(viewDate != null) {
             int year = Integer.parseInt(viewDate.substring(0,4));
             int month = Integer.parseInt(viewDate.substring(5,7));
