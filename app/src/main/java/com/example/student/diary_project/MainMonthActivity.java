@@ -76,6 +76,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
     private DrawDBHelper drawDBHelper;
     private NoSmokingDBHelper noSmokingDBHelper;
     private DietDBHelper dietDBHelper;
+    private PwdDBHelper pwdDBHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,17 +94,39 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         drawerLayout = findViewById(R.id.month_drawer_layout);
         navigationView = findViewById(R.id.month_nav_view);
 
+        pwdDBHelper = new PwdDBHelper(this);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_password);
         View actionView = menuItem.getActionView();
         switcher = actionView.findViewById(R.id.switcher);
-        switcher.setChecked(true);
+        if(pwdDBHelper.selectPwd() == 0) {
+            switcher.setChecked(false);
+        } else {
+            switcher.setChecked(true);
+        }
+        Log.i("lyh", calendarView.getCurrentDate()+"");
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, (switcher.isChecked()) ? "is checked!!!" : "not checked!!!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Intent intent = new Intent();
+                if(switcher.isChecked()) {
+                    // 비밀번호 설정
+                    intent.setClass(MainMonthActivity.this, PasswordSettingActivity.class);
+                } else {
+                    // 비밀번호 해제
+                    intent.setClass(MainMonthActivity.this, PasswordActivity.class);
+                    intent.putExtra("delete", 1);
+                }
+                intent.putExtra("activityCheck", 1);
+                intent.putExtra("theme", theme);
+                intent.putExtra("selectedDate", sdf.format(calendarView.getCurrentDate().getDate()));
+
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -412,10 +435,17 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_help) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+            Intent intent = new Intent(MainMonthActivity.this, ExplainActivity.class);
+            intent.putExtra("selectedDate", sdf.format(calendarView.getCurrentDate().getDate()));
+            intent.putExtra("activityCheck", 1);
+            intent.putExtra("theme", theme);
+
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_password) {
             switcher.setChecked(!switcher.isChecked());
-            Snackbar.make(item.getActionView(), (switcher.isChecked()) ? "is checked" : "not checked", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
         } else if (id == R.id.nav_send) {
 
         }

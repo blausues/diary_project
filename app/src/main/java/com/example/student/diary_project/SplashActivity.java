@@ -10,12 +10,25 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class SplashActivity extends AppCompatActivity {
+    private PwdDBHelper pwdDBHelper;
+    private int pwd;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pwdDBHelper = new PwdDBHelper(this);
+        pwd = pwdDBHelper.selectPwd();
 
-        Intent intent = new Intent(this, MainMonthActivity.class);
+        Intent intent = new Intent();
+
+        if(pwd == 0) {
+            // 패스워드 설정 안했을 시
+            intent.setClass(this, MainMonthActivity.class);
+        } else {
+            // 패스워드 설정 했을 시
+            intent.setClass(this, PasswordActivity.class);
+        }
         startActivity(intent);
         finish();
     }

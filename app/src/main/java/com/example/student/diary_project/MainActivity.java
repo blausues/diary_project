@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     private DietDBHelper dietDBHelper;
     private NoSmokingDBHelper noSmokingDBHelper;
     private WriteNormalDBHelper normalDBHelper;
+    private PwdDBHelper pwdDBHelper;
     //////////////////////////////////////////////////////////////////////////////////////////
 
     //리스트 생성 위해 필요한것
@@ -88,6 +89,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
         dietDBHelper = new DietDBHelper(this);
         normalDBHelper = new WriteNormalDBHelper(this);
         noSmokingDBHelper = new NoSmokingDBHelper(this);
+        pwdDBHelper = new PwdDBHelper(this);
 
         //레이아웃 아이디 모음
 
@@ -102,15 +104,39 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_password);
         View actionView = menuItem.getActionView();
         switcher = actionView.findViewById(R.id.switcher);
-        switcher.setChecked(true);
+        if(pwdDBHelper.selectPwd() == 0) {
+            switcher.setChecked(false);
+        } else {
+            switcher.setChecked(true);
+        }
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, (switcher.isChecked()) ? "is checked!!!" : "not checked!!!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Intent intent = new Intent();
+                if(switcher.isChecked()) {
+                    // 비밀번호 설정
+                    intent.setClass(MainActivity.this, PasswordSettingActivity.class);
+                } else {
+                    // 비밀번호 해제
+                    intent.setClass(MainActivity.this, PasswordActivity.class);
+                    intent.putExtra("delete", 1);
+                }
+                intent.putExtra("activityCheck", 0);
+                intent.putExtra("theme", theme);
+
+
+                ////////////////////////////////////////////////////////////////
+
+
+
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -2139,8 +2165,6 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
         } else if (id == R.id.nav_password) {
             switcher.setChecked(!switcher.isChecked());
-            Snackbar.make(item.getActionView(), (switcher.isChecked()) ? "is checked" : "not checked", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-
         } else if (id == R.id.nav_send) {
 
         }

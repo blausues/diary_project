@@ -16,31 +16,42 @@ import android.widget.EditText;
 
 public class PasswordSettingActivity extends Activity {
     private EditText etPasswordSetting;
+    private String viewDate, writeDateStr;
+    private int theme, dayMonthYearCheck, activityCheck;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_setting);
 
+        Intent receiveIntent = getIntent();
+        writeDateStr = receiveIntent.getStringExtra("selectedDate");
+        viewDate = receiveIntent.getStringExtra("viewDate");
+        dayMonthYearCheck = receiveIntent.getIntExtra("dayMonthYearCheck",0);
+        theme = receiveIntent.getIntExtra("theme",0);
+        activityCheck = receiveIntent.getIntExtra("activityCheck",0);
+
         etPasswordSetting = findViewById(R.id.et_password_setting);
         etPasswordSetting.requestFocus();
         etPasswordSetting.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
                 if(etPasswordSetting.getText().length()==4){
                     Intent intent = new Intent(PasswordSettingActivity.this,PasswordCheckActivity.class);
                     intent.putExtra("password",etPasswordSetting.getText().toString());
+                    intent.putExtra("activityCheck", activityCheck);
+                    intent.putExtra("selectedDate", writeDateStr);
+                    intent.putExtra("viewDate", viewDate);
+                    intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+                    intent.putExtra("theme", theme);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

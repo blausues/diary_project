@@ -78,7 +78,7 @@
                 android:background="@drawable/border"
                 android:padding="5dp"
                 android:textSize="14sp"
-                android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"
+                android:inputType="textMultiLine|textNoSuggestions"
                 android:privateImeOptions="nmz"/>
         </LinearLayout>
     </ScrollView>
