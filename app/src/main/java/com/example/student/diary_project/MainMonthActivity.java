@@ -142,7 +142,11 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         if(viewDate != null) {
             int year = Integer.parseInt(viewDate.substring(0,4));
             int month = Integer.parseInt(viewDate.substring(5,7));
+            viewDate = year+"-"+month;
             calendarView.setCurrentDate(CalendarDay.from(year, month-1, 1));
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            viewDate = sdf.format(new Date());
         }
 
         // DB에서 해당 테마 일기 쓴 날짜 가져와서 List에 넣기
@@ -184,9 +188,8 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
             tempDates = dietDBHelper.selectDietAllDate();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             // 이번 달 체중 기록 가져오기
-            ArrayList<DietVO> dietVOS = dietDBHelper.selectDietMonth(sdf.format(new Date()));
+            ArrayList<DietVO> dietVOS = dietDBHelper.selectDietMonth(viewDate);
 
             if (dietVOS.size() > 0) {
                 ArrayList<String> dateList = new ArrayList<>();
