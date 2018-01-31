@@ -201,7 +201,7 @@ public class WriteDrawDiaryActivity extends Activity {
                 intent.putExtra("viewDate", viewDate);
                 intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
                 intent.putExtra("theme", theme);
-                intent.putExtra("activityCheck",activityCheck);
+                intent.putExtra("activityCheck", activityCheck);
                 startActivity(intent);
                 finish();
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,10 +229,15 @@ public class WriteDrawDiaryActivity extends Activity {
     }
 
     private File screenShotSave(Bitmap screenBitmap) {
-
         filename = new Random().nextInt(1000000000) + "s.jpg";
         File root = Environment.getExternalStorageDirectory();
+        File checkFolder = new File(root.getAbsolutePath() + "/DCIM/Test1/");
         File file = new File(root.getAbsolutePath() + "/DCIM/Test1/" + filename);
+
+        if (!file.exists()) {// 원하는 경로에 폴더가 있는지 확인
+            checkFolder.mkdirs();
+        }
+
         Toast.makeText(WriteDrawDiaryActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
 
         FileOutputStream os = null;
