@@ -138,8 +138,8 @@ public class WriteNormalActivity extends Activity {
 // 이미지뷰 띄워주는 팝업 inflate
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
-        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
-        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ViewGroup.LayoutParams.WRAP_CONTENT, dm);
+        int lang_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, dm);
+        int lang_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, dm);
         pop_View = View.inflate(this, R.layout.popup_write_normal_show_image, null);
         popupWindow = new PopupWindow(pop_View, lang_width, lang_height, true);
 
