@@ -2166,6 +2166,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
         if (id == R.id.nav_month) {
             Intent intent = new Intent(MainActivity.this, MainMonthActivity.class);
             startActivity(intent);
+            finish();
         } else if (id == R.id.nav_day) {
         } else if (id == R.id.nav_help) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -2182,7 +2183,6 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
-        finish();
         return true;
     }
 }

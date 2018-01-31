@@ -99,6 +99,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        Log.d("aa", "onsaasd");
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_password);
         View actionView = menuItem.getActionView();
@@ -280,14 +281,16 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
                     // 준완이는 show랑 write 나눈다고 해서 이렇게 해놓음
                     for (int i = 0; i < dates.size(); i++) {
-                        if (dates.get(i).equals(date)) {
-                            Log.d("aa", "aaa");
-                            intent.setClass(MainMonthActivity.this,DrawDiaryActivity.class);
-                            intent.putExtra("theme",1);
-                        } else {
+                        if ((!dates.get(i).equals(date)) && i==dates.size()-1) {
                             Log.d("aa", "bbb");
                             intent.setClass(MainMonthActivity.this,WriteDrawDiaryActivity.class);
                             intent.putExtra("theme",1);
+                            break;
+                        } else if(dates.get(i).equals(date)){
+                            Log.d("aa", "aaa");
+                            intent.setClass(MainMonthActivity.this,DrawDiaryActivity.class);
+                            intent.putExtra("theme",1);
+                            break;
                         }
                     }
                 } else if (theme == 2) {
