@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 
 public class WriteNormalDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "normalDiary.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private SQLiteDatabase db;
 
