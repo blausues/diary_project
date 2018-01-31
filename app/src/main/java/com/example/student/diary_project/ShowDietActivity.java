@@ -426,6 +426,7 @@ public class ShowDietActivity extends Activity {
         } else {
             intent = new Intent(ShowDietActivity.this, MainMonthActivity.class);
         }
+        Log.i("lyh", "show" + writeDateStr);
         intent.putExtra("selectedDate", writeDateStr);
         intent.putExtra("viewDate", viewDate);
         intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);

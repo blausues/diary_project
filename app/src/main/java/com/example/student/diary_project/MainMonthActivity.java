@@ -142,7 +142,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
         if(viewDate != null) {
             int year = Integer.parseInt(viewDate.substring(0,4));
             int month = Integer.parseInt(viewDate.substring(5,7));
-            viewDate = year+"-"+month;
+            viewDate = viewDate.substring(0,7);
             calendarView.setCurrentDate(CalendarDay.from(year, month-1, 1));
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -188,6 +188,8 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
 
             tempDates = dietDBHelper.selectDietAllDate();
 
+
+            Log.i("lyh", viewDate);
             // 이번 달 체중 기록 가져오기
             ArrayList<DietVO> dietVOS = dietDBHelper.selectDietMonth(viewDate);
 
@@ -459,10 +461,10 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
     }
 
     // 뒤로가기 버튼을 통해서 왔을 때, 새로고침
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        finish();
-//        startActivity(getIntent());
-//    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 }
