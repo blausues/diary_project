@@ -419,7 +419,12 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (tmpAllList.get(position).getTheme()) {
                     case 0:
+                        NormalVO normalVO = new NormalVO();
+                        normalVO.setNormalWriteContent(normalDBHelper.selectAll(tmpAllList.get(position).getWriteDate()).getNormalWriteContent());
+                        normalVO.setNormalWriteImagePath(normalDBHelper.selectAll(tmpAllList.get(position).getWriteDate()).getNormalWriteImagePath());
                         Intent normalIntent = new Intent(MainActivity.this,WriteNormalActivity.class);
+                        normalIntent.putExtra("content", normalVO.getNormalWriteContent());
+                        normalIntent.putExtra("imagePath", normalVO.getNormalWriteImagePath());
                         normalIntent.putExtra("selectedDate",tmpAllList.get(position).getWriteDate());
                         normalIntent.putExtra("viewDate",viewDate.getText());
                         normalIntent.putExtra("dayMonthYearCheck",dayMonthYearCheck);

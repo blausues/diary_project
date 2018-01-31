@@ -8,5 +8,6 @@
         android:text="설명2"
         android:textSize="100dp"
         android:gravity="center"
+        android:background="#D4F4FA"
         />
 </android.support.constraint.ConstraintLayout>

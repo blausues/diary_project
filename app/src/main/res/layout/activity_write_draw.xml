@@ -134,7 +134,9 @@
                     android:textSize="20dp"
                     android:hint="내용"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

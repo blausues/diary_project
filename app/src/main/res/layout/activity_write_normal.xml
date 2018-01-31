@@ -33,6 +33,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="top"
+            android:textCursorDrawable="@drawable/cursor_color"
             />
     </RelativeLayout>
 
