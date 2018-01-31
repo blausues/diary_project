@@ -9,7 +9,11 @@ import android.util.Log;
 
 import com.example.student.diary_project.vo.DrawingVO;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -97,6 +101,22 @@ public class DrawDBHelper extends SQLiteOpenHelper{
             drawingVOList.add(drawingVO);
         }
         return drawingVOList;
+    }    //날짜별로 불러오기 drawdate는 불러올
+
+    public List<Calendar> selectDrawDiaryAllList(){
+        String sql = "SELECT WRITE_DATE FROM DRAW_TABLE ORDER BY WRITE_DATE ASC;";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        List<Calendar> dates = new ArrayList<>();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        while (cursor.moveToNext()) {
+            Calendar calendar = Calendar.getInstance();
+            Date date = transFormat.parse(cursor.getString(0), new ParsePosition(0));
+            calendar.setTime(date);
+            dates.add(calendar);
+        }
+        return dates;
     }
 
     //일기 수정

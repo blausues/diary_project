@@ -32,6 +32,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.student.diary_project.vo.DietVO;
+import com.example.student.diary_project.vo.DrawingVO;
 import com.example.student.diary_project.vo.NoSmokingVO;
 import com.example.student.diary_project.vo.NormalVO;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -149,12 +150,8 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
             tempDates = writeNormalDBHelper.selectNormalAllDate();
         } else if(theme == 1) {
             drawDBHelper = new DrawDBHelper(this);
-//            tempDates =
-            /////////////////////////////////////////////////////////////////////
-
-
-
-
+            drawDBHelper = new DrawDBHelper(this);
+            tempDates = drawDBHelper.selectDrawDiaryAllList();
 
         } else if(theme == 2) {
             noSmokingDBHelper = new NoSmokingDBHelper(this);
@@ -278,17 +275,19 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                     intent.putExtra("theme", 0);
 
                 } else if (theme == 1) {
-
-
-
+                    Log.d("aa", "aaaas");
                     /////////////////////////////////////////////////////////////////////
 
                     // 준완이는 show랑 write 나눈다고 해서 이렇게 해놓음
                     for (int i = 0; i < dates.size(); i++) {
                         if (dates.get(i).equals(date)) {
-                            // 달력에 일기 있으면 show로
+                            Log.d("aa", "aaa");
+                            intent.setClass(MainMonthActivity.this,DrawDiaryActivity.class);
+                            intent.putExtra("theme",1);
                         } else {
-                            // 없으면 write로
+                            Log.d("aa", "bbb");
+                            intent.setClass(MainMonthActivity.this,WriteDrawDiaryActivity.class);
+                            intent.putExtra("theme",1);
                         }
                     }
                 } else if (theme == 2) {
@@ -320,7 +319,7 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String selectedDate = sdf.format(new Date());
                 intent.putExtra("selectedDate", selectedDate);
-
+                intent.putExtra("activityCheck", 1);
                 if(theme == 0) {
                     NormalVO normalVO = new NormalVO();
                     normalVO.setNormalWriteContent(writeNormalDBHelper.selectAll(selectedDate).getNormalWriteContent());
@@ -331,10 +330,9 @@ public class MainMonthActivity extends Activity implements NavigationView.OnNavi
                     intent.putExtra("theme", 0);
                     intent.setClass(MainMonthActivity.this, WriteNormalActivity.class);
                 } else if(theme == 1) {
-
+                    intent.setClass(MainMonthActivity.this,WriteDrawDiaryActivity.class);
+                    intent.putExtra("theme",1);
                     ///////////////////////////////////////////////////////
-
-
                 } else if(theme == 2) {
                     intent.setClass(MainMonthActivity.this, ShowNoSmokingActivity.class);
                     intent.putExtra("theme", 2);

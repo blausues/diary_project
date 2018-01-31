@@ -85,6 +85,7 @@ public class DrawDiaryActivity extends Activity {
         tvContent = findViewById(R.id.tv_drawshow_content);
         btnEdit = findViewById(R.id.btn_drawshow_edit);
 
+        Log.d("hh", "sadasdasdasdasdasdasd");
         //////////////////////////////////////////////////////////////////////////////////
         //액티비티 생성
         drawDBHelper = new DrawDBHelper(this);

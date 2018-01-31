@@ -129,7 +129,8 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                 }
                 intent.putExtra("activityCheck", 0);
                 intent.putExtra("theme", theme);
-
+                intent.putExtra("viewDate",viewDate.getText());
+                intent.putExtra("dayMonthYearCheck",dayMonthYearCheck);
 
                 ////////////////////////////////////////////////////////////////
 
