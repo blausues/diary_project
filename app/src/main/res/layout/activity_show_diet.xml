@@ -64,6 +64,7 @@
                     android:layout_alignBaseline="@id/tv_kg"
                     android:layout_toLeftOf="@id/tv_kg"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_weight"/>
 
                 <TextView
@@ -104,6 +105,7 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal1"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_kcal1"/>
 
                 <TextView
@@ -132,6 +134,7 @@
                     android:textSize="15dp"
                     android:hint="먹은 식단"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_menu1"/>
             </RelativeLayout>
 
@@ -165,6 +168,7 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal2"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_kcal2"/>
 
                 <TextView
@@ -193,6 +197,7 @@
                     android:textSize="15dp"
                     android:hint="먹은 식단"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_menu2"/>
             </RelativeLayout>
 
@@ -225,6 +230,7 @@
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal3"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_kcal3"/>
 
                 <TextView
@@ -253,6 +259,7 @@
                     android:textSize="15dp"
                     android:hint="먹은 식단"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_menu3"/>
             </RelativeLayout>
 
@@ -283,6 +290,7 @@
                     android:layout_below="@id/tv_memo"
                     android:textSize="15dp"
                     android:visibility="gone"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_memo"/>
             </RelativeLayout>
 
