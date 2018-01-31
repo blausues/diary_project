@@ -52,7 +52,7 @@ public class PasswordCheckActivity extends Activity {
             public void afterTextChanged(Editable s) {
                 if(etPasswordCheck.getText().length()==4){
                     if(etPasswordCheck.getText().toString().equals(password)){
-                        Toast.makeText(PasswordCheckActivity.this, "비밀번호가 일치합니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PasswordCheckActivity.this, "비밀번호 설정완료.", Toast.LENGTH_SHORT).show();
                         pwdDBHelper.insertPwd(Integer.parseInt(password));
 
                         Intent intent;
@@ -68,7 +68,15 @@ public class PasswordCheckActivity extends Activity {
                         startActivity(intent);
                         finish();
                     }else{
-                        Toast.makeText(PasswordCheckActivity.this, "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PasswordCheckActivity.this, "비밀번호가 일치하지 않습니다. 다시 설정해주세요.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PasswordCheckActivity.this,PasswordSettingActivity.class);
+                        intent.putExtra("selectedDate", writeDateStr);
+                        intent.putExtra("activityCheck", activityCheck);
+                        intent.putExtra("viewDate", viewDate);
+                        intent.putExtra("dayMonthYearCheck", dayMonthYearCheck);
+                        intent.putExtra("theme", theme);
+                        startActivity(intent);
+                        finish();
                         etPasswordCheck.setText("");
                     }
                 }

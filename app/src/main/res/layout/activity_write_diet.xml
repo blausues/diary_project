@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@id/tv_kg"
                     android:layout_toLeftOf="@id/tv_kg"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_weight"/>
 
                 <TextView
@@ -91,6 +92,7 @@
                     android:layout_alignBaseline="@id/tv_kcal1"
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal1"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_kcal1"/>
 
                 <TextView
@@ -109,6 +111,7 @@
                     android:layout_below="@id/tv_kcal1"
                     android:textSize="15dp"
                     android:hint="먹은 식단"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_menu1"/>
             </RelativeLayout>
 
@@ -132,6 +135,7 @@
                     android:layout_alignBaseline="@id/tv_kcal2"
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal2"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_kcal2"/>
 
                 <TextView
@@ -150,6 +154,7 @@
                     android:layout_below="@id/tv_kcal2"
                     android:textSize="15dp"
                     android:hint="먹은 식단"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_menu2"/>
             </RelativeLayout>
 
@@ -172,6 +177,7 @@
                     android:layout_alignBaseline="@id/tv_kcal3"
                     android:textSize="15dp"
                     android:layout_toLeftOf="@id/tv_kcal3"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_kcal3"/>
 
                 <TextView
@@ -190,6 +196,7 @@
                     android:layout_below="@id/tv_kcal3"
                     android:textSize="15dp"
                     android:hint="먹은 식단"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_menu3"/>
             </RelativeLayout>
 
@@ -212,6 +219,7 @@
                     android:layout_below="@id/tv_memo"
                     android:textSize="15dp"
                     android:hint="오늘의 다이어트는 힘들었다."
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:id="@+id/edit_diet_write_memo"/>
             </RelativeLayout>
         </LinearLayout>

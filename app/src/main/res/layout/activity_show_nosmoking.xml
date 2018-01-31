@@ -79,6 +79,7 @@
                 android:padding="5dp"
                 android:textSize="14sp"
                 android:inputType="textMultiLine|textNoSuggestions"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:privateImeOptions="nmz"/>
         </LinearLayout>
     </ScrollView>
